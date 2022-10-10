@@ -1,0 +1,256 @@
+/*
+* Skeleton V2.0.4
+* Copyright 2014, Dave Gamache
+* www.getskeleton.com
+* Free to use under the MIT license.
+* http://www.opensource.org/licenses/mit-license.php
+* 12/29/2014
+*/
+
+
+/* Table of contents
+––––––––––––––––––––––––––––––––––––––––––––––––––
+- Grid
+- Base Styles
+- Typography
+- Links
+- Buttons
+- Forms
+- Lists
+- Code
+- Tables
+- Spacing
+- Utilities
+- Clearing
+- Media Queries
+*/
+
+
+/* Grid
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.aol-wrapper .container {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box; }
+.aol-wrapper .column,
+.aol-wrapper .columns {
+  width: 100%;
+  float: left;
+  box-sizing: border-box; }
+
+/* For devices larger than 400px */
+@media (min-width: 400px) {
+  .aol-wrapper .container {
+    width: 85%;
+    padding: 0; }
+}
+
+/* For devices larger than 550px */
+@media (min-width: 550px) {
+  .aol-wrapper .container {
+    width: 80%; }
+  .aol-wrapper .column,
+  .aol-wrapper .columns {
+    margin-left: 4%; }
+  .aol-wrapper .column:first-child,
+  .aol-wrapper .columns:first-child {
+    margin-left: 0; }
+
+  .aol-wrapper .one.column,
+  .aol-wrapper .one.columns                    { width: 4.66666666667%; }
+  .aol-wrapper .two.columns                    { width: 13.3333333333%; }
+  .aol-wrapper .three.columns                  { width: 22%;            }
+  .aol-wrapper .four.columns                   { width: 30.6666666667%; }
+  .aol-wrapper .five.columns                   { width: 39.3333333333%; }
+  .aol-wrapper .six.columns                    { width: 48%;            }
+  .aol-wrapper .seven.columns                  { width: 56.6666666667%; }
+  .aol-wrapper .eight.columns                  { width: 65.3333333333%; }
+  .aol-wrapper .nine.columns                   { width: 74.0%;          }
+  .aol-wrapper .ten.columns                    { width: 82.6666666667%; }
+  .aol-wrapper .eleven.columns                 { width: 91.3333333333%; }
+  .aol-wrapper .twelve.columns                 { width: 100%; margin-left: 0; }
+
+  .aol-wrapper .one-third.column               { width: 30.6666666667%; }
+  .aol-wrapper .two-thirds.column              { width: 65.3333333333%; }
+
+  .aol-wrapper .one-half.column                { width: 48%; }
+
+  /* Offsets */
+  .aol-wrapper .offset-by-one.column,
+  .aol-wrapper .offset-by-one.columns          { margin-left: 8.66666666667%; }
+  .aol-wrapper .offset-by-two.column,
+  .aol-wrapper .offset-by-two.columns          { margin-left: 17.3333333333%; }
+  .aol-wrapper .offset-by-three.column,
+  .aol-wrapper .offset-by-three.columns        { margin-left: 26%;            }
+  .aol-wrapper .offset-by-four.column,
+  .aol-wrapper .offset-by-four.columns         { margin-left: 34.6666666667%; }
+  .aol-wrapper .offset-by-five.column,
+  .aol-wrapper .offset-by-five.columns         { margin-left: 43.3333333333%; }
+  .aol-wrapper .offset-by-six.column,
+  .aol-wrapper .offset-by-six.columns          { margin-left: 52%;            }
+  .aol-wrapper .offset-by-seven.column,
+  .aol-wrapper .offset-by-seven.columns        { margin-left: 60.6666666667%; }
+  .aol-wrapper .offset-by-eight.column,
+  .aol-wrapper .offset-by-eight.columns        { margin-left: 69.3333333333%; }
+  .aol-wrapper .offset-by-nine.column,
+  .aol-wrapper .offset-by-nine.columns         { margin-left: 78.0%;          }
+  .aol-wrapper .offset-by-ten.column,
+  .aol-wrapper .offset-by-ten.columns          { margin-left: 86.6666666667%; }
+  .aol-wrapper .offset-by-eleven.column,
+  .aol-wrapper .offset-by-eleven.columns       { margin-left: 95.3333333333%; }
+
+  .aol-wrapper .offset-by-one-third.column,
+  .aol-wrapper .offset-by-one-third.columns    { margin-left: 34.6666666667%; }
+  .aol-wrapper .offset-by-two-thirds.column,
+  .aol-wrapper .offset-by-two-thirds.columns   { margin-left: 69.3333333333%; }
+
+  .aol-wrapper .offset-by-one-half.column,
+  .aol-wrapper .offset-by-one-half.columns     { margin-left: 52%; }
+
+}
+
+
+/* Forms
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.aol-wrapper input[type="email"],
+.aol-wrapper input[type="number"],
+.aol-wrapper input[type="search"],
+.aol-wrapper input[type="text"],
+.aol-wrapper input[type="tel"],
+.aol-wrapper input[type="url"],
+.aol-wrapper input[type="password"],
+.aol-wrapper textarea,
+.aol-wrapper select {
+  height: 38px;
+  padding: 6px 10px; /* The 6px vertically centers text on FF, ignored by Webkit */
+  background-color: #fff;
+  border: 1px solid #D1D1D1;
+  border-radius: 4px;
+  box-shadow: none;
+  box-sizing: border-box; }
+/* Removes awkward default styles on some inputs for iOS */
+.aol-wrapper input[type="email"],
+.aol-wrapper input[type="number"],
+.aol-wrapper input[type="search"],
+.aol-wrapper input[type="text"],
+.aol-wrapper input[type="tel"],
+.aol-wrapper input[type="url"],
+.aol-wrapper input[type="password"],
+.aol-wrapper textarea {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none; }
+.aol-wrapper textarea {
+  min-height: 65px;
+  padding-top: 6px;
+  padding-bottom: 6px; }
+.aol-wrapper input[type="email"]:focus,
+.aol-wrapper input[type="number"]:focus,
+.aol-wrapper input[type="search"]:focus,
+.aol-wrapper input[type="text"]:focus,
+.aol-wrapper input[type="tel"]:focus,
+.aol-wrapper input[type="url"]:focus,
+.aol-wrapper input[type="password"]:focus,
+.aol-wrapper textarea:focus,
+.aol-wrapper select:focus {
+  border: 1px solid #33C3F0;
+  outline: 0; }
+.aol-wrapper label,
+.aol-wrapper legend {
+  display: block;
+  margin-bottom: .5rem;
+  font-weight: 600; }
+.aol-wrapper fieldset {
+  padding: 0;
+  border-width: 0; }
+.aol-wrapper input[type="checkbox"],
+.aol-wrapper input[type="radio"] {
+  display: inline; }
+.aol-wrapper label > .label-body {
+  display: inline-block;
+  margin-left: .5rem;
+  font-weight: normal; }
+
+/* Spacing
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.aol-wrapper button,
+.aol-wrapper .button {
+  margin-bottom: 1rem; }
+.aol-wrapper input,
+.aol-wrapper textarea,
+.aol-wrapper select,
+.aol-wrapper fieldset {
+  margin-bottom: 1.5rem; }
+.aol-wrapper pre,
+.aol-wrapper blockquote,
+.aol-wrapper dl,
+.aol-wrapper figure,
+.aol-wrapper table,
+.aol-wrapper p,
+.aol-wrapper ul,
+.aol-wrapper ol,
+.aol-wrapper form {
+  margin-bottom: 2.5rem; }
+
+/* Utilities
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.aol-wrapper .u-full-width {
+  width: 100%;
+  box-sizing: border-box; }
+.aol-wrapper .u-max-full-width {
+  max-width: 100%;
+  box-sizing: border-box; }
+.aol-wrapper .u-pull-right {
+  float: right; }
+.aol-wrapper .u-pull-left {
+  float: left; }
+
+
+/* Misc
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.aol-wrapper hr {
+  margin-top: 3rem;
+  margin-bottom: 3.5rem;
+  border-width: 0;
+  border-top: 1px solid #E1E1E1; }
+
+
+/* Clearing
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+
+/* Self Clearing Goodness */
+.aol-wrapper .container:after,
+.aol-wrapper .row:after,
+.aol-wrapper .u-cf {
+  content: "";
+  display: table;
+  clear: both; }
+
+
+/* Media Queries
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+/*
+Note: The best way to structure the use of media queries is to create the queries
+near the relevant code. For example, if you wanted to change the styles for buttons
+on small devices, paste the mobile query code up in the buttons section and style it
+there.
+*/
+
+
+/* Larger than mobile */
+@media (min-width: 400px) {}
+
+/* Larger than phablet (also point when grid becomes active) */
+@media (min-width: 550px) {}
+
+/* Larger than tablet */
+@media (min-width: 750px) {}
+
+/* Larger than desktop */
+@media (min-width: 1000px) {}
+
+/* Larger than Desktop HD */
+@media (min-width: 1200px) {}

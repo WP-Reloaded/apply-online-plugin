@@ -1,0 +1,223 @@
+.aol-wrapper .clearfix{clear: both;}
+.aol-meta label{display: block}
+.strong{font-weight: bold; }
+/*.aol-ad-closing{border: 2px solid #ddd}*/
+.curtime #ad-closing::before {
+	content: "\f145";
+	position: relative;
+	top: -1px;
+        font: 400 20px/1 dashicons;
+	speak: none;
+	display: inline-block;
+	margin-left: -1px;
+	padding-right: 3px;
+	vertical-align: top;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+        color: #82878c;
+ 
+}
+/*.curtime input.datepicker{margin: -6px 0;}*/
+.app_form_fields .hidden{display: none;}
+#aol_ad_metas label, #app_form_fields label{
+    display: inline-block;
+    min-width: 100px;
+}
+
+.default_fields .toggle-required{display: none; }
+
+#aol_application.postbox .inside {
+    padding: 0;
+}
+#aol_application.postbox .inside .minor-publishing-actions{padding: 0 12px 12px}
+
+.app_form_fields table{border-spacing: 0; border-collapse: collapse; }
+.aol_table input[type="text"]{min-width: 180px;}
+table.aol_table tr{background: #EEE; border: 3px solid #FFF;}
+table.aol_table tr td{padding: 5px 10px}
+.aol_table label .dashicons{color: #CCC; font-size: 20px; vertical-align: middle; }
+.aol_table label .dashicons:hover{color: #AAA;}
+tr.ui-state-highlight { height: 40px; line-height: 40px; background-color: #fdff77 !important;}
+
+.table {display:table;}
+.row {display:table-row;}
+.cell{display:table-cell;}
+
+.app_form_fields .adapp_group{padding-bottom: 20px;}
+
+.post-type-aol_applications .widefat td, .post-type-aol_applications .widefat th{min-width: 120px; vertical-align: middle}
+input.closed, .danger {color: #E00;}
+.dashicons-menu::before { color: #AAA; }
+
+#menu-posts-aol_ad .wp-first-item + li{display: none;}
+
+.ui-sortable-handle .dashicons-menu{font-size: 26px;}
+.ui-sortable-handle .dashicons-menu:hover{cursor: pointer;}
+a.aol-heart{color: #F00; text-decoration: none; }
+a.aol-stats{color: #777; text-decoration: none; }
+a.aol-help{color: #0C0; text-decoration: none; }
+a.aol-shop{color: #00F; text-decoration: none; }
+a.aol-heart:hover{color: #D00; text-decoration: none; }
+a.aol-stats:hover{color: #000; text-decoration: none; }
+a.aol-help:hover{color: #0A0; text-decoration: none; }
+a.aol-shop:hover{color: #00B; text-decoration: none; }
+
+#ad_types > li{border: 1px solid #ccc; padding: 5px; }
+
+/*#app_form_fields td:first-child { max-width: 300px;}*/
+/*#app_form_fields td { padding: 0.5em 0;} since 2.0*/
+.wp-core-ui .button-danger {
+	background: #dc3545;
+	border-color: #dc2345 #dc1545 #dc1545;
+	box-shadow: 0 1px 0 #dc1545;
+	color: #fff;
+	text-decoration: none;
+	text-shadow: 0 -1px 1px #dc3545,1px 0 1px #dc3545,0 1px 1px #dc3545,-1px 0 1px #dc3545;
+}
+.wp-core-ui .button-danger:hover {
+	background: #c82333;
+	border-color: #bd2130;
+        color: #FFF;
+}
+.aol-remove:hover {
+        color: #E00;
+        text-shadow: none;
+        cursor: pointer;
+}
+.aol-add > .dashicons, .aol-remove > .dashicons {
+	position: relative;
+	top: 3px;
+}
+.field-generator{background: #f1f1f1; padding: 20px;}
+.hide{display: none;}
+
+.pw-weak{display: none;}
+.show-password #pass1-text{display: inline-block;}
+button.wp-generate-pw > .dashicons{position: relative; top: 3px;}
+
+#inviteevaluator .form-field input {
+	width: 25em;
+}
+.aol-settings .dashicons-warning { color: #E00;}
+.alert{padding:10px;margin-bottom:20px;border:1px solid transparent;border-radius:4px}
+.alert h4{margin-top:0;color:inherit}
+.alert .alert-link{font-weight:bold}
+.alert>p,.alert>ul{margin-bottom:0}
+.alert>p+p{margin-top:5px}
+.alert-dismissable,.alert-dismissible{padding-right:35px}
+.alert-dismissable .close,.alert-dismissible .close{position:relative;top:-2px;right:-21px;color:inherit}
+.alert-success{background-color:#dff0d8;border-color:#d6e9c6;color:#3c763d}
+.alert-success hr{border-top-color:#c9e2b3}
+.alert-success .alert-link{color:#2b542c}
+.alert-info{background-color:#d9edf7;border-color:#bce8f1;color:#31708f}
+.alert-info hr{border-top-color:#a6e1ec}
+.alert-info .alert-link{color:#245269}
+.alert-warning{background-color:#fcf8e3;border-color:#faebcc;color:#8a6d3b}
+.alert-warning hr{border-top-color:#f7e1b5}
+.alert-warning .alert-link{color:#66512c}
+.alert-danger{background-color:#f2dede;border-color:#ebccd1;color:#a94442}
+.alert-danger hr{border-top-color:#e4b9c0}
+.alert-danger .alert-link{color:#843534}
+.aol_form label{min-width: 100px; display: inline-block; }
+.aol_form .aol-form-field, .aol_form .aol-form-field{width: 80%;}
+.aol_form input[type=checkbox], .aol_form input[type=radio]{width: auto}
+.aol_form{background: #eee; padding: 10px; border-radius: 10px; }
+.dashicons.aol_fields{font-size: 35px; padding-right: 20px; }
+.aol_form .dashicons.aol_fields{height: 35px; }
+.aol-selectors{ clear: both; transition: color 0.2s}
+.aol-selectors p{margin: 0px; padding: 0px; }
+.aol-selectors td{padding-bottom: 20px; text-align: center; font-size: 13px;}
+.aol-edit-form{display: none; float: right;}
+.aol-edit-form .dashicons {border: 1px solid #ccc; background: #eee; padding: 2px; border-radius: 2px; }
+.aol_form .inline{display: inline-block; width: 20%}
+i.description{color: #666}
+.dashicons.aol_fields{cursor: pointer}
+#ad_custom_filters .dashicons-dismiss { color: #E00; font-size: 21px; cursor: pointer;}
+#ad_custom_filters tfoot tr{height: 60px;}
+
+ /* The switch - the box around the slider */
+.aol-settings .switch,
+body.post-type-aol_ad .switch{
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/*HTML Switch - Start*/
+/* Hide default HTML checkbox */
+.aol-settings .switch input,
+body.post-type-aol_ad .switch input{
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.aol-settings .slider,
+body.post-type-aol_ad  .slider{
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.aol-settings .slider:before,
+body.post-type-aol_ad  .slider:before{
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.aol-settings input:checked + .slider,
+body.post-type-aol_ad  input:checked + .slider{
+  background-color: #2196F3;
+}
+
+.aol-settings input:focus + .slider,
+body.post-type-aol_ad input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+.aol-settings input:checked + .slider:before,
+body.post-type-aol_ad  input:checked + .slider:before{
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.aol-settings .slider.round,
+body.post-type-aol_ad .slider.round{
+  border-radius: 34px;
+}
+
+.aol-settings .slider.round:before,
+body.post-type-aol_ad .slider.round:before {
+  border-radius: 50%;
+} 
+/*HTML Switch - End*/
+
+body.post-type-aol_ad fieldset{
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    border: 1px groove;
+}
+
+body.post-type-aol_ad .postbox-header .hndle{justify-content: normal}
+.description {font-style: italic}

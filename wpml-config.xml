@@ -1,0 +1,13 @@
+<wpml-config>
+    <taxonomies>
+        <taxonomy translate="1">Partner</taxonomy>
+    </taxonomies>
+    <admin-texts>
+        <key name="aol_required_fields_notice" title="Required Fields Notice" />
+        <key name="aol_application_message" title="" />
+        <key name="aol_form_heading" title="Application Form Title" />
+        <key name="aol_features_title" title="Ad features title" />
+        <key name="aol_application_submit_button" title="Submite Button Text" />
+        <key name="aol_application_success_alert" title="Application success alert" />
+    </admin-texts>
+</wpml-config>
