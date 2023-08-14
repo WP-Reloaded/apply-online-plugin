@@ -138,3 +138,17 @@ ol.aol_ads_list p{padding: 0px; margin: 0}
   .aol-11 {width: 91.66%;}
   .aol-12 {width: 100%;}
 }*/
+
+.aol-progress{width: 100%; background-color: #ddd; position: relative; text-align: center; margin-bottom: 20px; }
+
+.aol-progress-count {
+  width: 0;
+  height: 30px;
+  background-color: #00428b;
+  text-align: center; /* To center it horizontally (if you want) */
+  line-height: 30px; /* To center it vertically */
+  color: white;
+}
+.aol-progress-counter{position: absolute; top:0;}
+
+.progress-wrapper{display: none}

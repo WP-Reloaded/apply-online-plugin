@@ -62,11 +62,6 @@ class Applyonline_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-            //Again display Notice.
-            $notices = get_option('aol_dismissed_notices', array());
-            $notices = array_diff($notices,array('aol'));
-            update_option('aol_dismissed_notices', $notices);
-            
             //Run dependencies before terms insertion.
             self::dependencies();
             wp_insert_term(
@@ -234,7 +229,7 @@ class Applyonline_Activator {
                   'label' => 'E Mail',
                 ),
             );
-            
+
             $templates = array (
                 'templatedefault' => 
                 array (
@@ -264,7 +259,7 @@ class Applyonline_Activator {
                   ),
                 ),
               );
-            
+
             $types = array(
                 'ad' => 
                 array (
@@ -274,17 +269,23 @@ class Applyonline_Activator {
                   'singular' => 'Ad',
                   'plural' => 'Ads',
                 ));
-            
+
             $default_filters = array(
                 'category' => array('singular' => __('Category', 'ApplyOnline'), 'plural' => __('Categories', 'ApplyOnline')),
                 'type' => array('singular' => __('Type', 'ApplyOnline'), 'plural' => __('Types', 'ApplyOnline')),
                 'location' => array('singular' => esc_html__('Location', 'ApplyOnline'), 'plural' => esc_html__('Locations', 'ApplyOnline'))
             );
-            
+
             /*
              * Make sure it do not overwrite previously saved settings on plugin reactivation
              */
-            //if(!get_option('aol_default_fields')) update_option('aol_default_fields', $fields);
+            $notices = get_option('aol_dismissed_notices', array());
+            $notices = array_diff($notices,array('aol'));
+            update_option('aol_dismissed_notices', $notices);            
+
+            if( !get_option('aol_admin_notices') ) update_option('aol_admin_notices', array('aol_fresh_install'));
+
+            update_option('aol_progress_bar_color', array('foreground' => '#222222', 'background' => '#dddddd', 'counter' => '#888888'));
             if(!get_option('aol_form_templates')) update_option('aol_form_templates', $templates);
             if(!get_option('aol_recipients_emails')) update_option('aol_recipients_emails', NULL);
             if(!get_option('aol_ad_author_notification')) update_option('aol_ad_author_notification', 1);

@@ -3,8 +3,8 @@ Contributors: farhan.noor
 Donate link: https://wpreloaded.com/shop/
 Tags: Job Board, Job Manager, Form Builder, Ninja Forms, WP Forms, Applicant Tracking System, career, application, cv, courses, admission form, forms, contact form, email form, form builder, custom form, pdf form, registration form, payment form, login form, contact me, signature form, upload form, file upload form, conditional form, feedback form, appointment form, quote form, survey form, contact button, signup form, form plugin, contact form plugin, subscription form, email subscription form, newsletter form, donation form, booking form, quote request form, multi page form, conditional logic form, subscription form, application form, employment verification form, star rating form, rating form, event form, mailchimp form, campaign monitor form, constant contact form, mailpoet form, aweber form, cleverreach form, emma form, convertkit form, active campaign form, salesforce form, zoho form, capsule form
 Requires at least: 5.0
-Tested up to: 6.1
-Stable tag: 2.4.4
+Tested up to: 6.3
+Stable tag: 2.5.2
 Requires PHP: 5.2.4
 License: GPLv2 or later
 
@@ -103,10 +103,21 @@ New: Recaptcha integration for secure form submission.
 New: Add required field mark in the received application data.
 New: Different layout options e.g. Grid & Listing, sidebar filter, popup form, etc.
 New: Application failure custom text option.
-Fix: Form submit progress bar.
+
+= 2.5.2 =
+Fixed: Attachment field issue in the received application data.
+
+= 2.5.1 =
+Fixed: Progress-bar for text-area field.
+Fixed: Data sanitization and validation issues. 
+
+= 2.5 =
+New: Application form progress bar.
+New: Option to overwrite global settings for each ad from the ad editor screen.
+Fixed: Select2 library inclusion in admin panel.
 
 = 2.4.4 =
-Fixed: Fixed Max File Type option appearing in all field types in the form builder.
+Fixed: Max File Type option appearing in all field types in the form builder.
 
 = 2.4.3 =
 Fixed: File type field for File Attachment field.
@@ -373,6 +384,15 @@ Fixed: Paragraph field text added in the received application & print format.
 * Plugin launched.
 
 == Upgrade Notice ==
+= 2.5.2 =
+ Reliability, security and performance update, Upgrade immediately.
+
+= 2.5.1 =
+ Reliability, security and performance update, Upgrade immediately.
+
+= 2.5 =
+ Reliability, security and performance update, Upgrade immediately.
+
 = 2.4.4 =
  Reliability, security and performance update, Upgrade immediately.
 

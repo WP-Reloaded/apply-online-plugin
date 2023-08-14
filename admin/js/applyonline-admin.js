@@ -41,6 +41,7 @@
         var i = 0;
         $(document).ready(function(){
             /*Select2 API*/
+            if(typeof $.fn.select2 === 'undefined') return;
             $('.aol_select2_filter').select2({
                 placeholder: "Select here.",
                 //selectOnClose: true
@@ -416,7 +417,7 @@
                 var fieldVal = fieldVal.trim();
 
                 if(fieldName != '' && fieldVal!=''){
-                    $('#ad_features').append('<li class="'+fieldName+'"><input type="text" name="_aol_feature_'+fieldName+'[label]" value="'+fieldNameRaw+'" placeholder="Label" > &nbsp;  <input type="text" name="_aol_feature_'+fieldName+'[value]" value="'+fieldVal+'" laceholder="Value" > &nbsp; <div class="button aol-remove">Delete</div></li>');
+                    $('#ad_features').append('<li class="'+fieldName+'"><input type="text" name="_aol_feature_'+fieldName+'[label]" value="'+fieldNameRaw+'" placeholder="Label" > &nbsp;  <input type="text" name="_aol_feature_'+fieldName+'[value]" value="'+fieldVal+'" laceholder="Value" > &nbsp; <div class="button aol-remove"><span class="dashicons dashicons-remove"></span> Delete</div></li>');
                     $('#adfeature_name').val(""); //Reset Field value.
                     $('#adfeature_value').val(""); //Reset Field value.
                 }
@@ -438,14 +439,12 @@
             /*END Ad editor Scripts*/
             
             /*Settings Tabs*/
-            $('.aol-settings').children('.tab-data:first').show();
-            $('.aol-primary').children('.nav-tab').click(function(){
-                $('.aol-primary').find('.nav-tab').removeClass('nav-tab-active');
-                $(this).addClass('nav-tab-active');
+            $('.aol-tab').click(function(){
+                $('.aol-tab').removeClass('active');
+                $(this).addClass('active');
 
                 var target = $(this).data("id");
-
-                $('.aol-settings').children('.tab-data').hide();
+                $('.aol-settings').children('.aol-tab-data').hide();
                 $("#"+target).show();
             });
             /*End Settings Tabs*/
@@ -561,6 +560,7 @@
                     dd.find('.aol_default_option').attr('selected', 'selected');
                     return;
                 };
+                alert('Alhamdulillah');
                 $.ajax({
                     url: ajaxurl,
                     type: 'POST',
@@ -581,10 +581,10 @@
                 });
                 dd.val(null);
             });
-
+            
             $('.aol-import-form').select2({
                 //placeholder: "Import an Exsting Form",
-                placeholder: 'Please select an option',
+                placeholder: 'Select existing form',
                 ajax: {
                     url: ajaxurl,
                     delay: 500,

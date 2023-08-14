@@ -30,6 +30,9 @@
 	 */
         
         $(document).ready(function(){
+            /*Avada Theme work around, when it shows multiple forms on single ads.*/
+            $('.fusion-tb-header .aol-single, .fusion-tb-footer .aol-single').children().not('div').remove();
+
             $('.datepicker').datepicker({
                 yearRange: "-99:+50",
                 //dateFormat : aol_public.date_format,
@@ -40,132 +43,246 @@
             /*Setting Textarea Charchter Counter*/
             $('textarea, input[type=text]').keyup(function() {
     
-                    var characterCount = $(this).val().length,
-                        current = $(this).parent().find('.current'),
-                        maximum = $(this).parent().find('.maximum'),
-                        theCount = $(this).parent().find('.the-count');
+                var characterCount = $(this).val().length,
+                    current = $(this).parent().find('.current'),
+                    maximum = $(this).parent().find('.maximum'),
+                    theCount = $(this).parent().find('.the-count');
 
-                    current.text(characterCount);
-
-
-                  /*This isn't entirely necessary, just playin around*/
-                  if (characterCount < 70) {
-                    current.css('color', '#666');
-                  }
-                  if (characterCount > 70 && characterCount < 90) {
-                    current.css('color', '#6d5555');
-                  }
-                  if (characterCount > 90 && characterCount < 100) {
-                    current.css('color', '#793535');
-                  }
-                  if (characterCount > 100 && characterCount < 120) {
-                    current.css('color', '#841c1c');
-                  }
-                  if (characterCount > 120 && characterCount < 139) {
-                    current.css('color', '#8f0001');
-                  }
-
-                  if (characterCount >= 140) {
-                    maximum.css('color', '#8f0001');
-                    current.css('color', '#8f0001');
-                    theCount.css('font-weight','bold');
-                  } else {
-                    maximum.css('color','#666');
-                    theCount.css('font-weight','normal');
-                  }
+                current.text(characterCount);
 
 
-                });
+                /*This isn't entirely necessary, just playin around*/
+                if (characterCount < 70) {
+                  current.css('color', '#666');
+                }
+                if (characterCount > 70 && characterCount < 90) {
+                  current.css('color', '#6d5555');
+                }
+                if (characterCount > 90 && characterCount < 100) {
+                  current.css('color', '#793535');
+                }
+                if (characterCount > 100 && characterCount < 120) {
+                  current.css('color', '#841c1c');
+                }
+                if (characterCount > 120 && characterCount < 139) {
+                  current.css('color', '#8f0001');
+                }
+
+                if (characterCount >= 140) {
+                  maximum.css('color', '#8f0001');
+                  current.css('color', '#8f0001');
+                  theCount.css('font-weight','bold');
+                } else {
+                  maximum.css('color','#666');
+                  theCount.css('font-weight','normal');
+                }
+
+
+            });
             /*Ends Textarea Charchter Counter*/
          
             /*Submit Application Form*/
-         $( ".aol_app_form" ).submit(function(){
-            var datastring = new FormData(document.getElementById("aol_app_form"));
-            $.ajax({
-                    url: aol_public.ajaxurl,
-                    type: 'POST',
-                    dataType: 'json',
-                    data: datastring,
-                    //async: false,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    beforeSend: function(){
-                        $('#aol_form_status').removeClass();
-                        $('#aol_form_status').html('<img src="'+aol_public.url+'/images/loading.gif" />');
-                        $('#aol_form_status').addClass('alert alert-warning');
-                        $(".aol-form-button").prop('disabled', true);
-                    },
-                    success:function(response){
-                        $(document).trigger('afterAppSubmit', response); //Custom event  on ajax completiong
-                        
-                        if(response['success']==true){
+            $( ".aol_app_form" ).submit(function(){
+                var datastring = new FormData(document.getElementById("aol_app_form"));
+                $.ajax({
+                        url: aol_public.ajaxurl,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: datastring,
+                        //async: false,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        beforeSend: function(){
                             $('#aol_form_status').removeClass();
-                            $('#aol_form_status').addClass('alert alert-success');
-                            $('#aol_form_status').html(response['message']);
-                            $(".aol-form-button").prop('disabled', false);
-                            if(response['hide_form']==true) $('.aol_app_form').slideUp(); //Show a sliding effecnt.
+                            $('#aol_form_status').html('<img src="'+aol_public.url+'/images/loading.gif" />');
+                            $('#aol_form_status').addClass('alert alert-warning');
+                            $(".aol-form-button").prop('disabled', true);
+                        },
+                        success:function(response){
+                            $(document).trigger('afterAppSubmit', response); //Custom event  on ajax completion
                             
-                            //Divert to thank you page. 
-                            if(response.divert != null){
-                                var page = response.divert;
-                                window.location.href = stripslashes(page);
+                            if(response['success']==true){
+                                $('#aol_form_status').removeClass();
+                                $('#aol_form_status').addClass('alert alert-success');
+                                $('#aol_form_status').html(response['message']);
+                                $(".aol-form-button").prop('disabled', false);
+                                if(response['hide_form']==true) $('.aol_app_form').slideUp(); //Show a sliding effecnt.
+
+                                //Divert to thank you page. 
+                                if(response.divert != null){
+                                    var page = response.divert;
+                                    window.location.href = stripslashes(page);
+                                }
                             }
-                        }
-                        else if(response['success']==false){
+                            else if(response['success']==false){
+                                $('#aol_form_status').removeClass();
+                                $('#aol_form_status').addClass('alert alert-danger');
+                                $('#aol_form_status').html(response['error']);
+                                $(".aol-form-button").prop('disabled', false);
+                            }
+                            //If response is not jSon.
+                            else{
+                                $('#aol_form_status').addClass('alert alert-danger');
+                                $('#aol_form_status').html('Form saved with errors. Please contact us for more information. ');
+                                $(".aol-form-button").prop('disabled', false);
+                            }
+                        },
+                        error: function(xhr, type, error){
                             $('#aol_form_status').removeClass();
                             $('#aol_form_status').addClass('alert alert-danger');
-                            $('#aol_form_status').html(response['error']);
+                            $('#aol_form_status').html('An unexpected error occured with error code: <u>' + xhr.status + " " + xhr.statusText+'</u>. '+error+'. Please contact us for more information.');
                             $(".aol-form-button").prop('disabled', false);
-                        }
-                        //If response is not jSon.
-                        else{
-                            $('#aol_form_status').addClass('alert alert-danger');
-                            $('#aol_form_status').html('Form saved with errors. Please contact us for more information. ');
-                            $(".aol-form-button").prop('disabled', false);
-                        }
-                    },
-                    error: function(xhr, type, error){
-                        $('#aol_form_status').removeClass();
-                        $('#aol_form_status').addClass('alert alert-danger');
-                        $('#aol_form_status').html('An unexpected error occured with error code: <u>' + xhr.status + " " + xhr.statusText+'</u>. '+error+'. Please contact us for more information.');
-                        $(".aol-form-button").prop('disabled', false);
-                    },
-                    // Custom XMLHttpRequest
-                    xhr: function () {
-                      $('progress').attr({
-                              value: 0,
-                            });
-                      var myXhr = $.ajaxSettings.xhr();
-                      if (myXhr.upload) {
-                        // For handling the progress of the upload
-                        myXhr.upload.addEventListener('progress', function (e) {
-                          if (e.lengthComputable) {
-                            $('progress').attr({
-                              value: e.loaded,
-                              max: e.total,
-                            });
+                        },
+                        // Custom XMLHttpRequest
+                        /*
+                        xhr: function () {
+                          $('progress').attr({
+                                  value: 0,
+                                });
+                          var myXhr = $.ajaxSettings.xhr();
+                          if (myXhr.upload) {
+                            // For handling the progress of the upload
+                            myXhr.upload.addEventListener('progress', function (e) {
+                              if (e.lengthComputable) {
+                                $('progress').attr({
+                                  value: e.loaded,
+                                  max: e.total,
+                                });
+                              }
+                            }, false);
                           }
-                        }, false);
-                      }
-                      return myXhr;
-                    },
+                          return myXhr;
+                        },
+                        * 
+                        */
+                });
+                return false;
             });
-            return false;
-          });
           
             //Separator Code
-            $('.aol_multistep').click(function() {
-              $('fieldset').hide();
-              var load = $(this).data('load');
-              if( load == 'next' ) $(this).parent("fieldset").next("fieldset").show();
-              else if( load == 'back' ) $(this).parent("fieldset").prev("fieldset").show(); else $(this).parent("fieldset").previous("fieldset").show();
-              
-              return false;
-          });
+            $('.aol_multistep').click(function(){
+                $('fieldset').hide();
+                var load = $(this).data('load');
+                if( load == 'next' ) $(this).parent("fieldset").next("fieldset").show();
+                else if( load == 'back' ) $(this).parent("fieldset").prev("fieldset").show(); else $(this).parent("fieldset").previous("fieldset").show();
+
+                return false;
+            });
+          
+            /* Progress Bar*/
+            var fields_required = $('.aol-form-group.required');
+            var fields_count = fields_required.length;
+            if(fields_count > 0) {
+                $('.progress-wrapper').show();
+                update_progress_bar($, fields_required, fields_count);
+                $(fields_required).find('input, textarea').change(function(){
+                    update_progress_bar($, fields_required, fields_count);
+                });                                                 
+            }
+            /*End Progress Bar*/
         })
 
 })( jQuery );
+
+function update_progress_bar($, field, fields_count){
+    var filled = 0;
+    $(field).each(function(){
+        //If child input field is a checkbox or radio.
+        if( $(this).find('input').attr('type') == 'checkbox' || $(this).find('input').attr('type') == 'radio' ){
+            if($(this).find('input').is(':checked')) { // zero-length string AFTER a trim
+                filled++;
+            }
+        }
+        else{
+            if($.trim( $(this).find('input, textarea').val() ).length ) { // zero-length string AFTER a trim
+                filled++;
+            }            
+        }
+    });
+    filled_pecentage = (filled/fields_count)*100;
+    $('.aol-progress-count').css('width',filled_pecentage+'%');
+    $('.aol-progress-counter').text(filled+'/'+fields_count);
+    //$('.aol_progress').val(filled+'/'+fields_count);
+}
+
+function aol_submit($){
+    var datastring = new FormData(document.getElementById("aol_app_form"));
+    $.ajax({
+            url: aol_public.ajaxurl,
+            type: 'POST',
+            dataType: 'json',
+            data: datastring,
+            //async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function(){
+                $('#aol_form_status').removeClass();
+                $('#aol_form_status').html('<img src="'+aol_public.url+'/images/loading.gif" />');
+                $('#aol_form_status').addClass('alert alert-warning');
+                $(".aol-form-button").prop('disabled', true);
+            },
+            success:function(response){
+                $(document).trigger('afterAppSubmit', response); //Custom event  on ajax completiong
+
+                if(response['success']==true){
+                    $('#aol_form_status').removeClass();
+                    $('#aol_form_status').addClass('alert alert-success');
+                    $('#aol_form_status').html(response['message']);
+                    $(".aol-form-button").prop('disabled', false);
+                    if(response['hide_form']==true) $('.aol_app_form').slideUp(); //Show a sliding effecnt.
+
+                    //Divert to thank you page. 
+                    if(response.divert != null){
+                        var page = response.divert;
+                        window.location.href = stripslashes(page);
+                    }
+                }
+                else if(response['success']==false){
+                    $('#aol_form_status').removeClass();
+                    $('#aol_form_status').addClass('alert alert-danger');
+                    $('#aol_form_status').html(response['error']);
+                    $(".aol-form-button").prop('disabled', false);
+                }
+                //If response is not jSon.
+                else{
+                    $('#aol_form_status').addClass('alert alert-danger');
+                    $('#aol_form_status').html('Form saved with errors. Please contact us for more information. ');
+                    $(".aol-form-button").prop('disabled', false);
+                }
+            },
+            error: function(xhr, type, error){
+                $('#aol_form_status').removeClass();
+                $('#aol_form_status').addClass('alert alert-danger');
+                $('#aol_form_status').html('An unexpected error occured with error code: <u>' + xhr.status + " " + xhr.statusText+'</u>. '+error+'. Please contact us for more information.');
+                $(".aol-form-button").prop('disabled', false);
+            },
+            // Custom XMLHttpRequest
+            /*
+            xhr: function () {
+              $('progress').attr({
+                      value: 0,
+                    });
+              var myXhr = $.ajaxSettings.xhr();
+              if (myXhr.upload) {
+                // For handling the progress of the upload
+                myXhr.upload.addEventListener('progress', function (e) {
+                  if (e.lengthComputable) {
+                    $('progress').attr({
+                      value: e.loaded,
+                      max: e.total,
+                    });
+                  }
+                }, false);
+              }
+              return myXhr;
+            },
+            * 
+            */
+    });
+    return false;
+}
 
 function stripslashes (str) {
             return (str + '').replace(/\\(.?)/g, function (s, n1) {

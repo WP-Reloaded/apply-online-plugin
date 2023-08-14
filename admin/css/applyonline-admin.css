@@ -1,5 +1,6 @@
 .aol-wrapper .clearfix{clear: both;}
 .aol-meta label{display: block}
+.aol_select{text-transform: capitalize;}
 .strong{font-weight: bold; }
 /*.aol-ad-closing{border: 2px solid #ddd}*/
 .curtime #ad-closing::before {
@@ -85,9 +86,10 @@ a.aol-shop:hover{color: #00B; text-decoration: none; }
         cursor: pointer;
 }
 .aol-add > .dashicons, .aol-remove > .dashicons {
-	position: relative;
-	top: 3px;
+	margin-top: 4px;
+        padding-right: 5px;
 }
+/*.button.aol-add, .button.aol-remove{padding: 0 5px;}*/
 .field-generator{background: #f1f1f1; padding: 20px;}
 .hide{display: none;}
 
@@ -221,3 +223,11 @@ body.post-type-aol_ad fieldset{
 
 body.post-type-aol_ad .postbox-header .hndle{justify-content: normal}
 .description {font-style: italic}
+
+/* Options */
+    .aol-settings h3{margin-bottom: 5px;}
+    .aol-settings .aol-tab{cursor: pointer}
+    .aol-settings .aol-tab-data:not(#general){display: none}
+    .aol-settings .templateForm{display: none;}
+    .aol-tab.active{background: #FFF}
+/* End Options */

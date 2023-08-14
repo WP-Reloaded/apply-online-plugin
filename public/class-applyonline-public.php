@@ -76,7 +76,7 @@ class Applyonline_Public {
 		 */
 
                 wp_enqueue_style( $this->plugin_name.'-BS', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), $this->version, 'all' );
-                wp_enqueue_style('aol-jquery-ui-css', plugin_dir_url(__FILE__).'css/jquery-ui.min.css');
+                wp_enqueue_style('aol-jquery-ui', plugin_dir_url(__FILE__).'css/jquery-ui.min.css');
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/applyonline-public.css', array(), $this->version, 'all' );
 	}
 
@@ -165,7 +165,6 @@ class SinglePostTemplate{
                     $i++;
             } 
             return $fields;
-            //Debuggin
         }        
 
         public function application_form($post_id = 0){
@@ -173,16 +172,18 @@ class SinglePostTemplate{
             if(empty($post_id) AND !is_singular()){ 
                 return '<p id="aol_form_status alert alert-danger">'.__('Form ID is missing', 'ApplyOnline').'</p>';
             }
-            
+                        
             global $post;
-            $post_id = empty($post_id) ? $post->ID : (int)$post_id;
+            //Sanitizing & fetching post ID.
+            $post_id = empty($post_id) ? (int)$post->ID : (int)$post_id;
             $date = get_post_meta($post_id, '_aol_ad_closing_date', TRUE);
             
             $fields = apply_filters('aol_form_fields', $this->application_form_fields($post_id), $post_id);
 
             //If Form has no fields.
             if( empty($fields) ) return NULL;
-            
+
+            $progress_bar = get_option('aol_progress_bar_color', array('foreground' => '#222222', 'background' => '#dddddd', 'counter' => '#888888'));
             ob_start();
 
             echo '<h3 class="aol-heading">'._x('Apply Online', 'public', 'ApplyOnline').'</h3>';
@@ -190,9 +191,16 @@ class SinglePostTemplate{
             if( !empty($date) AND $date < time() )
                 return '<span class="alert alert-warning">'. get_option_fixed('aol_application_close_message', __('We are no longer accepting applications for this ad.', 'ApplyOnline')).'</span>';
             ?>
-            <form class="aol_app_form aol_app_form_<?php echo $post_id; ?>" name="aol_app_form" id="aol_app_form" enctype="multipart/form-data"  data-toggle="validator" action="#aol_app_form">
+            <style>
+                .aol-progress{background-color: <?php echo sanitize_text_field($progress_bar['background']); ?>}
+                .aol-progress-count{background-color: <?php echo sanitize_text_field($progress_bar['foreground']); ?>}
+                .aol-progress-counter{color: <?php echo sanitize_text_field($progress_bar['counter']); ?>}
+            </style>
+            <form class="aol_app_form aol_app_form_<?php echo (int)$post_id; ?>" name="aol_app_form" id="aol_app_form" enctype="multipart/form-data"  data-toggle="validator" action="#aol_app_form">
                 <?php
                     do_action('aol_before_form_fields', $post_id);
+                    
+                    //Function returns sanitized data.
                     echo aol_form_generator($fields, 0, '_aol_app_', $post_id);
                     do_action('aol_after_form_fields', $post_id);
                     $aol_button_attributes = apply_filters('aol_form_button_attributes', array('value' => __('Submit', 'ApplyOnline'), 'class' => 'btn btn-primary btn-submit button submit fusion-button button-large aol-form-button '. get_option('aol_submit_button_classes')));
@@ -203,15 +211,24 @@ class SinglePostTemplate{
                         $attributes .= esc_attr($key).'="'.esc_attr($val).'" ';
                     }
                     ?>
-                <p><small><i><?php echo get_option('aol_required_fields_notice', 'Fields with (*) are compulsory.'); ?></i></small></p>
-                <?php do_action('aol_before_submit_button', $post_id); ?> 
-                <input type="hidden" name="ad_id" value="<?php echo $post_id; ?>" >
+                <p><small><i><?php echo sanitize_text_field( get_option('aol_required_fields_notice', 'Fields with (*) are compulsory.') ); ?></i></small></p>
+                <input type="hidden" name="ad_id" value="<?php echo (int)$post_id; ?>" >
                 <input type="hidden" name="action" value="aol_app_form" >
                 <input type="hidden" name="wp_nonce" value="<?php echo wp_create_nonce( 'the_best_aol_ad_security_nonce' ) ?>" >
+                <?php if( get_option('aol_is_progress_bar') ): ?>
+                    <div class="progress-wrapper">
+                        <span><?php echo sanitize_text_field(get_option('aol_progress_bar_title', 'Application Progress')); ?></span>
+                        <!--<progress value="0" max="100" style="width: 100%">3/5</progress>-->
+                        <div class="aol-progress">
+                            <div class="aol-progress-count"></div>
+                            <span class="aol-progress-counter"></span>
+                        </div>                    
+                    </div>
+                <?php endif; ?>
+                <?php do_action('aol_before_submit_button', $post_id); ?> 
                 <?php aol_form_button(); ?>
                 <?php do_action('aol_after_submit_button', $post_id); ?>
             </form>
-            <progress value="0" max="100" style="width: 100%"></progress>
             <p id="aol_form_status"></p>
         <?php
             return apply_filters('aol_form', ob_get_clean(), $fields, $post_id);
@@ -370,7 +387,7 @@ class Applyonline_Shortcodes{
              */
             //Get list of taxanomies
             $taxes = get_object_taxonomies('aol_'.$a['type']);
-            $args['s'] = $search_keyword = isset($_REQUEST['aol_seach_keyword']) ? $_REQUEST['aol_seach_keyword'] : NULL;
+            $args['s'] = $search_keyword = isset($_REQUEST['aol_seach_keyword']) ? sanitize_text_field($_REQUEST['aol_seach_keyword']) : NULL;
             $args['tax_query'] = array();
             foreach($taxes as $tax){
                 $tax = substr($tax, 7);
@@ -392,7 +409,7 @@ class Applyonline_Shortcodes{
             do_action('aol_before_shortcode', $a, $filters);
             if(!(empty($filters) OR $a['filter'] == 'no' )){
                     echo '<div class="well well-lg">'; //Started well
-                        echo '<form method="post" class="form-horizontal" id="aol_'.$a['type'].'_form" action="#aol_'.$a['type'].'_form">';
+                        echo '<form method="post" class="form-horizontal" id="aol_'.esc_attr($a['type']).'_form" action="#aol_'.esc_attr($a['type']).'_form">';
                             echo '<div class="form-group">'; //1st row Started'
                             //$col_count = $filter_count < 4 ? 12/($filter_count+1) : 3;
                             $col_count = floor(12/($filter_count));
@@ -402,8 +419,8 @@ class Applyonline_Shortcodes{
                             foreach ($filters as $key => $filter){
                                 $key = sanitize_key($key);
                                 //$Fclass = ((isset($_REQUEST['filter']) AND $_REQUEST['filter']) == 'aol_ad_'. $key) ? 'selected' : NULL;
-                                echo '<div class="aol-md-'.$col_count.'">'; 
-                                    echo '<select name="'.$key.'" class="aol-filter-select form-control"><option value="">'. sprintf(_x('%s - All', 'Filter Dropdown', 'ApplyOnline'), sanitize_text_field( __($filter['plural'], 'ApplyOnline') ) ).'</option>';
+                                echo '<div class="aol-md-'.$col_count.'">';
+                                    echo '<select name="'.esc_attr($key).'" class="aol-filter-select form-control"><option value="">'. sprintf(_x('%s - All', 'Filter Dropdown', 'ApplyOnline'), sanitize_text_field( __($filter['plural'], 'ApplyOnline') ) ).'</option>';
                                     $args = array(
                                         'taxonomy' => 'aol_ad_'. $key,
                                         'hide_empty' => true,
@@ -427,7 +444,7 @@ class Applyonline_Shortcodes{
             if(!empty($posts)):
                 if($a['display'] == 'list') echo "<$lstyle>";
                 do_action('aol_before_archive');
-                echo '<div class="'.implode(' ', $archive_wraper_classes).'">';
+                echo '<div class="'. esc_attr(implode(' ', $archive_wraper_classes)).'">';
                 $post_count = 0;
                 foreach($posts as $post): setup_postdata($post);
                     $wrapper_inner_classes = apply_filters('aol_ad_inner_wrapper_classes', array('panel', 'panel-default'), $post);
@@ -443,17 +460,17 @@ class Applyonline_Shortcodes{
                     if($a['display'] == 'list'): echo '<li>'. apply_filters('aol_shortcode_list', '<a href="'.get_the_permalink($post).'">'.$post->post_title.'</a>').'</li>';
                     else:
                         do_action('aol_before_ad', $post_count, $post->post_count);
-                        echo '<div class="'.implode(' ', $wraper_classes).' aol_ad_'.$post->ID.'">';
-                            echo '<div class="'.implode(' ', $wrapper_inner_classes).' '.$status.'">';
+                        echo '<div class="'. esc_attr(implode(' ', $wraper_classes)).' aol_ad_'.$post->ID.'">';
+                            echo '<div class="'. esc_attr( implode(' ', $wrapper_inner_classes) ).' '.$status.'">';
                             foreach($order as $index):
                                 switch ($index):
                                     case 'title':
                                         $output = apply_filters('aol_shortcode_title', $post->post_title, $post, $title_classes);
-                                        echo '<div class="'.implode(' ', $title_classes).'">'.$output.'</div>';
+                                        echo '<div class="'. esc_attr( implode(' ', $title_classes) ).'">'.$output.'</div>';
                                         break;
 
                                     case 'body_start' :
-                                        echo '<div class="'.implode(' ', $body_classes).'">';
+                                        echo '<div class="'.esc_attr( implode(' ', $body_classes) ).'">';
                                         do_action('aol_shortcode_before_body');
                                         break;
 
@@ -486,7 +503,7 @@ class Applyonline_Shortcodes{
 
                                     case 'footer':
                                         if(empty($terms) or empty($filters)) break;
-                                        echo '<div class="'.implode(' ', $footer_classes).'">';
+                                        echo '<div class="'. esc_attr( implode(' ', $footer_classes) ).'">';
                                         echo apply_filters('aol_shortcode_footer', $this->aol_filters_terms($terms, $post->ID), $post, $terms);
                                         echo "</div>";
                                     break;
@@ -758,7 +775,7 @@ class Applyonline_Shortcodes{
                     $form_fields_raw[$key] = apply_filters('aol_form_field_before_validation', maybe_unserialize($val[0]), $key, $val, $_POST[$key]);
                 }
             endforeach;
-            
+
             $form = apply_filters('aol_form_for_app_validation', $form_fields_raw, $_POST, $_FILES);
             foreach($form as $key => $val):
                 $key = sanitize_key($key);
@@ -806,7 +823,7 @@ class Applyonline_Shortcodes{
                 exit;
             } 
             //End - Check for required fields
-            $receipents = array();
+            $applicant_emails = array();
             foreach($form as $key => $val){
                 if( !isset($_POST[$key]) ) continue;
                 $app_field = maybe_unserialize($val);
@@ -820,7 +837,7 @@ class Applyonline_Shortcodes{
 
                 /*Set Receipents for email alerts*/
                 if( $app_field['type'] == 'email' AND isset($app_field['notify']) AND $app_field['notify']==1 ){
-                    $receipents[] = $val;
+                    $applicant_emails[] = $val;
                 }
             }
             if(isset($this->uploads)){
@@ -876,8 +893,11 @@ class Applyonline_Shortcodes{
                 
                 //Email notification Since v2.2 
                 if( $args['post_status'] != 'draft'){
-                    $this->application_email_notification($pid, $args, $this->uploads);
-                    $this->applicant_email_notification( $pid, $args, $receipents );
+                    $recipients = sanitize_textarea_field( get_post_meta($parent, '_recipients_emails', true) );
+                    if( !empty($recipients) ) $recipients = explode("\n", str_replace(array("\r", " "),"", $recipients));
+                    $this->application_email_notification($recipients, $pid, $args, $this->uploads);
+                    
+                    $this->applicant_email_notification( $pid, $args, $applicant_emails );
                 }
 
                 $divert_page = get_option('aol_thankyou_page');
@@ -925,10 +945,10 @@ class Applyonline_Shortcodes{
             $attachments = array();
 
             //@todo need a filter hook to modify content of this email message and to add a from field in the message.
-            $message="Hi there,\n\n"
-                ."Thank you for showing your interest in the ad: [title]. Your application with id [id] has been received. We will review your application and contact you if required.\n\n"
-                .sprintf(__('Team %s'), get_bloginfo('name'))."\n"
-                .site_url()."\n"
+            $message="<p>Hi there,</p>"
+                ."<p>Thank you for showing your interest in the ad: [title]. Your application with id [id] has been received. We will review your application and contact you if required.</p>"
+                .sprintf(__('Team %s'), get_bloginfo('name'))."<br/>"
+                .site_url()."<br/>"
                 ."Please do not reply to this system generated message.";
 
             $message = str_replace(array('[title]', '[id]'), array($post->post_title, $post->ID), get_option('aol_success_mail_message', $message));
@@ -952,22 +972,29 @@ class Applyonline_Shortcodes{
             return true;
         }
 
-        function application_email_notification($post_id, $post, $uploads ){
+        function application_email_notification($emails, $post_id, $post, $uploads ){
             $post = (object)$post;
 
             //send email alert.
             $post_url = admin_url("post.php?post=$post_id&action=edit");
 
-            $admin_email = get_option('admin_email');
-            $emails_raw = get_option('aol_recipients_emails', $admin_email);
-            $emails = explode("\n", $emails_raw);
+            if( empty($emails) ){
+                $admin_email = get_option('admin_email');
+                
+                //Get global recipients
+                $emails_raw = get_option('aol_recipients_emails', $admin_email);
+                
+                //$emails_raw may contain empty string. 
+                if( empty($emails_raw) ) $emails_raw = $admin_email;
+                $emails = explode("\n", str_replace(array("\r", " "),"", $emails_raw));                
+            }
             $author_notification = get_option('aol_ad_author_notification');
             if($author_notification){
                 $ad = get_post($post->post_parent);
                 $author = get_userdata($ad->post_author);
                 if( !in_array($author->user_email, $emails) ) array_push($emails, $author->user_email);
             }
-
+            
             // Get the site domain and get rid of www.
             $sitename = strtolower( $_SERVER['SERVER_NAME'] );
             if ( substr( $sitename, 0, 4 ) == 'www.' ) {
@@ -991,7 +1018,6 @@ class Applyonline_Shortcodes{
                         .'</p>';
 
             $message = apply_filters('aol_email_notification', $message, $post_id); //Deprecated.
-
             $aol_email = apply_filters(
                         'aol_email', 
                         array( 'to' => $emails, 'subject' => $subject, 'message' => nl2br($message), 'headers' => $headers, 'attachments' => array() ), 
@@ -999,7 +1025,6 @@ class Applyonline_Shortcodes{
                         $post,
                         $uploads
                     );
-            //print_rich($aol_email); die();
 
             do_action('aol_email_before', array('to' => $emails, 'subject' => $subject, 'message' => nl2br($message), 'headers' => $headers), $post_id, $post, $uploads);
 
@@ -1010,7 +1035,7 @@ class Applyonline_Shortcodes{
             remove_filter( 'wp_mail_content_type', 'aol_email_content_type' );
             
             do_action('aol_email_after', $emails, $subject, nl2br($message), $headers);
-            
+
             return true;
         }
         

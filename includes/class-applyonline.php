@@ -182,13 +182,13 @@ class Applyonline {
                 $this->loader->add_filter('display_post_states', $plugin_admin, 'add_closed_state', 10, 2);
                 
                 /*Admin Notice*/
-                $this->loader->add_action('admin_notices', $plugin_admin, 'settings_notice');
+                $this->loader->add_action('admin_notices', $plugin_admin, 'admin_notice');
                 $this->loader->add_action('wp_ajax_aol_dismiss_notice', $plugin_admin, 'admin_dismiss_notice');
                 
                 $this->loader->add_filter( 'wp_dropdown_users_args',  $plugin_admin, 'ad_editor_authors_metabox');
                 $this->loader->add_action('wp_ajax_applications_search_and_filter', $plugin_admin, 'applications_search_and_filter');
                 
-                /*User Insertion Sanitiziation for AOL Manager Role*/                
+                $this->loader->add_action('wp_ajax_aol_all_ads', $plugin_admin, 'get_ads_list');
 	}
 
 	/**
@@ -248,18 +248,18 @@ class Applyonline {
 	public function get_version() {
 		return $this->version;
 	}
-                
+
         function after_plugin_update(){
             require_once plugin_dir_path( __FILE__ ).'class-applyonline-activator.php';
             $saved_version = get_option('aol_version', 0);
             if($saved_version < 1.6) {
                 Applyonline_Activator::bug_fix_before_16();
             }
-            
+
             if($saved_version < 1.9){
                 Applyonline_Activator::fix_roles();
             }
-            
+
             if($saved_version < 2.1){
                 /*Merge Custom Filters to Default Filters*/
                 $default_filters = array(
@@ -287,7 +287,7 @@ class Applyonline {
                 update_option('aol_version', $this->get_version(), TRUE);
             }
         }
-        
+
         function load_dashicons_front_end() {
           wp_enqueue_style( 'dashicons' );
         }
@@ -320,7 +320,7 @@ class Applyonline {
             );
             register_post_type('aol_'.sanitize_key($cpt), array_merge($args, $args_custom));
         }
-        
+
         public function taxonomy_generator($key, $singular, $plural,  $hierarchical = TRUE){
             // Add new taxonomy, make it hierarchical (like categories)
             $labels = array(
@@ -362,7 +362,6 @@ class Applyonline {
             }
             register_taxonomy( 'aol_ad_'.sanitize_key($key), $types, $args );
         }
-
 
         /*
          * @todo make label of the CPT editable from plugin settings so user can show his own title on the archive page
@@ -410,13 +409,14 @@ class Applyonline {
                 'label' => __( 'Applications', 'ApplyOnline' ),
                 'labels' => $lables,
                 'show_ui'           => true,
-                'public'            => false,
+                'public'            => true,
                 'exclude_from_search'=> true,
                 'capability_type'   => array('application', 'applications'),
                 'capabilities'  => array( 'create_posts' => 'create_applications'),
                 'description' =>    __( 'All Applications', 'ApplyOnline' ),
                 'supports' =>       array('comments', 'editor'),
                 'map_meta_cap'      => TRUE,
+                'rewrite'           => array('slug' => 'applications'),
                 'show_in_menu'      => 'aol-settings',
         );
             register_post_type('aol_application',$args);
@@ -445,7 +445,7 @@ class Applyonline_labels{
         add_filter('gettext', array($this, 'translations'), 3, 3);
         add_filter('gettext_with_context', array($this, 'gettext_with_context'), 3, 4);
     }
-    
+
     function translations( $translated_text, $text, $domain ) {
         //Stop if not applyOnlin text domain.
         if($domain != 'ApplyOnline') return $translated_text;
@@ -467,7 +467,7 @@ class Applyonline_labels{
             }
         return $translated_text;
     }
-    
+
     /**
     * @param string $translated
     * @param string $text
