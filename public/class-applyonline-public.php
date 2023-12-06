@@ -214,7 +214,7 @@ class SinglePostTemplate{
                 <p><small><i><?php echo sanitize_text_field( get_option('aol_required_fields_notice', 'Fields with (*) are compulsory.') ); ?></i></small></p>
                 <input type="hidden" name="ad_id" value="<?php echo (int)$post_id; ?>" >
                 <input type="hidden" name="action" value="aol_app_form" >
-                <input type="hidden" name="wp_nonce" value="<?php echo wp_create_nonce( 'the_best_aol_ad_security_nonce' ) ?>" >
+                <input type="hidden" name="wp_nonce" value="<?php echo wp_create_nonce( 'the_best_aol_ad_security_nonce' ); ?>" >
                 <?php if( get_option('aol_is_progress_bar') ): ?>
                     <div class="progress-wrapper">
                         <span><?php echo sanitize_text_field(get_option('aol_progress_bar_title', 'Application Progress')); ?></span>
@@ -344,7 +344,6 @@ class Applyonline_Shortcodes{
             
             $order = apply_filters('aol_grid_element_order', array('title', 'body_start', 'meta', 'thumbnail', 'excerpt', 'body_close', 'footer'));
             $a = shortcode_atts( array(
-                'categories' => NULL, //depricated since 1.9
                 'ads' => '', //Depricated since 2.2.3
                 'include' => '', //Replaced ads attribute.
                 'exclude'  => '',
@@ -355,23 +354,10 @@ class Applyonline_Shortcodes{
                 'filter' => 'yes',
                 'type'  => 'ad',
                 'author' => null
-            ), $atts );
-
-            /*Start - Depricated since 1.9*/
-            $term = null;
-            if(isset($a['categories'])) {
-                $_POST['aol_ad_category'] = explode(',',$atts['categories']);
-                //$a['show_filter'] = 'no';
-                /*
-                $args['tax_query'] = array(
-                        array('taxonomy' => 'aol_ad_category', 'terms'    => explode(',',$atts['categories']))
-                    );
-                 */
-            }
-            /*End - Depricated since 1.9*/
+                ), $atts, 'aol' );
 
             $lstyle = ($a['list-style'] == 'ol') ? 'ol' : 'ul';
-            $args=array(
+            $args = array(
                 'posts_per_page'=> $a['count'],
                 'post_type'     =>'aol_'.$a['type'],
                 'author'    => $a['author'],
@@ -752,8 +738,8 @@ class Applyonline_Shortcodes{
         }
                         
         public function aol_process_app_form(){
-            $nonce=$_POST['wp_nonce'];
-            if(!wp_verify_nonce($nonce, 'the_best_aol_ad_security_nonce') and get_option('aol_nonce_is_active', 1) == 1){
+            $nonce = $_POST['wp_nonce'];
+            if(!wp_verify_nonce($nonce, 'the_best_aol_ad_security_nonce') and (int)get_option('aol_nonce_is_active', 1) == 1){
                 header( "Content-Type: application/json" );
                 echo json_encode( array( 'success' => false, 'error' => __( 'Session Expired, please refresh this page and try again', 'ApplyOnline' ) ));
                 exit;
@@ -766,7 +752,8 @@ class Applyonline_Shortcodes{
             
             //Check for required fields
             //Get parent ad value for which the application is being submitted.
-            $form_fields_raw = get_post_meta((int)$_POST['ad_id']);
+            $adid = (int)$_POST['ad_id'];
+            $form_fields_raw = get_post_meta($adid);
             foreach($form_fields_raw as $key => $val):
                 $key = sanitize_key($key);
                 if(substr($key, 0, 9) != '_aol_app_'){
@@ -848,7 +835,7 @@ class Applyonline_Shortcodes{
                 }
             } 
 
-            $app_data = apply_filters('aol_app_final_fields', $app_data);
+            $app_data = apply_filters('aol_app_final_fields', $app_data, $_POST);
             
             $args=  array(
                 'post_type'     =>'aol_application',
@@ -861,7 +848,6 @@ class Applyonline_Shortcodes{
             );
             do_action('aol_before_app_save', $app_data, $_POST); //Depricated Since 2.5
             do_action('aol_before_save_app', $app_data, $_POST);
-            //do_action('aol_before_app_save', $_POST);
             
             $args = apply_filters('aol_insert_app_data', $args, $app_data);
             
@@ -895,7 +881,7 @@ class Applyonline_Shortcodes{
                 if( $args['post_status'] != 'draft'){
                     $recipients = sanitize_textarea_field( get_post_meta($parent, '_recipients_emails', true) );
                     if( !empty($recipients) ) $recipients = explode("\n", str_replace(array("\r", " "),"", $recipients));
-                    $this->application_email_notification($recipients, $pid, $args, $this->uploads);
+                    $this->admin_email_notification($recipients, $pid, $args, $this->uploads);
                     
                     $this->applicant_email_notification( $pid, $args, $applicant_emails );
                 }
@@ -972,7 +958,7 @@ class Applyonline_Shortcodes{
             return true;
         }
 
-        function application_email_notification($emails, $post_id, $post, $uploads ){
+        function admin_email_notification($emails, $post_id, $post, $uploads ){
             $post = (object)$post;
 
             //send email alert.
@@ -1008,7 +994,7 @@ class Applyonline_Shortcodes{
             //@todo need a filter hook to modify content of this email message and to add a from field in the message.
             $message=   '<p>'.__('Hi,', 'ApplyOnline').'</p>'
                         .'<p>'
-                        .sprintf(__('A new application for the ad %1$s has been received on %2$s website.', 'ApplyOnline'), '<b>'.$post->post_title.'</b>', '<b>'.get_bloginfo('name').'</b>')
+                        .sprintf(__('A new application for the ad %1$s received on %2$s website.', 'ApplyOnline'), '<b>'.$post->post_title.'</b>', '<b>'.get_bloginfo('name').'</b>')
                         .'</p><p>'
                         .sprintf(__('%sClick Here%s to access this application.', 'ApplyOnline'),'<b><a href="'.$post_url.'">', '</a></b>')
                         .'</p>'

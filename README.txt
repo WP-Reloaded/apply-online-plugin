@@ -1,10 +1,10 @@
 === ApplyOnline - Application Form Builder and Manager ===
 Contributors: farhan.noor
 Donate link: https://wpreloaded.com/shop/
-Tags: Job Board, Job Manager, Form Builder, Ninja Forms, WP Forms, Applicant Tracking System, career, application, cv, courses, admission form, forms, contact form, email form, form builder, custom form, pdf form, registration form, payment form, login form, contact me, signature form, upload form, file upload form, conditional form, feedback form, appointment form, quote form, survey form, contact button, signup form, form plugin, contact form plugin, subscription form, email subscription form, newsletter form, donation form, booking form, quote request form, multi page form, conditional logic form, subscription form, application form, employment verification form, star rating form, rating form, event form, mailchimp form, campaign monitor form, constant contact form, mailpoet form, aweber form, cleverreach form, emma form, convertkit form, active campaign form, salesforce form, zoho form, capsule form
+Tags: Job Board, Form Builder, Custom Form, Forms, Contact Form, career, application, cv, courses, admission form, forms, contact form, email form, form builder, custom form, pdf form, registration form, payment form, login form, contact me, signature form, upload form, file upload form, conditional form, feedback form, appointment form, quote form, survey form, contact button, signup form, form plugin, contact form plugin, subscription form, email subscription form, newsletter form, donation form, booking form, quote request form, multi page form, conditional logic form, subscription form, application form, employment verification form, star rating form, rating form, event form, mailchimp form, campaign monitor form, constant contact form, mailpoet form, aweber form, cleverreach form, emma form, convertkit form, active campaign form, salesforce form, zoho form, capsule form
 Requires at least: 5.0
-Tested up to: 6.3
-Stable tag: 2.5.2
+Tested up to: 6.4
+Stable tag: 2.5.3
 Requires PHP: 5.2.4
 License: GPLv2 or later
 
@@ -18,12 +18,12 @@ Create stunning application forms using drag and drop Application Form Builder a
 Not a tech savvy? ApplyOnline plugin is the solution. Its intuitive drag and drop form builder is made for you, so you may not need a developer and/or designer to create an Application Form Management System for you. Very light on your website without creating any mess and beautifully integrates without worrying for design issues.
 
 = Setup is as easy as 1,2,3 =
-1. Go to *Plugins/Add New* section in your WordPress admin panel, Search for Apply Online in the search box, install and activate the plugin created by Spider Teams.
+1. In your WordPress admin panel, go to *Plugins/Add New* section and search for Apply Online in the search box. Install and activate the plugin created by Spider Teams.
 2. After activation, go to All Ads section in your WordPress admin panel and create your desired ads with drag and drop Application Form Builder.
 3. To list ads on the front-end, create a dedicated WordPress page and write shortcode [aol]. isn't it so easy?
 
 = Multiple Ad Types support with only one plugin =
-Does your organization collect admission forms and also looking for job ads? Look no further, Ad Types feature is the solution for you. Go to *ApplyOnline/Settings/Types* in WordPress admin and create as many types as you wish. Just copy desired shortcode and paste into your WordPress page.
+Does your organization collect admission forms and also looking for job ads? Look no further, Ad Types feature is the solution for you. Go to *ApplyOnline/Settings/Types* in WordPress admin and create as many types as you wish. Just copy generated shortcode and paste into your desired WordPress page.
 
 = Powerful Features =
 * Create as many ad types as you wish e.g. **Career, Classes, Registrations, Admissions,** etc. 
@@ -37,7 +37,7 @@ Does your organization collect admission forms and also looking for job ads? Loo
 * Build a list of recipients to send email notifications when an application is received.
 * Hooks and functions for advancements and customization.
 * Clear and well formed documentation for developers and non-developers.
-* [Add-ons](https://wpreloaded.com/shop "World's #1 Online Application Form Builder & Manager") to extend the plugin to next level.
+* [Add-ons](https://wpreloaded.com/shop "World's #1 Online Application Form Builder & Manager") to supercharge existing power of the plugin.
 
 = Add-ons =
 * **Application Tracker:** A next level Application Tracking System where applicants can signup, login, save applications as draft, edit it for multiple times & submit it finally. It includes a dedicated applicant's dashboard to view history & track the status of their application(s).
@@ -98,18 +98,22 @@ No. However if you use our [pro add ons](https://wpreloaded.com/shop/), then tho
 
 == Changelog ==
 = Upcoming =
-New: Upload file size for each attachment field in the form builder.
-New: Recaptcha integration for secure form submission.
-New: Add required field mark in the received application data.
-New: Different layout options e.g. Grid & Listing, sidebar filter, popup form, etc.
-New: Application failure custom text option.
+Custom size limit for attachment fields in the form builder.
+Recaptcha integration for secure form submission.
+Required field mark in the received application data.
+Different layout options e.g. grid layout, list layout, sidebar filter, popup form, etc.
+Application failure custom text option.
+
+= 2.5.3 =
+Fixed: Attachment link for received application forms.
 
 = 2.5.2 =
 Fixed: Attachment field issue in the received application data.
+Fixed: Security issues.
 
 = 2.5.1 =
 Fixed: Progress-bar for text-area field.
-Fixed: Data sanitization and validation issues. 
+Fixed: Data sanitization and validation issues.
 
 = 2.5 =
 New: Application form progress bar.
