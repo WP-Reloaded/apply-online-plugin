@@ -172,7 +172,6 @@ class Applyonline {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-                $this->loader->add_action( 'set_current_user', $plugin_admin, 'output_attachment' );
 
                 $this->loader->add_filter( 'views_edit-aol_application', $plugin_admin, 'status_filters' );
                 
@@ -207,6 +206,7 @@ class Applyonline {
                 
                 /*Schedule Ad*/
                 $this->loader->add_action('pre_get_posts', $plugin_public, 'check_ad_closing_status');
+                $this->loader->add_action( 'set_current_user', $plugin_public, 'output_attachment' );
 	}
 
         /**

@@ -538,8 +538,10 @@ function aol_get_domain(){
  * @return   array     Application data.
  */
 function aol_application_data($post){
-    $keys = get_post_custom_keys( $post->ID );
-    if( in_array('ad_transcript', $keys) ) return aol_application_data_v2($post, $keys);
+    $keys = get_post_custom_keys( $post->ID );    
+    if( in_array('ad_transcript', $keys) ){
+        return aol_application_data_v2($post, $keys);
+    }
     
     $keys_order = get_post_meta($post->post_parent, "_aol_fields_order", TRUE);
     //print_rich($keys); print_rich($keys_order); print_rich(array_mer($keys_order, $keys));
@@ -563,11 +565,11 @@ function aol_application_data($post){
 
             if(is_array($val)){
                 //If the outputs is file attachment
-                if(isset($val['file']) AND isset($val['type'])) 
-                    $val = '<a href="'.admin_url('?aol_attachment='). aol_crypt($val['file']).'" target="_blank">'.esc_html__('Attachment','ApplyOnline').'</a>';
-                
-                elseif(isset($val['url']) AND isset($val['type'])) 
-                    $val = '<a href="'.esc_url($val['url']).'" target="_blank">"'.esc_html__('Attachment','ApplyOnline').'"</a>';
+                if(isset($val['file']) AND isset($val['type'])){
+                    $val = '<a href="'. aol_crypt($val['file']).'" target="_blank">'.esc_html__('Attachment','ApplyOnline').'</a>';                    
+                } elseif(isset($val['url']) AND isset($val['type'])){
+                    $val = '<a href="'.esc_url($val['url']).'" target="_blank">"'.esc_html__('Attachment','ApplyOnline').'"</a>';                    
+                } 
 
                 //If output is a radio or checkbox.
                 else $val = implode(', ', $val);
@@ -601,7 +603,7 @@ function aol_application_data_v2($post, $keys){
             //If the outputs is a file attachment
             switch ($meta[$key]['type']){
                 case 'file':
-                    $val = empty($val) ? NULL: admin_url('?aol_attachment='). aol_crypt($val['file']);
+                    $val = empty($val) ? NULL: aol_crypt($val['file']);
                     break;
 
                 case 'checkbox':
@@ -613,7 +615,7 @@ function aol_application_data_v2($post, $keys){
                     break;
                 
                 default :
-                    $val  = empty($val) ? NULL: sanitize_textarea_field($val);
+                    $val  = empty($val) ? NULL: $val;
             }
             $data[] = array(
                 'label' => isset($meta[$key]['label']) ? $meta[$key]['label'] : str_replace( '_', ' ', substr ( $key, 9 ) ),
@@ -622,6 +624,30 @@ function aol_application_data_v2($post, $keys){
         }
     endforeach;
     return $data;
+}
+
+function aol_application_table($post){
+    ob_start();
+    ?>
+    <table class="aol-table widefat striped">
+        <?php
+        $rows = aol_application_data($post);
+        foreach ( $rows as $row ):
+                echo '<tr>';
+                    echo '<td>' . sanitize_text_field($row['label']) . '</td>';
+                    echo '<td>';
+                    if(empty($row['value'])) {
+                        echo '<i class="text-secondary">- '.__('not provided', 'ApplyOnline').' -</i>';
+                    } else {
+                        echo ( $row['type'] == 'file' ) ? '<a href="'.esc_url(get_option('siteurl').'?aol_attachment='.$row['value'] ).'" target="_blank">'.__('Attachment','ApplyOnline').'</a>' : sanitize_textarea_field($row['value']);
+                    }
+                    echo '</td>';
+                echo '</tr>';
+        endforeach;;
+        ?>
+    </table>
+    <?php
+    return ob_get_clean();
 }
 
 /**
@@ -843,7 +869,7 @@ function aol_empty_option_alert($option = NULL, $consider_empty = NULL){
 * @author Bran van der Meer <branmovic@gmail.com>
 * @since 29-01-2010
 */
-function aol_array_find($needle, array $haystack)        { 
+function aol_array_find($needle, array $haystack){ 
     foreach ($haystack as $key => $value) {
         if (stripos($value, $needle) !== FALSE) {
             return $key;
@@ -851,14 +877,6 @@ function aol_array_find($needle, array $haystack)        {
     }
     return false;
 }
-
-
-//add_filter('views_edit-aol_application', 'aol_views', 10);
-function aol_views($views){
-    print_rich($views);
-    return array('Test' => 'Hello Test', 'Hello World');
-}
-
 
 /**
  * This function recursively map an array.

@@ -57,9 +57,7 @@ class Applyonline_Admin{
                 
                 //Application Print
                 add_action('wp_ajax_application_table_filter_result', array($this, 'application_table_filter_result'));
-                
-                //add_action( 'set_current_user', array($this,  'output_attachment') );
-                
+                                
                 $this->hooks_to_search_in_post_metas();
                 
                 new ApplyOnline_Ad_Options();
@@ -336,38 +334,6 @@ class Applyonline_Admin{
          * There is an article on internet with FALSE claim of plugin vulnerability in this function,
          * However the author of the article failed to understand that this function only provides a READ ONLY access to Attachments to internal users only e.g. Administrator.
          */
-        function output_attachment(){
-            if( isset($_REQUEST['aol_attachment']) AND current_user_can('read_application') ){
-                
-                //the file you want to send
-                $path = urldecode( aol_crypt( ($_REQUEST['aol_attachment']), 'd') );
-                // the file name of the download, change this if needed
-                $public_name = basename($path);
-                $mime_type = wp_check_filetype($path);
-
-                // send the headers
-                header("Content-Disposition: attachment; filename=$public_name;");
-                header("Content-Type: ".$mime_type['type']);
-                header('Content-Length: ' . filesize($path));
-
-                if( !function_exists('finfo_open') ){
-                    echo file_get_contents($path); 
-                    exit;
-                }
-
-                // get the file's mime type to send the correct content type header
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                $mime_type = finfo_file($finfo, $path);
-
-                // stream the file
-                $fp = fopen($path, 'rb');
-                $result = fpassthru($fp);
-                
-                //Revert to File load method if File stream method fails
-                if( $result == FALSE ) echo file_get_contents($path); 
-                exit;
-            }
-        }        
     }
     
     class ApplyOnline_Ad_Options{
@@ -652,20 +618,7 @@ class Applyonline_Admin{
                          */
                         ?>
                     <?php do_action('aol_before_application', $post); ?>
-                    <table class="widefat striped">
-                        <?php
-                        $rows = aol_application_data($post);
-                        foreach ( $rows as $row ):
-                                echo '<tr>';
-                                    echo '<td>' . sanitize_text_field($row['label']) . '</td>';
-                                    echo '<td>';
-                                    if( empty($row['value']) ) printf(__('%sNot provided%s', 'ApplyOnline'), '<i>-', '-<i>');
-                                    else echo ( $row['type'] == 'file' ) ? '<a href="'.esc_url( $row['value'] ).'" target="_blank">'.__('Attachment','ApplyOnline').'</a>' : sanitize_text_field($row['value']);
-                                    echo '</td>';
-                                echo '</tr>';
-                        endforeach;;
-                        ?>
-                    </table>
+                    <?php echo aol_application_table($post); ?>
                     <?php do_action('aol_after_application', $post); ?>
                 </div>
                 <?php
@@ -832,6 +785,7 @@ class Applyonline_Admin{
         public function applicants_list_columns( $columns ){
             $columns = array (
                 'cb'       => '<input type="checkbox" />',
+                'ID'    => __( 'ID', 'ApplyOnline' ),
                 'title'    => __( 'Ad Title', 'ApplyOnline' ),
                 'qview'      => NULL,
                 'applicant'=> __( 'Applicant', 'ApplyOnline' ),
@@ -858,7 +812,10 @@ class Applyonline_Admin{
             }
             $name = aol_array_find('Name', $keys);
             switch ( $column ) {
-                 case 'qview' :
+                case 'ID' :
+                    echo $post_id;
+                 break;
+                case 'qview' :
                      add_thickbox();
                      $url = add_query_arg( array(
                         'action'    => 'aol_modal_box',

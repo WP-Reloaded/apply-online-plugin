@@ -121,6 +121,39 @@ class Applyonline_Public {
                 $query->set('post__not_in', $closed);
             }
         }
+        
+        function output_attachment(){
+            if( isset($_REQUEST['aol_attachment']) AND (current_user_can('read_application') OR current_user_can('save_application')) ){
+                
+                //the file you want to send
+                $path = urldecode( aol_crypt( ($_REQUEST['aol_attachment']), 'd') );
+                // the file name of the download, change this if needed
+                $public_name = basename($path);
+                $mime_type = wp_check_filetype($path);
+
+                // send the headers
+                header("Content-Disposition: attachment; filename=$public_name;");
+                header("Content-Type: ".$mime_type['type']);
+                header('Content-Length: ' . filesize($path));
+
+                if( !function_exists('finfo_open') ){
+                    echo file_get_contents($path); 
+                    exit;
+                }
+
+                // get the file's mime type to send the correct content type header
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $mime_type = finfo_file($finfo, $path);
+
+                // stream the file
+                $fp = fopen($path, 'rb');
+                $result = fpassthru($fp);
+                
+                //Revert to File load method if File stream method fails
+                if( $result == FALSE ) echo file_get_contents($path); 
+                exit;
+            }
+        }
 }
 
 class SinglePostTemplate{
