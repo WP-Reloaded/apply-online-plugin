@@ -79,8 +79,7 @@ class Applyonline_Activator {
                         'aol_application_status',
                         array( 'description'=> 'Pending Applications' )
                     );
-            
-            
+
             wp_insert_term(
                 'Management',
                 'aol_ad_category',
@@ -359,7 +358,7 @@ class Applyonline_Activator {
             //$caps = array_merge($caps, array('delete_others_ads' =>FALSE,'edit_others_ads' =>FALSE));
             remove_role('aol_manager');
             add_role('aol_manager', 'AOL Manager', $caps);
-            
+
             do_action('activate_applyonline');
         }
         

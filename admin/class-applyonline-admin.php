@@ -658,7 +658,10 @@ class Applyonline_Admin{
                         foreach ( $rows as $row ):
                                 echo '<tr>';
                                     echo '<td>' . sanitize_text_field($row['label']) . '</td>';
-                                    echo ( $row['type'] == 'file' ) ? '<td><a href="'.esc_url( $row['value'] ).'" target="_blank">'.__('Attachment','ApplyOnline').'</a></td>' : '<td>' . sanitize_text_field($row['value']) . '</td>';
+                                    echo '<td>';
+                                    if( empty($row['value']) ) printf(__('%sNot provided%s', 'ApplyOnline'), '<i>-', '-<i>');
+                                    else echo ( $row['type'] == 'file' ) ? '<a href="'.esc_url( $row['value'] ).'" target="_blank">'.__('Attachment','ApplyOnline').'</a>' : sanitize_text_field($row['value']);
+                                    echo '</td>';
                                 echo '</tr>';
                         endforeach;;
                         ?>
@@ -1779,7 +1782,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_application_success_alert"><?php _e('Application success alert', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_application_success_alert"><?php _e('Application submission note', 'ApplyOnline'); ?></label></th>
                         <td>
                             <textarea class="small-text code" name="aol_application_success_alert" cols="50" rows="3" id="aol_application_success_alert"><?php echo sanitize_text_field( get_option_fixed('aol_application_success_alert' ) ); ?></textarea>
                             <p class="description"><?php _e('Use [id] for dynamic application ID.', 'ApplyOnline'); ?></p>
