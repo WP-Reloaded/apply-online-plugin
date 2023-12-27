@@ -947,20 +947,11 @@ class Applyonline_Shortcodes{
          */
         function applicant_email_notification($post_id, $post, $emails){
             if(empty($emails)) return true;
-            
-            $subject = get_option('aol_success_mail_subject', 'Thank you for the application');
-
             $post = (object)$post;
+            
+            $subject = str_replace('[title]', $post->post_title, get_option('aol_success_mail_subject', 'Your application for [title]') );
 
-            // Get the site domain and get rid of www.
-            $sitename = strtolower( $_SERVER['SERVER_NAME'] );
-            if ( substr( $sitename, 0, 4 ) == 'www.' ) {
-                $sitename = substr( $sitename, 4 );
-            }
-            $from_email = 'do-not-reply@' . $sitename;
-
-            aol_from_mail_header();
-            $headers = array('Content-Type: text/html', "From: ". wp_specialchars_decode(get_bloginfo('name'))." <$from_email>");
+            $headers = aol_from_mail_header();
             $attachments = array();
 
             //@todo need a filter hook to modify content of this email message and to add a from field in the message.
@@ -980,11 +971,7 @@ class Applyonline_Shortcodes{
 
             do_action('aol_email_before', array('to' => $emails, 'subject' => $subject, 'message' => nl2br($message), 'headers' => $headers), $post_id, $post);
 
-            add_filter( 'wp_mail_content_type', 'aol_email_content_type' );
-
             wp_mail( $aol_email['to'], $aol_email['subject'], $aol_email['message'], $aol_email['headers']);
-
-            remove_filter( 'wp_mail_content_type', 'aol_email_content_type' );
 
             do_action('aol_email_after', $emails, $subject, nl2br($message), $headers);
 
@@ -1047,12 +1034,8 @@ class Applyonline_Shortcodes{
 
             do_action('aol_email_before', array('to' => $emails, 'subject' => $subject, 'message' => nl2br($message), 'headers' => $headers), $post_id, $post, $uploads);
 
-            add_filter( 'wp_mail_content_type', 'aol_email_content_type' );
-
             wp_mail( $aol_email['to'], $aol_email['subject'], $aol_email['message'], $aol_email['headers'], $aol_email['attachments']);
-            
-            remove_filter( 'wp_mail_content_type', 'aol_email_content_type' );
-            
+                        
             do_action('aol_email_after', $emails, $subject, nl2br($message), $headers);
 
             return true;

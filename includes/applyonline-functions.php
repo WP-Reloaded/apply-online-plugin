@@ -705,6 +705,12 @@ function get_aol_settings(){
     return $settings;
 }
 
+/**
+ * Marked as deprecated. Use aol_mail_header() instead.
+ * 
+ * @param array $extra_headers
+ * @return array Headers required by mail functions.
+ */
 function aol_from_mail_header($extra_headers = array()){
     // Get the site domain and get rid of www.
     $sitename = strtolower( $_SERVER['SERVER_NAME'] );
@@ -713,13 +719,25 @@ function aol_from_mail_header($extra_headers = array()){
     }
     $from_email = 'do-not-reply@' . $sitename;
     
-    $headers = 'Content-Type: text/html'."\r\n";
-    $headers .= wp_specialchars_decode('From: '.get_bloginfo('name')." <$from_email>")."\r\n";
-    $headers .= implode(",\r\n", $extra_headers);
+    //Removed since 2.5.4
+    //$headers = 'Content-Type: text/html'."\r\n";
+    //$headers .= wp_specialchars_decode('From: '.get_bloginfo('name')." <$from_email>")."\r\n";
+    //$headers .= implode(",\r\n", $extra_headers);
     
-    return $headers;
+    //Introduced in  2.5.4
+    $headers = array('Content-Type: text/html; charset='. get_option('blog_charset'), "From: ". wp_specialchars_decode(get_bloginfo('name'))." <$from_email>");
+    
+    return array_merge($headers, $extra_headers);
     
     //return array('Content-Type: text/html', "From:". wp_specialchars_decode(get_bloginfo('name'))." <$from_email>", implode(',', $extra_headers));
+}
+
+/**
+ * 
+ * @return type
+ */
+function aol_mail_header($extra_headers = array()){
+    return aol_from_mail_header($extra_headers);
 }
 
 function aol_integration(){
@@ -749,70 +767,6 @@ function aol_mail_footer(){
         $message .= "------\n";
         $message .= "Please do not reply to this system generated message.";
     return $message;
-}
-
-if( !function_exists('sanitize_textarea_field') ){
-    function sanitize_textarea_field( $str ) {
-        $filtered = _sanitize_text_fields( $str, true );
-
-        /**
-         * Filters a sanitized textarea field string.
-         *
-         * @since 4.7.0
-         *
-         * @param string $filtered The sanitized string.
-         * @param string $str      The string prior to being sanitized.
-         */
-        return apply_filters( 'sanitize_textarea_field', $filtered, $str );
-    }
-    
-    /**
-    * Internal helper function to sanitize a string from user input or from the db
-    *
-    * @since 4.7.0
-    * @access private
-    *
-    * @param string $str String to sanitize.
-    * @param bool $keep_newlines optional Whether to keep newlines. Default: false.
-    * @return string Sanitized string.
-    */
-   function _sanitize_text_fields( $str, $keep_newlines = false ) {
-           if ( is_object( $str ) || is_array( $str ) ) {
-                   return '';
-           }
-
-           $str = (string) $str;
-
-           $filtered = wp_check_invalid_utf8( $str );
-
-           if ( strpos( $filtered, '<' ) !== false ) {
-                   $filtered = wp_pre_kses_less_than( $filtered );
-                   // This will strip extra whitespace for us.
-                   $filtered = wp_strip_all_tags( $filtered, false );
-
-                   // Use html entities in a special case to make sure no later
-                   // newline stripping stage could lead to a functional tag
-                   $filtered = str_replace( "<\n", "&lt;\n", $filtered );
-           }
-
-           if ( ! $keep_newlines ) {
-                   $filtered = preg_replace( '/[\r\n\t ]+/', ' ', $filtered );
-           }
-           $filtered = trim( $filtered );
-
-           $found = false;
-           while ( preg_match( '/%[a-f0-9]{2}/i', $filtered, $match ) ) {
-                   $filtered = str_replace( $match[0], '', $filtered );
-                   $found    = true;
-           }
-
-           if ( $found ) {
-                   // Strip out the whitespace that may now exist after removing the octets.
-                   $filtered = trim( preg_replace( '/ +/', ' ', $filtered ) );
-           }
-
-           return $filtered;
-   }
 }
 
 if( !function_exists('unregister_post_type') ){

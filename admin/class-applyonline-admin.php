@@ -93,9 +93,10 @@ class Applyonline_Admin{
                 wp_enqueue_style( 'aol-select2', plugin_dir_url( __FILE__ ) . 'css/select2.min.css', array(), $this->version, 'all'  );
                 wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/applyonline-admin.css', array(), $this->version, 'all' );
                 
-                if ( is_aol_admin_screen() )wp_enqueue_style( 'aol-select2', plugin_dir_url( __FILE__ ) . 'select2/css/select2.min.css', array(), $this->version, 'all'  );
-                
-                if(is_aol_admin_screen()); wp_enqueue_style('aol-jquery-ui', plugin_dir_url(__FILE__).'css/jquery-ui.min.css');
+                if ( is_aol_admin_screen() ){
+                    wp_enqueue_style( 'aol-select2', plugin_dir_url( __FILE__ ) . 'select2/css/select2.min.css', array(), $this->version, 'all'  );
+                    wp_enqueue_style('aol-jquery-ui', plugin_dir_url(__FILE__).'css/jquery-ui.min.css');                    
+                }                
 	}
 
 	/**
@@ -581,7 +582,7 @@ class Applyonline_Admin{
             if($post->post_type == 'aol_application'){
                 $actions = array(); //Empty actions.
                 $filter = isset($_GET['aol_application_status']) ? '&aol_application_status=pending' : NULL;
-                $actions['filters'] = '<a rel="permalink" title="'.__('Filter Applications', 'ApplyOnline').'" href="'.  admin_url('edit.php?post_type=aol_application').'&ad='.$post->post_parent.$filter.'"><span class="dashicons dashicons-filter"></span></a>';
+                $actions['filters'] = '<a rel="permalink" title="'.__('Filter Similar Applications', 'ApplyOnline').'" href="'.  admin_url('edit.php?post_type=aol_application').'&ad='.$post->post_parent.$filter.'"><span class="dashicons dashicons-filter"></span></a>';
                 $actions['ad'] = '<a rel="permalink" title="'.__('Edit Ad', 'ApplyOnline').'" href="'.  admin_url('post.php?action=edit').'&post='.$post->post_parent.'"><span class="dashicons dashicons-admin-tools"></span></a>';
                 $actions['view'] = '<a rel="permalink" title="'.__('View Ad', 'ApplyOnline').'" target="_blank" href="'.  get_the_permalink($post->post_parent). '"><span class="dashicons dashicons-external"></span></a>';
             }
@@ -785,7 +786,7 @@ class Applyonline_Admin{
         public function applicants_list_columns( $columns ){
             $columns = array (
                 'cb'       => '<input type="checkbox" />',
-                'ID'    => __( 'ID', 'ApplyOnline' ),
+                'id'    => __( 'ID', 'ApplyOnline' ),
                 'title'    => __( 'Ad Title', 'ApplyOnline' ),
                 'qview'      => NULL,
                 'applicant'=> __( 'Applicant', 'ApplyOnline' ),
@@ -812,7 +813,7 @@ class Applyonline_Admin{
             }
             $name = aol_array_find('Name', $keys);
             switch ( $column ) {
-                case 'ID' :
+                case 'id' :
                     echo $post_id;
                  break;
                 case 'qview' :
@@ -1748,7 +1749,8 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                     <tr>
                         <th><label for="aol_success_mail_subject"><?php _e('Application success email subject', 'ApplyOnline'); ?></label></th>
                         <td>
-                            <textarea class="small-text code" name="aol_success_mail_subject" cols="50" rows="3" id="aol_required_fields_notice"><?php echo sanitize_text_field( get_option_fixed('aol_success_mail_subject', 'Thank you for the application' ) ); ?></textarea>
+                            <input class="regular-text" type="text" name="aol_success_mail_subject" cols="50" rows="3" id="aol_required_fields_notice" value="<?php echo sanitize_text_field( get_option_fixed('aol_success_mail_subject', 'Your application for [title]' ) ); ?>" />
+                            <p class="description"> <?php _e('Use [title] to write ad title in the email subject.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
