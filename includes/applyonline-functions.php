@@ -538,8 +538,10 @@ function aol_get_domain(){
  * @return   array     Application data.
  */
 function aol_application_data($post){
-    $keys = get_post_custom_keys( $post->ID );
-    if( in_array('ad_transcript', $keys) ) return aol_application_data_v2($post, $keys);
+    $keys = get_post_custom_keys( $post->ID );    
+    if( in_array('ad_transcript', $keys) ){
+        return aol_application_data_v2($post, $keys);
+    }
     
     $keys_order = get_post_meta($post->post_parent, "_aol_fields_order", TRUE);
     //print_rich($keys); print_rich($keys_order); print_rich(array_mer($keys_order, $keys));
@@ -563,11 +565,11 @@ function aol_application_data($post){
 
             if(is_array($val)){
                 //If the outputs is file attachment
-                if(isset($val['file']) AND isset($val['type'])) 
-                    $val = '<a href="'.admin_url('?aol_attachment='). aol_crypt($val['file']).'" target="_blank">'.esc_html__('Attachment','ApplyOnline').'</a>';
-                
-                elseif(isset($val['url']) AND isset($val['type'])) 
-                    $val = '<a href="'.esc_url($val['url']).'" target="_blank">"'.esc_html__('Attachment','ApplyOnline').'"</a>';
+                if(isset($val['file']) AND isset($val['type'])){
+                    $val = '<a href="'. aol_crypt($val['file']).'" target="_blank">'.esc_html__('Attachment','ApplyOnline').'</a>';                    
+                } elseif(isset($val['url']) AND isset($val['type'])){
+                    $val = '<a href="'.esc_url($val['url']).'" target="_blank">"'.esc_html__('Attachment','ApplyOnline').'"</a>';                    
+                } 
 
                 //If output is a radio or checkbox.
                 else $val = implode(', ', $val);
@@ -601,7 +603,7 @@ function aol_application_data_v2($post, $keys){
             //If the outputs is a file attachment
             switch ($meta[$key]['type']){
                 case 'file':
-                    $val = empty($val) ? NULL: admin_url('?aol_attachment='). aol_crypt($val['file']);
+                    $val = empty($val) ? NULL: aol_crypt($val['file']);
                     break;
 
                 case 'checkbox':
@@ -613,7 +615,7 @@ function aol_application_data_v2($post, $keys){
                     break;
                 
                 default :
-                    $val  = empty($val) ? NULL: sanitize_textarea_field($val);
+                    $val  = empty($val) ? NULL: $val;
             }
             $data[] = array(
                 'label' => isset($meta[$key]['label']) ? $meta[$key]['label'] : str_replace( '_', ' ', substr ( $key, 9 ) ),
@@ -622,6 +624,30 @@ function aol_application_data_v2($post, $keys){
         }
     endforeach;
     return $data;
+}
+
+function aol_application_table($post){
+    ob_start();
+    ?>
+    <table class="aol-table widefat striped">
+        <?php
+        $rows = aol_application_data($post);
+        foreach ( $rows as $row ):
+                echo '<tr>';
+                    echo '<td>' . sanitize_text_field($row['label']) . '</td>';
+                    echo '<td>';
+                    if(empty($row['value'])) {
+                        echo '<i class="text-secondary">- '.__('not provided', 'ApplyOnline').' -</i>';
+                    } else {
+                        echo ( $row['type'] == 'file' ) ? '<a href="'.esc_url(get_option('siteurl').'?aol_attachment='.$row['value'] ).'" target="_blank">'.__('Attachment','ApplyOnline').'</a>' : sanitize_textarea_field($row['value']);
+                    }
+                    echo '</td>';
+                echo '</tr>';
+        endforeach;;
+        ?>
+    </table>
+    <?php
+    return ob_get_clean();
 }
 
 /**
@@ -679,6 +705,12 @@ function get_aol_settings(){
     return $settings;
 }
 
+/**
+ * Marked as deprecated. Use aol_mail_header() instead.
+ * 
+ * @param array $extra_headers
+ * @return array Headers required by mail functions.
+ */
 function aol_from_mail_header($extra_headers = array()){
     // Get the site domain and get rid of www.
     $sitename = strtolower( $_SERVER['SERVER_NAME'] );
@@ -687,13 +719,25 @@ function aol_from_mail_header($extra_headers = array()){
     }
     $from_email = 'do-not-reply@' . $sitename;
     
-    $headers = 'Content-Type: text/html'."\r\n";
-    $headers .= wp_specialchars_decode('From: '.get_bloginfo('name')." <$from_email>")."\r\n";
-    $headers .= implode(",\r\n", $extra_headers);
+    //Removed since 2.5.4
+    //$headers = 'Content-Type: text/html'."\r\n";
+    //$headers .= wp_specialchars_decode('From: '.get_bloginfo('name')." <$from_email>")."\r\n";
+    //$headers .= implode(",\r\n", $extra_headers);
     
-    return $headers;
+    //Introduced in  2.5.4
+    $headers = array('Content-Type: text/html; charset='. get_option('blog_charset'), "From: ". wp_specialchars_decode(get_bloginfo('name'))." <$from_email>");
+    
+    return array_merge($headers, $extra_headers);
     
     //return array('Content-Type: text/html', "From:". wp_specialchars_decode(get_bloginfo('name'))." <$from_email>", implode(',', $extra_headers));
+}
+
+/**
+ * 
+ * @return type
+ */
+function aol_mail_header($extra_headers = array()){
+    return aol_from_mail_header($extra_headers);
 }
 
 function aol_integration(){
@@ -723,70 +767,6 @@ function aol_mail_footer(){
         $message .= "------\n";
         $message .= "Please do not reply to this system generated message.";
     return $message;
-}
-
-if( !function_exists('sanitize_textarea_field') ){
-    function sanitize_textarea_field( $str ) {
-        $filtered = _sanitize_text_fields( $str, true );
-
-        /**
-         * Filters a sanitized textarea field string.
-         *
-         * @since 4.7.0
-         *
-         * @param string $filtered The sanitized string.
-         * @param string $str      The string prior to being sanitized.
-         */
-        return apply_filters( 'sanitize_textarea_field', $filtered, $str );
-    }
-    
-    /**
-    * Internal helper function to sanitize a string from user input or from the db
-    *
-    * @since 4.7.0
-    * @access private
-    *
-    * @param string $str String to sanitize.
-    * @param bool $keep_newlines optional Whether to keep newlines. Default: false.
-    * @return string Sanitized string.
-    */
-   function _sanitize_text_fields( $str, $keep_newlines = false ) {
-           if ( is_object( $str ) || is_array( $str ) ) {
-                   return '';
-           }
-
-           $str = (string) $str;
-
-           $filtered = wp_check_invalid_utf8( $str );
-
-           if ( strpos( $filtered, '<' ) !== false ) {
-                   $filtered = wp_pre_kses_less_than( $filtered );
-                   // This will strip extra whitespace for us.
-                   $filtered = wp_strip_all_tags( $filtered, false );
-
-                   // Use html entities in a special case to make sure no later
-                   // newline stripping stage could lead to a functional tag
-                   $filtered = str_replace( "<\n", "&lt;\n", $filtered );
-           }
-
-           if ( ! $keep_newlines ) {
-                   $filtered = preg_replace( '/[\r\n\t ]+/', ' ', $filtered );
-           }
-           $filtered = trim( $filtered );
-
-           $found = false;
-           while ( preg_match( '/%[a-f0-9]{2}/i', $filtered, $match ) ) {
-                   $filtered = str_replace( $match[0], '', $filtered );
-                   $found    = true;
-           }
-
-           if ( $found ) {
-                   // Strip out the whitespace that may now exist after removing the octets.
-                   $filtered = trim( preg_replace( '/ +/', ' ', $filtered ) );
-           }
-
-           return $filtered;
-   }
 }
 
 if( !function_exists('unregister_post_type') ){
@@ -843,7 +823,7 @@ function aol_empty_option_alert($option = NULL, $consider_empty = NULL){
 * @author Bran van der Meer <branmovic@gmail.com>
 * @since 29-01-2010
 */
-function aol_array_find($needle, array $haystack)        { 
+function aol_array_find($needle, array $haystack){ 
     foreach ($haystack as $key => $value) {
         if (stripos($value, $needle) !== FALSE) {
             return $key;
@@ -851,14 +831,6 @@ function aol_array_find($needle, array $haystack)        {
     }
     return false;
 }
-
-
-//add_filter('views_edit-aol_application', 'aol_views', 10);
-function aol_views($views){
-    print_rich($views);
-    return array('Test' => 'Hello Test', 'Hello World');
-}
-
 
 /**
  * This function recursively map an array.

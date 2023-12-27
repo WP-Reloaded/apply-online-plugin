@@ -305,7 +305,7 @@ class Applyonline_Activator {
                         .sprintf(__('Team %s'), get_bloginfo('name'))."\n"
                         .site_url()."\n"
                         ."Please do not reply to this system generated message.");
-            if(!get_option('aol_success_mail_subject')) update_option('aol_success_mail_subject', 'Thank you for the application');
+            if(!get_option('aol_success_mail_subject')) update_option('aol_success_mail_subject', 'Your application for [title]');
             
             self::fix_roles();
             self::bug_fix_before_16();

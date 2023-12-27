@@ -3,7 +3,7 @@ Contributors: farhan.noor
 Donate link: https://wpreloaded.com/shop/
 Tags: Job Board, Form Builder, Custom Form, Forms, Contact Form, career, application, cv, courses, admission form, forms, contact form, email form, form builder, custom form, pdf form, registration form, payment form, login form, contact me, signature form, upload form, file upload form, conditional form, feedback form, appointment form, quote form, survey form, contact button, signup form, form plugin, contact form plugin, subscription form, email subscription form, newsletter form, donation form, booking form, quote request form, multi page form, conditional logic form, subscription form, application form, employment verification form, star rating form, rating form, event form, mailchimp form, campaign monitor form, constant contact form, mailpoet form, aweber form, cleverreach form, emma form, convertkit form, active campaign form, salesforce form, zoho form, capsule form
 Requires at least: 5.0
-Tested up to: 6.4
+Tested up to: 6.3
 Stable tag: 2.5.3
 Requires PHP: 5.2.4
 License: GPLv2 or later
