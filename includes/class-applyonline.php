@@ -70,7 +70,7 @@ class Applyonline {
                 if ( defined( 'APPLYONLINE_VERSION' ) ) {
 			$this->version = APPLYONLINE_VERSION;
 		} else {
-			$this->version = '2.5';
+			$this->version = '1.0.0';
 		}
                 
                 define( 'ALLOWED_FILE_TYPES', 'jpg,jpeg,png,doc,docx,pdf,rtf,odt,txt' );

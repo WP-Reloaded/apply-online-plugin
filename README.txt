@@ -3,8 +3,8 @@ Contributors: farhan.noor
 Donate link: https://wpreloaded.com/shop/
 Tags: Job Board, Form Builder, Custom Form, Forms, Contact Form, career, application, cv, courses, admission form, forms, contact form, email form, form builder, custom form, pdf form, registration form, payment form, login form, contact me, signature form, upload form, file upload form, conditional form, feedback form, appointment form, quote form, survey form, contact button, signup form, form plugin, contact form plugin, subscription form, email subscription form, newsletter form, donation form, booking form, quote request form, multi page form, conditional logic form, subscription form, application form, employment verification form, star rating form, rating form, event form, mailchimp form, campaign monitor form, constant contact form, mailpoet form, aweber form, cleverreach form, emma form, convertkit form, active campaign form, salesforce form, zoho form, capsule form
 Requires at least: 5.0
-Tested up to: 6.3
-Stable tag: 2.5.3
+Tested up to: 6.4
+Stable tag: 2.5.5
 Requires PHP: 5.2.4
 License: GPLv2 or later
 
@@ -87,7 +87,7 @@ Yes, use shortcode with "excerpt" attribute i.e. [aol excerpt="no"]
 = Can I list ads without any fancy styling? =
 Yes, use shortcode with "style" attribute to list ads with bullets i.e. [aol display="list"]. To generate an ordered list add another attribute "list-style" i.e. [aol display="list" list-style="ol"].
 
-= What attributes can i use in the shortcode? =
+= What attributes can be used in the shortcode? =
 Default shortcode with all attributes is [aol ads="1,2,3" excerpt="no" type="ad"]. Use only required attributes.
 
 = Does this plugin have hooks and functions for customization of plugin behavior? =
@@ -104,7 +104,25 @@ Required field mark in the received application data.
 Different layout options e.g. grid layout, list layout, sidebar filter, popup form, etc.
 Application failure custom text option.
 
+= 2.5.5 =
+New: Admin email subject option in the plugin's setting.
+Fixed: PHP warning in class-applyonline.php file.
+
+= 2.5.4.2 =
+Fixed: PHP warning in class-applyonline.php file.
+
+= 2.5.4.1 =
+Fixed: Attachment link in the Printable version of the received application.
+
+= 2.5.4 =
+New: Application IDs in the Application table in the WordPress admin panel.
+New: Option to write ad title in the email subject.
+New: Security patch for PSID-149593e79c87 CVE-2023-45756.
+New: Security patch for PSID-baadd6626a79 CVE-2023-46080.
+Fixed: Email issues due to missing charset in the email header.
+
 = 2.5.3 =
+New: Security patch for PSID-e59ab80d07f4 CVE-2023-24391.
 Fixed: Attachment link for received application forms.
 
 = 2.5.2 =
@@ -388,6 +406,18 @@ Fixed: Paragraph field text added in the received application & print format.
 * Plugin launched.
 
 == Upgrade Notice ==
+= 2.5.5 =
+ Security patches and important updates, upgrade immediately.
+
+= 2.5.4.1 =
+ Security patches and important updates, upgrade immediately.
+
+= 2.5.4 =
+ XSS Security patch and performance update, Upgrade immediately.
+
+= 2.5.3 =
+ XSS Security patch and performance update, Upgrade immediately.
+
 = 2.5.2 =
  Reliability, security and performance update, Upgrade immediately.
 

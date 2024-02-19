@@ -626,10 +626,10 @@ function aol_application_data_v2($post, $keys){
     return $data;
 }
 
-function aol_application_table($post){
+function aol_application_table($post, $classes = 'aol-table widefat striped'){
     ob_start();
     ?>
-    <table class="aol-table widefat striped">
+<table class="<?php echo sanitize_text_field($classes); ?>">
         <?php
         $rows = aol_application_data($post);
         foreach ( $rows as $row ):
@@ -725,9 +725,9 @@ function aol_from_mail_header($extra_headers = array()){
     //$headers .= implode(",\r\n", $extra_headers);
     
     //Introduced in  2.5.4
-    $headers = array('Content-Type: text/html; charset='. get_option('blog_charset'), "From: ". wp_specialchars_decode(get_bloginfo('name'))." <$from_email>");
+    $headers = array('Content-Type: text/html', "From: ". wp_specialchars_decode(get_bloginfo('name'))." <$from_email>");
     
-    return array_merge($headers, $extra_headers);
+    return array_merge($headers, $extra_headers); 
     
     //return array('Content-Type: text/html', "From:". wp_specialchars_decode(get_bloginfo('name'))." <$from_email>", implode(',', $extra_headers));
 }
@@ -791,8 +791,9 @@ if( !function_exists('unregister_post_type') ){
  * @return type array
  */
 function aol_sanitize_array( $arr, $func = 'sanitize_text_field' ){
-    $newArr = array();
+    if( !(is_array($arr) or is_object($arr)) ) return sanitize_text_field($arr);
 
+    $newArr = array();
     foreach( $arr as $key => $value )
     {
         $newArr[sanitize_key($key) ] = ( is_array( $value ) ? aol_sanitize_array( $value, $func ) : ( is_array($func) ? call_user_func_array($func, $value) : $func( $value ) ) );

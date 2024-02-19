@@ -460,7 +460,7 @@ class Applyonline_Admin{
                 if($keys != NULL):
                     foreach($keys as $key):
                         if(substr($key, 0, 13)=='_aol_feature_'){
-                            $features[sanitize_key($key)] = aol_sanitize_array(get_post_meta($post->ID, $key, TRUE));
+                            $features[$key] = get_post_meta($post->ID, $key, TRUE);
                         }
                     endforeach;
                 endif;
@@ -741,16 +741,7 @@ class Applyonline_Admin{
                             </div>
                         </htmlpageheader>
                         <?php do_action('aol_print_before_application', $post); ?>
-                        <table class="table table-sm table-bordered table-responsive">
-                            <tbody>
-                                <?php 
-                                    $rows = aol_application_data($post);
-                                    foreach ( $rows as $row ):
-                                            echo '<tr><td>' . sanitize_text_field($row['label']) . '</td><td>' . sanitize_text_field($row['value']) . '</td></tr>';
-                                    endforeach;
-                                    ?>
-                            </tbody>
-                        </table>
+                        <?php echo aol_application_table($post, 'table table-sm table-bordered table-responsive'); ?>
                         <?php do_action('aol_print_after_application'); ?>
                         <htmlpagefooter name="wpinv-pdf-footer">
                             <div class="row wpinv-footer">
@@ -1526,6 +1517,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
         register_setting( 'aol_settings_group', 'aol_nonce_is_active', array( 'sanitize_callback' => 'sanitize_text_field') );
         register_setting( 'aol_settings_group', 'aol_success_mail_message', array( 'sanitize_callback' => 'sanitize_textarea_field') );
         register_setting( 'aol_settings_group', 'aol_success_mail_subject', array( 'sanitize_callback' => 'sanitize_text_field') );
+        register_setting( 'aol_settings_group', 'aol_admin_mail_subject', array( 'sanitize_callback' => 'sanitize_text_field') );
         register_setting( 'aol_settings_group', 'aol_not_found_alert', array( 'sanitize_callback' => 'sanitize_text_field') );
         
         
@@ -1747,14 +1739,21 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_success_mail_subject"><?php _e('Application success email subject', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_admin_mail_subject"><?php _e('Admin success email subject', 'ApplyOnline'); ?></label></th>
                         <td>
-                            <input class="regular-text" type="text" name="aol_success_mail_subject" cols="50" rows="3" id="aol_required_fields_notice" value="<?php echo sanitize_text_field( get_option_fixed('aol_success_mail_subject', 'Your application for [title]' ) ); ?>" />
-                            <p class="description"> <?php _e('Use [title] to write ad title in the email subject.', 'ApplyOnline'); ?></p>
+                            <input class="regular-text" type="text" name="aol_admin_mail_subject" cols="50" rows="3" id="aol_required_fields_notice" value="<?php echo sanitize_text_field( get_option_fixed('aol_admin_mail_subject', 'New application [id] for [title]' ) ); ?>" />
+                            <p class="description"> <?php _e('Use [id] and [title] to write ad ID and title in the email subject.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_success_mail_message"><?php _e('Application success email message', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_success_mail_subject"><?php _e('Applicant success email subject', 'ApplyOnline'); ?></label></th>
+                        <td>
+                            <input class="regular-text" type="text" name="aol_success_mail_subject" cols="50" rows="3" id="aol_required_fields_notice" value="<?php echo sanitize_text_field( get_option_fixed('aol_success_mail_subject', 'Your application for [title]' ) ); ?>" />
+                            <p class="description"> <?php _e('Use [id] and [title] to write ad ID and title in the email subject.', 'ApplyOnline'); ?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="aol_success_mail_message"><?php _e('Applicant success email message', 'ApplyOnline'); ?></label></th>
                         <td>
                             <textarea class="small-text code" name="aol_success_mail_message" cols="50" rows="10" id="aol_required_fields_notice"><?php echo sanitize_textarea_field( get_option_fixed('aol_success_mail_message', $message) ); ?></textarea>
                             <p class="description"> <?php _e('Ues [title] & [id] to add ad title & its ID number in the mail.', 'ApplyOnline'); ?></p>
