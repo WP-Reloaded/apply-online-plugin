@@ -306,6 +306,7 @@ class Applyonline_Activator {
                         .site_url()."\n"
                         ."Please do not reply to this system generated message.");
             if(!get_option('aol_success_mail_subject')) update_option('aol_success_mail_subject', 'Your application for [title]');
+            if(!get_option('aol_admin_mail_subject')) update_option('aol_admin_mail_subject', 'New application [id] for [title]');
             
             self::fix_roles();
             self::bug_fix_before_16();

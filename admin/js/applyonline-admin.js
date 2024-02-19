@@ -77,11 +77,11 @@
                 
             /*Ad Types Settings*/
             $('#ad_aol_type').click(function(){
-                var fieldNameRawSingular=$('#ad_type_singular').val(); // Get Raw value.
-                var fieldNameRawPlural=$('#ad_type_plural').val(); // Get Raw value.
-                var fieldNameRawDesc=$('#ad_type_description').val(); // Get Raw value.
+                var fieldNameRawSingular = aol_sanitize_text_field( $('#ad_type_singular').val() ); // Get Raw value.
+                var fieldNameRawPlural = aol_sanitize_text_field( $('#ad_type_plural').val() ); // Get Raw value.
+                var fieldNameRawDesc = aol_sanitize_text_field( $('#ad_type_description').val() ); // Get Raw value.
                 
-                var fieldNameSingular = sanitize_me(fieldNameRawSingular);
+                var fieldNameSingular = aol_sanitize_key(fieldNameRawSingular);
 
 
                 if(fieldNameSingular != '' && fieldNameRawPlural != ''){
@@ -93,20 +93,23 @@
                 }
                 else{
                     $('#adapp_name').css('border','1px solid #F00');
-
                 }
 
             });
+            
+            /*Form Builder row removal*/
             $('#ad_types').on('click', 'li .aol-remove',function(){
                 $(this).parentsUntil('ol', 'li').remove();
             });
+            
+            /*Form Builder default template*/
             $('#ad_types').find('.default').click(function(){
                 return false;
             });
                 
             /*Ad editor Scripts*/
 
-            /*Application Field Type change for new Field only*/
+            /*Form Builder Application Field Type change for new Field only*/
             $('.aol_fields').click(function(){
                //var fieldType=$(this).val();
                var fieldType = $(this).data('id');
@@ -127,7 +130,7 @@
             });
             
                        
-            // Required Option
+            //Form Builder Required field Option
             $('.aol_checkbox').on('click', function(e){
                // e.preventDefault();
                 if( $(this).prop('checked') ) {
@@ -158,40 +161,35 @@
 //               
 //            });
             $('.textfield-poup').on('click', function(e){
-                //alert('xxx');
                 $('.aol_form').css('dispaly','none');
             });
             
-            /**
-             * Add Application Form Field (Group Fields) in Admin Panel.
-             * This code adds a new row to the Application Form Builder list of form fields on WP Ad Editor.
-             */
+            /* Form Builder (Group Fields): Add new row. */
             $('.addField').on('click', function(e){
                 e.preventDefault();
-                var tempID = $(this).data('temp');
+                var tempID = aol_sanitize_text_field( $(this).data('temp') );
                 var wrapper = $(this).closest('.aol_form');
                 
                 //var fieldNameRaw = $('#adapp_name').val(); // Get Raw value.
-                var fieldNameRaw = wrapper.find('.adapp_name').val(); // Get Raw value.
-                var fielduidRaw = wrapper.find('#adapp_uid').val();
+                var fieldNameRaw = aol_sanitize_text_field( wrapper.find('.adapp_name').val() ); // Get Raw value.
                 //var fieldName = md5(fieldNameRaw)
-                //var fieldID = sanitize_me(fieldNameRaw); //Replace white space with _.
-                var fieldID = sanitize_me(fielduidRaw);
+                //var fieldID = aol_sanitize_key(fieldNameRaw); //Replace white space with _.
+                var fieldID = aol_sanitize_key( wrapper.find('#adapp_uid').val() );
                 if( tempID == '' ) var fieldID = '_aol_app_'+fieldID;
                 else if( tempID == 'new' ) var fieldID = 'new[_aol_app_'+fieldID+']';
                 else if( tempID != '' ) var fieldID = tempID+'[_aol_app_'+fieldID+']';
-                var fieldType = wrapper.find('input[name="aol_type"]').val(); 
-                var fieldPlaceholder = wrapper.find('.adapp_placeholder').val();
-                var fieldClass = wrapper.find('.adapp_class').val();
-                var fieldFileTypes = wrapper.find('.adapp_file_types').val();
-                var fieldFileSize = wrapper.find('.adapp_file_max_size').val();
-                var required = wrapper.find('.adapp_required').val();
-                var notify_email = wrapper.find('.adapp_notification').val();
-                var fieldOptions = wrapper.find('.adapp_field_options').val();
-                var fieldDesccription = wrapper.find('.adapp_field_help').val();
-                var fieldText = wrapper.find('.adapp_text').val();
-                var fieldTextHeight = wrapper.find('.adapp_text_height').val();
-                var fieldLimit = wrapper.find('.adapp_limit').val();
+                var fieldType = aol_sanitize_key( wrapper.find('input[name="aol_type"]').val() ); 
+                var fieldPlaceholder = aol_sanitize_text_field( wrapper.find('.adapp_placeholder').val() );
+                var fieldClass = aol_sanitize_text_field( wrapper.find('.adapp_class').val() );
+                var fieldFileTypes = aol_sanitize_text_field( wrapper.find('.adapp_file_types').val() );
+                var fieldFileSize = parseInt( wrapper.find('.adapp_file_max_size').val() );
+                var required = parseInt( wrapper.find('.adapp_required').val() );
+                var notify_email = aol_sanitize_text_field( wrapper.find('.adapp_notification').val() );
+                var fieldOptions = aol_sanitize_text_field( wrapper.find('.adapp_field_options').val() );
+                var fieldDesccription = aol_sanitize_text_field( wrapper.find('.adapp_field_help').val() );
+                var fieldText = aol_sanitize_text_field( wrapper.find('.adapp_text').val() );
+                var fieldTextHeight = aol_sanitize_text_field( wrapper.find('.adapp_text_height').val() );
+                var fieldLimit = parseInt( wrapper.find('.adapp_limit').val() );
                 if( notify_email == '1'){
                     var notify_checked ='checked';
                 }else {
@@ -200,7 +198,7 @@
                 if( required == '1'){
                     var checked_item ='checked';
                 }else {
-                    var checked_item    ='';
+                    var checked_item ='';
                 }
                 
                 var  aol_defult_selection = '';
@@ -299,16 +297,13 @@
                 return false;
             });
             
-            /**
-             * Update a Form Field values/options e.g. field title, classes, etc.
-             * Update Row Title on the Ad Editor screen.
-             * close the Form Builder Popup.
-             */
+            /* Form Builder: Edit an existing row */
             $('body').on('click', '.aol-save-form', function(e){
                //Change Row label as per new value.
-               var rowID = $(this).closest('.aol_form').data('id');
-               var rowLabel = $(this).closest('.aol_form').find('input[name="'+rowID+'[label]"]').val();
-               $('#app_form_fields tr.'+rowID+' label').html(rowLabel);
+                var rowID = $(this).closest('.aol_form').data('id');
+                var rowLabel = $(this).closest('.aol_form').find('input[name="'+rowID+'[label]"]').val();
+                
+                $('#app_form_fields tr.'+rowID+' label').html( aol_sanitize_text_field(rowLabel) );
                 
                 //Close the Row Editor
                 e.preventDefault();
@@ -607,13 +602,12 @@
             });
             
             $('#ad_aol_filter').click(function(){
-                var Singular = $('#ad_filter_singular').val(); // Get Raw value.
-                var Plural = $('#ad_filter_plural').val(); // Get Raw value.
+                var Singular = aol_sanitize_text_field($('#ad_filter_singular').val() ); // Get Raw value.
+                var Plural = aol_sanitize_text_field( $('#ad_filter_plural').val() );  // Get Raw value.
                 //var fieldNameRawPlural=$('#ad_filter_plural').val(); // Get Raw value.
                 
-                var keySingular = sanitize_me(Singular);
-                //var fieldNamePlural = sanitize_me(fieldNameRawPlural);
-
+                var keySingular = aol_sanitize_key(Singular);
+                //var fieldNamePlural = aol_sanitize_key(fieldNameRawPlural);
 
                 if(Singular != '' && Plural != ''){
                     //$('#ad_custom_filters').append('<tr><td><input id="filter-'+keySingular+'" name="aol_ad_filters[]" value="'+keySingular+'" type="checkbox"> <label for="filter-'+keySingular+'">'+Singular+' filter</label></td><td><input type="text" class="'+keySingular+' aol_ad_filter" name="aol_ad_filters['+keySingular+'][singular]" value="'+Singular+'" placholder="Singular" /> <input type="text" class="'+keySingular+' aol_ad_filter" name="aol_ad_filters['+keySingular+'][plural]" value="'+Plural+'" placeholder="Plural" /></td><td><span class="dashicons dashicons-trash removeField button-trash"></span></td></tr>');
@@ -663,11 +657,11 @@
             
              /*Application Settings Tab*/
             $('#ad_aol_status').click(function(){
-                var Singular = $('#ad_status_singular').val(); // Get Raw value.
+                var Singular = aol_sanitize_text_field( $('#ad_status_singular').val() ) ; // Get Raw value.
                 //var fieldNameRawPlural=$('#ad_status_plural').val(); // Get Raw value.
                 
-                var keySingular = sanitize_me(Singular);
-                //var fieldNamePlural = sanitize_me(fieldNameRawPlural);
+                var keySingular = aol_sanitize_key(Singular);
+                //var fieldNamePlural = aol_sanitize_key(fieldNameRawPlural);
 
 
                 if(Singular != ''){
@@ -690,17 +684,34 @@
              * @returns {unresolved}
              */            
 
-        }); //Document Ready State.
-        
-        
-                   
+        }); //Document Ready State.        
 })( jQuery );
-function sanitize_me(field){
+
+function sanitize_xss(string) {
+  const map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#x27;',
+      "/": '&#x2F;',
+  };
+  const reg = /[&<>"'/]/ig;
+  return string.replace(reg, (match)=>(map[match]));
+}
+
+function aol_sanitize_text_field(field){
+    //return field.replace(/[^a-zA-Z0-9 ]/g, '');
     field = field.trim();
+    return field.replace(/[~`!@#$%^*(){}\[\]"'<>\/\\|]/g, "");
+}
+
+function aol_sanitize_key(field){
+    field = aol_sanitize_text_field(field);
     field = field.replace(/\s/g, "_");
     field = field.toLowerCase();
-    field = field.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return field;
+    //field = field.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return field.replace(/[^a-z0-9_-]/g, '');
 }
 
 function aol_form(element, fieldID = null, fieldNameRaw = null, fieldPlaceholder = null, fieldDesccription = null, fieldClass = null, fieldFileTypes = null, fieldFileSize = null, checked_item = null, fieldOptions = null, aol_defult_selection = null, fieldType = null, required = null){
