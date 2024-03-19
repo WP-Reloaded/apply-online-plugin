@@ -1,16 +1,19 @@
 === ApplyOnline - Application Form Builder and Manager ===
 Contributors: farhan.noor
 Donate link: https://wpreloaded.com/shop/
-Tags: Job Board, Form Builder, Custom Form, Forms, Contact Form, career, application, cv, courses, admission form, forms, contact form, email form, form builder, custom form, pdf form, registration form, payment form, login form, contact me, signature form, upload form, file upload form, conditional form, feedback form, appointment form, quote form, survey form, contact button, signup form, form plugin, contact form plugin, subscription form, email subscription form, newsletter form, donation form, booking form, quote request form, multi page form, conditional logic form, subscription form, application form, employment verification form, star rating form, rating form, event form, mailchimp form, campaign monitor form, constant contact form, mailpoet form, aweber form, cleverreach form, emma form, convertkit form, active campaign form, salesforce form, zoho form, capsule form
+Tags: Job Board, Form Builder, Contact Form, payment form, Job Manager
 Requires at least: 5.0
-Tested up to: 6.4
-Stable tag: 2.5.5
+Tested up to: 6.5
+Stable tag: 2.5.6
 Requires PHP: 5.2.4
 License: GPLv2 or later
 
-Robust Application Form Builder & Manager for Job Boards, Online Admissions, classes, courses registrations, etc.
+Powerful & intuitive plugin to post ads and start receiving applications online.
 
 == Description ==
+= Are you looking for a page on your website to post ads and start receiving applications conveniently? =
+Focused on stability and simplicity, with this plugin you can create a job board, advertisement board or open online registration of courses & classes and start receiving applications from your website.
+
 = The Most User Friendly WordPress Application Form Builder and Manager =
 Create stunning application forms using drag and drop Application Form Builder and publish job ads, admission ads, classes ads and manage received applications like a boss. It's not only a Form Builder, but a complete hiring & registration solution. [Click Here](https://wpreloaded.com/plugins/apply-online "World's #1 Online Application Form Builder & Manager") for a live demo.
 
@@ -26,7 +29,10 @@ Not a tech savvy? ApplyOnline plugin is the solution. Its intuitive drag and dro
 Does your organization collect admission forms and also looking for job ads? Look no further, Ad Types feature is the solution for you. Go to *ApplyOnline/Settings/Types* in WordPress admin and create as many types as you wish. Just copy generated shortcode and paste into your desired WordPress page.
 
 = Powerful Features =
+* Super simple integration, just install & add a menu link to *yourwebsite.com/ads*.
+* Beautifully integrates into your existing website without worrying for design.
 * Create as many ad types as you wish e.g. **Career, Classes, Registrations, Admissions,** etc. 
+* Form builder with all HTML form fields to create a stunning application form.
 * Ads listing with title, thumbnail image, ad summary, taxonomies and **Apply Now** button.
 * Ads filtration option above the ads listing to narrow down desired ads.
 * Ad detail page with description, features and application form.
@@ -53,7 +59,7 @@ Does your organization collect admission forms and also looking for job ads? Loo
 * Created with love by [Spider Teams](https://spiderteams.com/home "We create the web!")
 
 == Installation ==
-1. Go to Plugins/Add New section, Search for Apply Online in the search box and install the plugin created by Spider Teams.
+1. Go to Plugins/Add New section, Search for ApplyOnline in the search box and install the plugin created by Spider Teams.
 1. After activation, go to All Ads section in your WordPress admin panel and create your desired ads with drag and drop Application Form Builder.
 1. To list ads on the front-end, create a dedicated WordPress page and write shortcode [aol]. isn't it so easy?
 1. For more information go to FAQs section in your WordPress admin panel under **Apply Online/Settings** section.
@@ -98,15 +104,20 @@ No. However if you use our [pro add ons](https://wpreloaded.com/shop/), then tho
 
 == Changelog ==
 = Upcoming =
-Custom size limit for attachment fields in the form builder.
 Recaptcha integration for secure form submission.
 Required field mark in the received application data.
 Different layout options e.g. grid layout, list layout, sidebar filter, popup form, etc.
-Application failure custom text option.
+
+= 2.5.6 =
+Fixed: Paragraph field line break issues.
+Fixed: Checkbox & Radio button fields' styling issues.
 
 = 2.5.5 =
 New: Admin email subject option in the plugin's setting.
+New: Custom size limit for attachment fields in the form builder.
 Fixed: PHP warning in class-applyonline.php file.
+Fixed: Security patch for PSID-149593e79c87 & CVE-2023-45756.
+Fixed: Security patch for PSID-e59ab80d07f4 & CVE-2023-24391.
 
 = 2.5.4.2 =
 Fixed: PHP warning in class-applyonline.php file.
@@ -117,12 +128,10 @@ Fixed: Attachment link in the Printable version of the received application.
 = 2.5.4 =
 New: Application IDs in the Application table in the WordPress admin panel.
 New: Option to write ad title in the email subject.
-New: Security patch for PSID-149593e79c87 CVE-2023-45756.
-New: Security patch for PSID-baadd6626a79 CVE-2023-46080.
+New: Security patch for PSID-baadd6626a79 & CVE-2023-46080.
 Fixed: Email issues due to missing charset in the email header.
 
 = 2.5.3 =
-New: Security patch for PSID-e59ab80d07f4 CVE-2023-24391.
 Fixed: Attachment link for received application forms.
 
 = 2.5.2 =
@@ -406,6 +415,9 @@ Fixed: Paragraph field text added in the received application & print format.
 * Plugin launched.
 
 == Upgrade Notice ==
+= 2.5.6 =
+ Security patches and important updates, upgrade immediately.
+
 = 2.5.5 =
  Security patches and important updates, upgrade immediately.
 

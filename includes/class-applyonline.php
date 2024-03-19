@@ -315,10 +315,10 @@ class Applyonline {
                 'menu_icon'  => 'dashicons-admin-site',
                 'show_in_menu'  => 'edit.php?post_type=aol_ad',
                 'description' => $description,
-                'rewrite'       => array('slug' => sanitize_key($plural)),
+                'rewrite'       => array('slug' => $plural),
                 'supports' => array('editor', 'excerpt', 'title', 'thumbnail', 'revisions', 'author'),
             );
-            register_post_type('aol_'.sanitize_key($cpt), array_merge($args, $args_custom));
+            register_post_type('aol_'.$cpt, array_merge($args, $args_custom));
         }
 
         public function taxonomy_generator($key, $singular, $plural,  $hierarchical = TRUE){
@@ -351,16 +351,15 @@ class Applyonline {
                     'show_admin_column' => true,
                     'query_var'         => true,
                     'show_in_menu'      => false,
-                    'rewrite'           => array( 'slug' => sanitize_key('ad-'.$key) ),
+                    'rewrite'           => array( 'slug' => 'ad-'.$key ),
                     'capabilities'      => $capabilities,
             );
             $cpts = get_option_fixed('aol_ad_types', array());
             $types = array();
-            if(!is_array($types)) $types = array();
             foreach ($cpts as $cpt => $val){
-                if(isset($val['filters']) AND in_array(sanitize_key($key), (array)$val['filters'])) $types[] = 'aol_'.$cpt;
+                if(isset($val['filters']) AND in_array($key, (array)$val['filters'])) $types[] = 'aol_'.$cpt;
             }
-            register_taxonomy( 'aol_ad_'.sanitize_key($key), $types, $args );
+            register_taxonomy( 'aol_ad_'.$key, $types, $args );
         }
 
         /*

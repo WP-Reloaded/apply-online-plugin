@@ -131,31 +131,9 @@
                         error: function(xhr, type, error){
                             $('#aol_form_status').removeClass();
                             $('#aol_form_status').addClass('alert alert-danger');
-                            $('#aol_form_status').html('An unexpected error occured with error code: <u>' + xhr.status + " " + xhr.statusText+'</u>. '+error+'. Please contact us for more information.');
+                            $('#aol_form_status').html('An unexpected error occured: <u>' + xhr.status + ":" + xhr.statusText+'</u>. '+error+'. Please refresh page and try again. If problem presists, please report this issue through Contact Us page. Thanks');
                             $(".aol-form-button").prop('disabled', false);
                         },
-                        // Custom XMLHttpRequest
-                        /*
-                        xhr: function () {
-                          $('progress').attr({
-                                  value: 0,
-                                });
-                          var myXhr = $.ajaxSettings.xhr();
-                          if (myXhr.upload) {
-                            // For handling the progress of the upload
-                            myXhr.upload.addEventListener('progress', function (e) {
-                              if (e.lengthComputable) {
-                                $('progress').attr({
-                                  value: e.loaded,
-                                  max: e.total,
-                                });
-                              }
-                            }, false);
-                          }
-                          return myXhr;
-                        },
-                        * 
-                        */
                 });
                 return false;
             });
@@ -255,7 +233,7 @@ function aol_submit($){
             error: function(xhr, type, error){
                 $('#aol_form_status').removeClass();
                 $('#aol_form_status').addClass('alert alert-danger');
-                $('#aol_form_status').html('An unexpected error occured with error code: <u>' + xhr.status + " " + xhr.statusText+'</u>. '+error+'. Please contact us for more information.');
+                $('#aol_form_status').html('An unexpected error occured: <u>' + xhr.status + ":" + xhr.statusText+'</u>. '+error+'. Please refresh page and try again. If problem presists, please report this issue through Contact Us page. Thanks');
                 $(".aol-form-button").prop('disabled', false);
             },
             // Custom XMLHttpRequest

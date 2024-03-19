@@ -234,28 +234,28 @@ class Applyonline_Activator {
                 array (
                   'templateName' => 'Default Template',
                   '_aol_app_name' => 
-                  array (
-                    'label' =>  'Name',
-                    'required' => NULL,
-                    'type' => 'text',
-                    'placeholder' => 'Please provide your full name.',
-                    'limit' => 50
-                  ),
-                  '_aol_app_email' => 
-                  array (
-                    'label' => 'E Mail',
-                    'required' => NULL,
-                    'type' => 'email',
-                  ),
-                  '_aol_app_address' => 
-                  array (
-                    'label' => 'Address',
-                    'required' => NULL,
-                    'type' => 'text_area',
-                    'description' => 'Please provide your full address',
-                    'placeholder' => '',
-                    'limit' => 200
-                  ),
+                    array (
+                      'label' =>  'Name',
+                      'required' => NULL,
+                      'type' => 'text',
+                      'placeholder' => 'Please provide your full name.',
+                      'limit' => 50
+                    ),
+                    '_aol_app_email' => 
+                    array (
+                      'label' => 'E Mail',
+                      'required' => NULL,
+                      'type' => 'email',
+                    ),
+                    '_aol_app_address' => 
+                    array (
+                      'label' => 'Address',
+                      'required' => NULL,
+                      'type' => 'text_area',
+                      'description' => 'Please provide your full address',
+                      'placeholder' => '',
+                      'limit' => 300
+                    ),
                 ),
               );
 
@@ -291,6 +291,7 @@ class Applyonline_Activator {
             if(!get_option('aol_allowed_file_types')) update_option('aol_allowed_file_types', 'jpg,jpeg,png,doc,docx,pdf,rtf,odt,txt');
             if(!get_option('aol_slug')) update_option('aol_slug', 'ads');
             if(!get_option('aol_application_success_alert')) update_option('aol_application_success_alert', 'Form has been submitted successfully with application id [id]. If required, we will get back to you shortly!');
+            if(!get_option('aol_application_failure_alert')) update_option('aol_application_failure_alert', 'Something went wrong and form could not be submitted. Please follow these instruciton:\nTry submitting form again.\sRefresh page and try submitting form again.\nIf problem persists, please report this issue through Contact Us page.');
             if(!get_option('aol_required_fields_notice')) update_option('aol_required_fields_notice', 'Fields with (*)  are compulsory.');
             if(!get_option('aol_app_statuses')) update_option('aol_app_statuses', array('pending', 'rejected', 'shortlisted'));
             if(!get_option('aol_show_filter')) update_option('aol_show_filter', 0);
@@ -301,7 +302,7 @@ class Applyonline_Activator {
             if(!get_option('aol_mail_footer')) update_option('aol_mail_footer', "\n\nThank you\n".get_bloginfo('name')."\n".site_url()."n------\nPlease do not reply to this system generated message.");
             if(!get_option('aol_custom_statuses')) update_option('aol_custom_statuses', array('pending' => __('Pending', 'ApplyOnline'), 'rejected'=> __('Rejected', 'ApplyOnline'), 'shortlisted' => __('Shortlisted', 'ApplyOnline')));
             if(!get_option('aol_nonce_is_active', 1)) update_option('aol_nonce_is_active', 1);
-            if(!get_option('aol_success_mail_message')) update_option('aol_success_mail_message', "Hi there,\n\nThank you for showing your interest in the ad: [title]. Your application with id [id] has been received. We will review your application and contact you if required.\n\n"
+            if(!get_option('aol_success_mail_message')) update_option('aol_success_mail_message', "Hi there,\n\nThank you for showing interest in the ad: [title]. Your application with id [id] has been received. We will review your application and contact you if required.\n\n"
                         .sprintf(__('Team %s'), get_bloginfo('name'))."\n"
                         .site_url()."\n"
                         ."Please do not reply to this system generated message.");

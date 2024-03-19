@@ -10,8 +10,8 @@
  * @wordpress-plugin
  * Plugin Name:       ApplyOnline
  * Plugin URI:        https://wpreloaded.com
- * Description:       Online Application Form Builder and Manager
- * Version:           2.5.5
+ * Description:       Online Application Form Builder and Manager.
+ * Version:           2.5.6
  * Author:            Spider Teams
  * Author URI:        https://spiderteams.com
  * License:           GPL-2.0+
@@ -24,7 +24,7 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-define( 'APPLYONLINE_VERSION', '2.5.5' );
+define( 'APPLYONLINE_VERSION', '2.5.6' );
 
 require_once( 'class-addons-update.php' );
 /**
