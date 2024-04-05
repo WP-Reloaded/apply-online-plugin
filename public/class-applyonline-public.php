@@ -1000,16 +1000,11 @@ class Applyonline_Shortcodes{
 
             if( empty($emails) ){                
                 //Get global recipients
-                $emails_raw = sanitize_textarea_field( get_option('aol_recipients_emails', $admin_email) );
+                $emails_string = sanitize_textarea_field( get_option_fixed('aol_recipients_emails', get_option('admin_email')) );
                 
-                //$emails_raw may be empty. 
-                if( empty($emails_raw) ){
-                    $emails = get_option('admin_email');
-                } else{
-                    $emails = explode("\n", str_replace(array("\r", " "),"", $emails_raw));                                    
-                }
+                $emails = explode("\n", str_replace(array("\r", " "),"", $emails_string) );
             }
-            
+
             $emails = array_map('sanitize_email', $emails);
             
             $author_notification = get_option('aol_ad_author_notification');
@@ -1028,9 +1023,9 @@ class Applyonline_Shortcodes{
              * 
              */
 
-            $subject = sprintf(__('New application for %s', 'ApplyOnline'), wp_specialchars_decode($post->post_title));
+            //$subject = sprintf(__('New application for %s', 'ApplyOnline'), sanitize_text_field($post->post_title));
             $subject = str_replace( array('[id]' ,'[title]'), array($post->ID ,$post->post_title), get_option('aol_admin_mail_subject', 'New application [id] for [title]') );
-            $header = aol_from_mail_header();
+            $headers = aol_from_mail_header();
 
             //@todo need a filter hook to modify content of this email message and to add a from field in the message.
             $message=   '<p>'.__('Hi,', 'ApplyOnline').'</p>'
@@ -1047,7 +1042,7 @@ class Applyonline_Shortcodes{
             $message = apply_filters('aol_email_notification', $message, $post_id); //Deprecated.
             $aol_email = apply_filters(
                         'aol_email', 
-                        array( 'to' => $emails, 'subject' => $subject, 'message' => nl2br($message), 'headers' => $headers, 'attachments' => array() ), 
+                        array( 'to' => $emails, 'subject' => $subject, 'message' => $message, 'headers' => $headers, 'attachments' => array() ), 
                         $post_id,
                         $post,
                         $uploads
@@ -1060,5 +1055,5 @@ class Applyonline_Shortcodes{
             do_action('aol_email_after', $emails, $subject, nl2br($message), $headers);
 
             return true;
-        }        
+        }
 }

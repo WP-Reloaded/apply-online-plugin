@@ -1446,9 +1446,78 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
         }
     }
     
+    function settings_api(){
+        $tabs = array(
+                'general' => array(
+                    'id'        => 'general',
+                    'name'      => __( 'General' ,'ApplyOnline' ),
+                    'desc'      => __( 'Global settings for the plugin. Some options can be overwritten from the individual ad editor screen.', 'ApplyOnline' ),
+                    'href'      => null,
+                    'classes'   => ' active',
+                    'callback'  => array($this, 'tab_general')
+                ),/*
+                'ui' => array(
+                    'id'        => 'ui',
+                    'name'      => __('User Interface' ,'ApplyOnline'),
+                    'desc'      => __( 'Front-end User Iterface Manager', 'ApplyOnline' ),
+                    'href'      => null,
+                ),
+                 * 
+                 */
+                'template' => array(
+                    'id'        => 'template',
+                    'name'      => __('Template' ,'ApplyOnline'),
+                    'desc'      => __( 'Application form templates for new ads.', 'ApplyOnline' ),
+                    'href'      => null,
+                    'callback' => array($this, 'tab_template')
+                ),
+                'applications' => array(
+                    'id'        => 'applications',
+                    'name'      => __('Applications' ,'ApplyOnline'),
+                    'desc'      => __( 'This section is intended for received applications.', 'ApplyOnline' ),
+                    'href'      => null,
+                    'callback'  => array($this, 'tab_applications')
+                ),
+                'filters' => array(
+                    'id'        => 'filters',
+                    'name'      => __('Ad Filters' ,'ApplyOnline'),
+                    'desc'      => __( 'Display Filters in [aol] shortcode outupt.', 'ApplyOnline' ),
+                    'href'      => null,
+                    'callback'  => array($this, 'tab_filters')
+                ),
+                'types' => array(
+                    'id'        => 'types',
+                    'name'      => __('Ad Types' ,'ApplyOnline'),
+                    'desc'      => __( 'Define different types of ads e.g. Careers, Classes, Memberships. These types will appear under All Ads section in WordPress admin panel.', 'ApplyOnline' ),
+                    'href'      => null,
+                    'callback'  => array($this, 'tab_types')
+                ),
+        );
+        $tabs = apply_filters('aol_settings_tabs', $tabs);
+        //Show these tabs at the end.
+        $tabs['faqs'] = array(
+                    'id'        => 'faqs',
+                    'name'      => __('How Tos' ,'ApplyOnline'),
+                    'desc'      => __('Frequently Asked Questions.' ,'ApplyOnline'),
+                    'href'      => null,
+                    'callback'  => array($this, 'tab_faqs')
+                );
+        $tabs['extend'] = array(
+                    'id'        => 'extend',
+                    'name'      => __('Extend' ,'ApplyOnline'),
+                    'desc'      => __('Extend Plugin' ,'ApplyOnline'),
+                    'href'      => 'https://wpreloaded.com/shop/',
+                    'capability' => 'manage_options',
+                    'callback'  => array($this, 'tab_extend')
+                );
+        $tabs = apply_filters('aol_settings_all_tabs', $tabs);
+        return $tabs;
+    }
+    
     public function settings_page_callback(){
         $this->save_settings();
-        $tabs = json_decode(json_encode($this->settings_api()), FALSE);
+        //$tabs = json_decode(json_encode($this->settings_api()), FALSE);
+        $tabs = $this->settings_api();
         ob_start();
         ?>
             <div class="wrap aol-settings">
@@ -1465,30 +1534,37 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                 <h2 class="nav-tab-wrapper aol-tabs-wrapper aol-primary">
                     <?php 
                         foreach($tabs as $tab){
-                            if( isset($tab->capability) AND !current_user_can($tab->capability) ) continue;
-                            $href = empty($tab->href) ? null : 'href="'.$tab->href.'" target="_blank"';
-                            $classes = isset($tab->classes) ? $tab->classes : null;
-                            echo '<a class="nav-tab aol-tab '. esc_attr($classes).'" data-id="'.esc_attr($tab->id).'" '.esc_url($href).'>'.sanitize_text_field($tab->name).'</a>';
+                            if( isset($tab['capability']) AND !current_user_can($tab['capability']) ) continue;
+                            $href = empty($tab['href']) ? null : 'href="'.$tab['href'].'" target="_blank"';
+                            $classes = isset($tab['classes']) ? $tab['classes'] : null;
+                            echo '<a class="nav-tab aol-tab '. esc_attr($classes).'" data-id="'.esc_attr($tab['id']).'" '.esc_url($href).'>'.sanitize_text_field($tab['name']).'</a>';
                         }
                     ?>
                 </h2>
                 <?php 
                     foreach($tabs as $tab){
                         //$callback = ( isset($tab->output) and !isset($tab->callback) ) ? $tab->output : $tab->callback;
-                        echo '<div class="aol-tab-data wrap" id="'.esc_attr($tab->id).'">';
-                            if(isset($tab->name)) echo '<h3>'.sanitize_text_field($tab->name).'</h3>';
-                            if(isset($tab->desc)) echo '<p>'.sanitize_text_field($tab->desc).'</p>';
+                        echo '<div class="aol-tab-data wrap" id="'.esc_attr($tab['id']).'">';
+                            if(isset($tab['name'])) echo '<h3>'.sanitize_text_field($tab['name']).'</h3>';
+                            if(isset($tab['desc'])) echo '<p>'.sanitize_text_field($tab['desc']).'</p>';
 
                             //Output is already sanitized in the concerned method.
-                            $callback = $tab->callback;
-                            echo isset($tab->output) ? $tab->output : $this->$callback();
+                            $callback = $tab['callback'];
+                            //echo isset($tab['output']) ? $tab['output'] : $this[$callback()];
+                            if( is_array($callback) ){
+                                $obj = $callback[0];
+                                $method = $callback[1];
+                                echo $obj->$method();
+                            } else {
+                                echo $callback();
+                            }
                         echo '</div>';
                     }
                 ?>
             </div>
         <?php
         return ob_get_flush();
-    }           
+    }
 
     public function registers_settings(){
         register_setting( 'aol_settings_group', 'aol_recipients_emails', array( 'sanitize_callback' => 'sanitize_textarea_field') );
@@ -1565,74 +1641,6 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
         flush_rewrite_rules();
     }
     
-    function settings_api(){
-        $tabs = array(
-                'general' => array(
-                    'id'        => 'general',
-                    'name'      => __( 'General' ,'ApplyOnline' ),
-                    'desc'      => __( 'Global settings for the plugin. Some options can be overwritten from the individual ad editor screen.', 'ApplyOnline' ),
-                    'href'      => null,
-                    'classes'   => ' active',
-                    'callback'  => 'tab_general'
-                ),/*
-                'ui' => array(
-                    'id'        => 'ui',
-                    'name'      => __('User Interface' ,'ApplyOnline'),
-                    'desc'      => __( 'Front-end User Iterface Manager', 'ApplyOnline' ),
-                    'href'      => null,
-                ),
-                 * 
-                 */
-                'template' => array(
-                    'id'        => 'template',
-                    'name'      => __('Template' ,'ApplyOnline'),
-                    'desc'      => __( 'Application form templates for new ads.', 'ApplyOnline' ),
-                    'href'      => null,
-                    'callback' => 'tab_template'
-                ),
-                'applications' => array(
-                    'id'        => 'applications',
-                    'name'      => __('Applications' ,'ApplyOnline'),
-                    'desc'      => __( 'This section is intended for received applications.', 'ApplyOnline' ),
-                    'href'      => null,
-                    'callback'  => 'tab_applications'
-                ),
-                'filters' => array(
-                    'id'        => 'filters',
-                    'name'      => __('Ad Filters' ,'ApplyOnline'),
-                    'desc'      => __( 'Display Filters in [aol] shortcode outupt.', 'ApplyOnline' ),
-                    'href'      => null,
-                    'callback'  => 'tab_filters'
-                ),
-                'types' => array(
-                    'id'        => 'types',
-                    'name'      => __('Ad Types' ,'ApplyOnline'),
-                    'desc'      => __( 'Define different types of ads e.g. Careers, Classes, Memberships. These types will appear under All Ads section in WordPress admin panel.', 'ApplyOnline' ),
-                    'href'      => null,
-                    'callback'  => 'tab_types'
-                ),
-        );
-        $tabs = apply_filters('aol_settings_tabs', $tabs);
-        //Show these tabs at the end.
-        $tabs['faqs'] = array(
-                    'id'        => 'faqs',
-                    'name'      => __('How Tos' ,'ApplyOnline'),
-                    'desc'      => __('Frequently Asked Questions.' ,'ApplyOnline'),
-                    'href'      => null,
-                    'callback'  => 'tab_faqs'
-                );
-        $tabs['extend'] = array(
-                    'id'        => 'extend',
-                    'name'      => __('Extend' ,'ApplyOnline'),
-                    'desc'      => __('Extend Plugin' ,'ApplyOnline'),
-                    'href'      => 'https://wpreloaded.com/shop/',
-                    'capability' => 'manage_options',
-                    'callback'  => 'tab_extend'
-                );
-        $tabs = apply_filters('aol_settings_all_tabs', $tabs);
-        return $tabs;
-    }
-    
     private function wp_pages(){
         $pages = get_pages();
         $pages_arr = array();
@@ -1653,8 +1661,11 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                     $aol_upload_path = wp_normalize_path($uload_dir['basedir']);
                     $progress_bar = (array)get_option('aol_progress_bar_color', array('foreground' => '#222222', 'background' => '#dddddd', 'counter' => '#888888'));
                     $failure_alert = "Something went wrong please follow these instruciton:&#013;Try submitting form again.&#013;Refresh page and try submitting form again.&#013;If problem persists, please report this issue through Contact Us page.";
+
+                    $submission_alert = 'Form has been submitted successfully with application id [id]. If required, we will get back to you shortly!';
+
                     $message="Hi there,\n\n"
-                        ."Thank you for showing your interest in the ad: [title]. Your application with id [id] has been received. We will review your application and contact you if required.\n\n"
+                        ."Thank you for showing interest in the ad: [title]. Your application with id [id] has been received. We will review your application and contact you if required.\n\n"
                         .sprintf(__('Team %s'), get_bloginfo('name'))."\n"
                         .site_url()."\n"
                         ."Please do not reply to this system generated message.";
@@ -1691,7 +1702,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_ad_author_notification"><?php _e('Email alerts for ad authors', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_ad_author_notification"><?php _e('Email notification for ad authors', 'ApplyOnline'); ?></label></th>
                         <td>
                             <label class="switch">
                                 <input type="checkbox" name="aol_ad_author_notification" <?php echo get_option('aol_ad_author_notification') ? 'checked="checked"':Null; ?> >
@@ -1721,26 +1732,26 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                     <tr>
                         <th><label for="aol_application_success_alert"><?php _e('Application submission note', 'ApplyOnline'); ?></label></th>
                         <td>
-                            <textarea class="small-text code" name="aol_application_success_alert" cols="50" rows="4" id="aol_application_success_alert"><?php echo sanitize_text_field( get_option_fixed('aol_application_success_alert' ) ); ?></textarea>
+                            <textarea class="small-text code" name="aol_application_success_alert" cols="50" rows="4" id="aol_application_success_alert"><?php echo sanitize_text_field( get_option_fixed('aol_application_success_alert', $submission_alert ) ); ?></textarea>
                             <p class="description"><?php _e('Use [id] for dynamic application ID.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_admin_mail_subject"><?php _e('Success email subject for admin', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_admin_mail_subject"><?php _e('Email notification subject for admin', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input class="regular-text" type="text" name="aol_admin_mail_subject" cols="50" rows="3" id="aol_admin_mail_subject" value="<?php echo esc_attr( get_option_fixed('aol_admin_mail_subject', 'New application [id] for [title]' ) ); ?>" />
                             <p class="description"> <?php _e('Use [id] and [title] to write ad ID and title in the email subject.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_success_mail_subject"><?php _e('Success email subject for applicant', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_success_mail_subject"><?php _e('Email notification subject for applicant', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input class="regular-text" type="text" name="aol_success_mail_subject" cols="50" rows="3" id="aol_success_mail_subject" value="<?php echo esc_attr( get_option_fixed('aol_success_mail_subject', 'Your application for [title]' ) ); ?>" />
                             <p class="description"> <?php _e('Use [id] and [title] to write ad ID and title in the email subject.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_success_mail_message"><?php _e('Applicant success email message', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_success_mail_message"><?php _e('Email notification message', 'ApplyOnline'); ?></label></th>
                         <td>
                             <textarea class="small-text code" name="aol_success_mail_message" cols="50" rows="10" id="aol_success_mail_message"><?php echo sanitize_textarea_field( get_option_fixed('aol_success_mail_message', $message) ); ?></textarea>
                             <p class="description"> <?php _e('Ues [title] & [id] to add ad title & its ID number in the mail.', 'ApplyOnline'); ?></p>

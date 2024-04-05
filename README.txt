@@ -4,14 +4,14 @@ Donate link: https://wpreloaded.com/shop/
 Tags: Job Board, Form Builder, Contact Form, payment form, Job Manager
 Requires at least: 5.0
 Tested up to: 6.5
-Stable tag: 2.5.6
+Stable tag: 2.5.7
 Requires PHP: 5.2.4
 License: GPLv2 or later
 
 Powerful & intuitive plugin to post ads and start receiving applications online.
 
 == Description ==
-= Are you looking for a page on your website to post ads and start receiving applications conveniently? =
+= Job Boards, Course Registrations, School Admissions, and more, all in one place.  =
 Focused on stability and simplicity, with this plugin you can create a job board, advertisement board or open online registration of courses & classes and start receiving applications from your website.
 
 = The Most User Friendly WordPress Application Form Builder and Manager =
@@ -107,6 +107,14 @@ No. However if you use our [pro add ons](https://wpreloaded.com/shop/), then tho
 Recaptcha integration for secure form submission.
 Required field mark in the received application data.
 Different layout options e.g. grid layout, list layout, sidebar filter, popup form, etc.
+
+
+= 2.5.8 =
+Fixed: Set admin the default email recipient.
+
+= 2.5.7 =
+Fixed: Empty recipients email option in settings.
+Fixed: Mail header HTML content type.
 
 = 2.5.6 =
 Fixed: Paragraph field line break issues.
@@ -415,6 +423,9 @@ Fixed: Paragraph field text added in the received application & print format.
 * Plugin launched.
 
 == Upgrade Notice ==
+= 2.5.7 =
+ Critical updates. upgrade immediately.
+
 = 2.5.6 =
  Security patches and important updates, upgrade immediately.
 

@@ -286,7 +286,7 @@ class Applyonline_Activator {
 
             update_option('aol_progress_bar_color', array('foreground' => '#222222', 'background' => '#dddddd', 'counter' => '#888888'));
             if(!get_option('aol_form_templates')) update_option('aol_form_templates', $templates);
-            if(!get_option('aol_recipients_emails')) update_option('aol_recipients_emails', NULL);
+            if(!get_option('aol_recipients_emails')) update_option('aol_recipients_emails', get_option('admin_email'));
             if(!get_option('aol_ad_author_notification')) update_option('aol_ad_author_notification', 1);
             if(!get_option('aol_allowed_file_types')) update_option('aol_allowed_file_types', 'jpg,jpeg,png,doc,docx,pdf,rtf,odt,txt');
             if(!get_option('aol_slug')) update_option('aol_slug', 'ads');

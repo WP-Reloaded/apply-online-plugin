@@ -449,7 +449,7 @@ function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 
                     $checked = NULL;
                     if(empty($value) and ($i == 0 and $selection === '1' )) $checked = 'checked' ;
                     elseif($option == $value) $checked = 'checked';
-                    $form_output .= '<span><input type="'.$type.'" name="'.$prepend.$field_key.'" class="aol-radio '.$field_key.' " value="'.$key.'" '.$checked.' > '.sanitize_text_field($option) .' &nbsp; &nbsp; </span>';
+                    $form_output .= '<label><input type="'.$type.'" name="'.$prepend.$field_key.'" class="aol-radio '.$field_key.' " value="'.$key.'" '.$checked.' > '.sanitize_text_field($option) .' &nbsp; &nbsp; </label>';
                     $i++;
                 }
                 $form_output .= '</div>'.$wrapper_end;
@@ -461,7 +461,7 @@ function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 
                 foreach ($field['options'] as $key => $option) {
                     $checked = NULL;
                     if(!empty($value) AND in_array($option, $value)) $checked = 'checked';
-                    $form_output .= '<span><input type="'.$type.'" name="'.$prepend.$field_key.'[]" class="aol-checkbox '.$field_key.' " value="'.$key.'" '.$checked.'> '.sanitize_text_field($option) .' &nbsp; &nbsp; </span>';
+                    $form_output .= '<label><input type="'.$type.'" name="'.$prepend.$field_key.'[]" class="aol-checkbox '.$field_key.' " value="'.$key.'" '.$checked.'> '.sanitize_text_field($option) .' &nbsp; &nbsp; </label>';
                     $i++;
                 }
                 $form_output .= '</div>'.$wrapper_end;
@@ -880,4 +880,7 @@ function is_aol_admin_screen(){
 function aol_sanitize_text_field($str, $strict = FALSE, $allowed = NULL){
     $str = sanitize_text_field($str);
     preg_replace('[^a-z0-9\s]/i', "", $str);
+}
+function aol_test(){
+    echo 'Alhamdulillah, this is working';
 }
