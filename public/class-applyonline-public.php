@@ -223,11 +223,15 @@ class SinglePostTemplate{
             //If closing date has passed away.
             if( !empty($date) AND $date < time() )
                 return '<span class="alert alert-warning">'. get_option_fixed('aol_application_close_message', __('We are no longer accepting applications for this ad.', 'ApplyOnline')).'</span>';
+                $css_pattern = '/^#([0-9A-Fa-f]{3}){1,2}$/';
+                $css_bg = preg_match($css_pattern, $progress_bar['background']) ? $progress_bar['background'] : NULL;
+                $css_fg = preg_match($css_pattern, $progress_bar['foreground']) ? $progress_bar['foreground'] : NULL;
+                $css_color = preg_match($css_pattern, $progress_bar['counter']) ? $progress_bar['counter'] : NULL;
             ?>
             <style>
-                .aol-progress{background-color: <?php echo sanitize_text_field($progress_bar['background']); ?>}
-                .aol-progress-count{background-color: <?php echo sanitize_text_field($progress_bar['foreground']); ?>}
-                .aol-progress-counter{color: <?php echo sanitize_text_field($progress_bar['counter']); ?>}
+                .aol-progress{background-color: <?php echo $css_bg; ?>}
+                .aol-progress-count{background-color: <?php echo $css_fg; ?>}
+                .aol-progress-counter{color: <?php echo $css_color; ?>}
             </style>
             <form class="aol_app_form aol_app_form_<?php echo (int)$post_id; ?>" name="aol_app_form" id="aol_app_form" enctype="multipart/form-data"  data-toggle="validator" action="#aol_app_form">
                 <?php
@@ -406,7 +410,7 @@ class Applyonline_Shortcodes{
              */
             //Get list of taxanomies
             $taxes = get_object_taxonomies('aol_'.$a['type']);
-            $args['s'] = $search_keyword = isset($_REQUEST['aol_seach_keyword']) ? sanitize_text_field($_REQUEST['aol_seach_keyword']) : NULL;
+            $args['s'] = $search_keyword = isset($_REQUEST['aol_seach_keyword']) ? $_REQUEST['aol_seach_keyword'] : NULL;
             $args['tax_query'] = array();
             foreach($taxes as $tax){
                 $tax = substr($tax, 7);
@@ -436,10 +440,11 @@ class Applyonline_Shortcodes{
                             //elseif($col_count == 5) 
                             $i = 0;
                             foreach ($filters as $key => $filter){
+                                //Sanitizing Key beforehand.
                                 $key = sanitize_key($key);
                                 //$Fclass = ((isset($_REQUEST['filter']) AND $_REQUEST['filter']) == 'aol_ad_'. $key) ? 'selected' : NULL;
-                                echo '<div class="aol-md-'.$col_count.'">';
-                                    echo '<select name="'.esc_attr($key).'" class="aol-filter-select form-control"><option value="">'. sprintf(_x('%s - All', 'Filter Dropdown', 'ApplyOnline'), sanitize_text_field( __($filter['plural'], 'ApplyOnline') ) ).'</option>';
+                                echo '<div class="aol-md-'.(int)$col_count.'">';
+                                    echo '<select name="'.esc_attr($key).'" class="aol-filter-select form-control"><option value="">'. sprintf(__('%s - All', 'Filter Dropdown', 'ApplyOnline'), esc_html__($filter['plural'], 'ApplyOnline') ).'</option>';
                                     $args = array(
                                         'taxonomy' => 'aol_ad_'. $key,
                                         'hide_empty' => true,
@@ -455,7 +460,7 @@ class Applyonline_Shortcodes{
                             }
                             echo '</div>'; //Ended 1st row
                         echo '<div class="form-group">'; //2nd row started
-                        echo '<div class="aol-md-10"><input type="text" name="aol_seach_keyword" class="form-control" placeholder="'.__('Search Keyword', 'ApplyOnline').'" value="'.$search_keyword.'"></div>';
+                        echo '<div class="aol-md-10"><input type="text" name="aol_seach_keyword" class="form-control" placeholder="'.__('Search Keyword', 'ApplyOnline').'" value="'. esc_attr($search_keyword).'"></div>';
                         echo '<div class="aol-md-2"><button class="fusion-button button btn btn-info btn-block aol-filter-button">'.__('Filter', 'ApplyOnline').'</button></div>';
                         echo '</div></form>'; //2nd row closed, form closed 
                     echo '</div>'; //Ended Well
@@ -470,7 +475,7 @@ class Applyonline_Shortcodes{
                     /* Getting Post Status*/
                     $timestamp = (int)get_post_meta($post->ID, '_aol_ad_closing_date', true);
                     $timestamp = apply_filters('aol_ad_closing_date', $timestamp, $post);
-                    if( $timestamp == 0 OR $timestamp > time() ) $status = 'open';
+                    if( $timestamp === 0 OR $timestamp > time() ) $status = 'open';
                     else $status = 'closed';
                     /* END Getting Post Status*/
                     
@@ -770,14 +775,17 @@ class Applyonline_Shortcodes{
             return $errors;
         }
                         
-        public function aol_process_app_form(){
-            $nonce = $_POST['wp_nonce'];
-            if(!wp_verify_nonce($nonce, 'the_best_aol_ad_security_nonce') and (int)get_option('aol_nonce_is_active', 1) == 1){
+        /**
+         * The function is responsible to process application form received from the front-end. 
+         */
+        public function aol_process_app_form( $form_data = NULL ){
+            if( empty($form_data) ) $form_data = $_POST;
+            $nonce = $form_data['wp_nonce'];
+            if( !wp_verify_nonce($nonce, 'the_best_aol_ad_security_nonce') /*and (int)get_option('aol_nonce_is_active', 1) == 1*/ ){
                 header( "Content-Type: application/json" );
-                echo json_encode( array( 'success' => false, 'error' => __( 'Session Expired, please refresh this page and try again', 'ApplyOnline' ) ));
+                echo json_encode( array( 'success' => false, 'error' => __( 'Session Expired, please refresh this page and try again. If problem presists, please report this issue through Contact Us page. Thanks', 'ApplyOnline' ) ));
                 exit;
             }
-
             $app_field = $app_data = array();
             /*Initializing Variables*/
             $errors = new WP_Error();
@@ -785,18 +793,20 @@ class Applyonline_Shortcodes{
             
             //Check for required fields
             //Get parent ad value for which the application is being submitted.
-            $adid = (int)$_POST['ad_id'];
-            $form_fields_raw = get_post_meta($adid);
+            $ad_id = (int)$form_data['ad_id'];
+            $form_fields_raw = get_post_meta($ad_id);
+
+            //Remove unnecessary array elements from the parent ad array.
             foreach($form_fields_raw as $key => $val):
                 $key = sanitize_key($key);
-                if(substr($key, 0, 9) != '_aol_app_'){
+                if( substr($key, 0, 9) != '_aol_app_' ){
                     unset($form_fields_raw[$key]);
                 } else{
-                    $form_fields_raw[$key] = apply_filters('aol_form_field_before_validation', maybe_unserialize($val[0]), $key, $val, $_POST[$key]);
+                    $form_fields_raw[$key] =  isset( $form_data[$key] ) ? apply_filters('aol_form_field_before_validation', maybe_unserialize($val[0]), $key, $val, $form_data[$key]) : NULL;
                 }
             endforeach;
 
-            $form = apply_filters('aol_form_for_app_validation', $form_fields_raw, $_POST, $_FILES);
+            $form = apply_filters('aol_form_for_app_validation', $form_fields_raw, $form_data, $_FILES);
             foreach($form as $key => $val):
                 $key = sanitize_key($key);
 
@@ -808,7 +818,7 @@ class Applyonline_Shortcodes{
 
                     //eMail validation.
                     if($val['type'] == 'email'){
-                        if(!empty($_POST[$key]) and is_email($_POST[$key])==FALSE) $errors->add('email', sprintf(__('%s is invalid.', 'ApplyOnline'), '"'.$val['label'].'"'));
+                        if(!empty($form_data[$key]) and is_email($form_data[$key])==FALSE) $errors->add('email', sprintf(__('%s is invalid.', 'ApplyOnline'), '"'.$val['label'].'"'));
                     }
 
                     //File validation & verification.
@@ -819,20 +829,20 @@ class Applyonline_Shortcodes{
 
                     //chek required fields for non File Fields.
                     if( isset($val['required']) AND (int)$val['required'] == 1 and $val['type'] != 'file'){
-                        $_POST[$key] = is_array($_POST[$key]) ? array_map('sanitize_text_field', $_POST[$key]) : sanitize_textarea_field($_POST[$key]);
-                        if(empty($_POST[$key])) $errors->add('required', sprintf (__('%s is required.', 'ApplyOnline'), '"'.$val['label'].'"') );
+                        $form_data[$key] = is_array($form_data[$key]) ? array_map('sanitize_text_field', $form_data[$key]) : sanitize_textarea_field($form_data[$key]);
+                        if(empty($form_data[$key])) $errors->add('required', sprintf (__('%s is required.', 'ApplyOnline'), '"'.$val['label'].'"') );
                     }                    
             endforeach;
             //Deprictated since 2.2.2. Will be deleted soon. Use aol_app_final_fields hook instead
-            $app_data = apply_filters('aol_app_fields_to_process', $app_data, $_POST);
-            $parent = $app_data['ad_id'] = (int)$_POST['ad_id'];
-            
-            $errors = apply_filters('aol_form_errors', $errors, $_POST, $_FILES); //You can hook 3rd party form errors here.
-            //$errors = apply_filters('aol_form_errors', $errors, $_POST, $_FILES);
-            
+            $app_data = apply_filters('aol_app_fields_to_process', $app_data, $form_data);
+            $parent_id = $app_data['ad_id'] = (int)$form_data['ad_id'];
+
+            //You can hook 3rd party form errors here.
+            $errors = apply_filters('aol_form_errors', $errors, $form_data, $_FILES);
+
             $error_messages = $errors->get_error_messages();
             //$error_messages = array_merge($error_messages, $upload_error_messages);
-            
+
             if(!empty($error_messages )){
                 $error_html = implode('<br />', $error_messages);
                 $response = json_encode( array( 'success' => false, 'error' => $error_html ));    //generate the error response.
@@ -841,21 +851,21 @@ class Applyonline_Shortcodes{
                 header( "Content-Type: application/json" );
                 die($response);
                 exit;
-            } 
+            }
             //End - Check for required fields
             $applicant_emails = array();
             foreach($form as $key => $val){
-                if( !isset($_POST[$key]) ) continue;
+                if( !isset($form_data[$key]) ) continue;
                 $app_field = maybe_unserialize($val);
                 
                 //normalizing path & sanitizing data before input.
-                $val = is_array($_POST[$key]) ? array_map('sanitize_text_field', $_POST[$key]) : sanitize_textarea_field($_POST[$key]);
+                $val = is_array($form_data[$key]) ? array_map('sanitize_text_field', $form_data[$key]) : sanitize_textarea_field($form_data[$key]);
                 $key = sanitize_key($key);
                 
                 //Populating array with sanitized keys & values.
                 $app_data[$key] = $val;
 
-                /*Set Receipents for email alerts*/
+                /*get applicant's email for email notification*/
                 if( $app_field['type'] == 'email' AND isset($app_field['notify']) AND $app_field['notify']==1 ){
                     $applicant_emails[] = $val;
                 }
@@ -868,19 +878,19 @@ class Applyonline_Shortcodes{
                 }
             } 
 
-            $app_data = apply_filters('aol_app_final_fields', $app_data, $_POST);
+            $app_data = apply_filters('aol_app_final_fields', $app_data, $form_data);
             
             $args=  array(
                 'post_type'     =>'aol_application',
                 'post_content'  =>'',
-                'post_parent'   => $parent,
-                'post_title'    =>get_the_title($parent),
+                'post_parent'   => $parent_id,
+                'post_title'    =>get_the_title($parent_id),
                 'post_status'   =>'publish',
                 'tax_input'     => array('aol_application_status' => 'pending'),
                 'meta_input'    => NULL,
             );
-            do_action('aol_before_app_save', $app_data, $_POST); //Depricated Since 2.5
-            do_action('aol_before_save_app', $app_data, $_POST);
+            do_action('aol_before_app_save', $app_data, $form_data); //Depricated Since 2.5
+            do_action('aol_before_save_app', $app_data, $form_data);
             
             $args = apply_filters('aol_insert_app_data', $args, $app_data);
             
@@ -891,12 +901,12 @@ class Applyonline_Shortcodes{
                     $args['meta_input'][$key] = $val;
                 endforeach;
 
-                $post = get_post($parent);
-                update_post_meta($pid, 'aol_ad_id', $post->ID);
-                update_post_meta($pid, 'aol_ad_author', $post->post_author);
+                $parent = get_post($parent_id);
+                update_post_meta($pid, 'aol_ad_id', $parent->ID);
+                update_post_meta($pid, 'aol_ad_author', $parent->post_author);
                 
                 /* Saving Ad Transcript Since v2.2 */
-                $ad_transcript = get_post_meta($post->ID, '', TRUE);
+                $ad_transcript = get_post_meta($parent->ID, '', TRUE);
                 foreach($ad_transcript as $key => $val){
                     if(substr($key, 0, 4) != '_aol') unset($ad_transcript[$key]);
                     else $ad_transcript[$key] = $val[0];
@@ -908,15 +918,15 @@ class Applyonline_Shortcodes{
 
                 do_action('aol_after_app_save', $pid, $app_data); //Depricated since 2.5
                 do_action('aol_after_save_app', $pid, $app_data);
-                //do_action('aol_after_app_save', $pid, $_POST);
+                //do_action('aol_after_app_save', $pid, $form_data);
                 
                 //Email notification Since v2.2 
                 if( $args['post_status'] != 'draft'){
-                    $recipients = sanitize_textarea_field( get_post_meta($parent, '_recipients_emails', true) );
-                    if( !empty($recipients) ) $recipients = explode("\n", str_replace(array("\r", " "),"", $recipients));
                     $this->applicant_email_notification( $pid, $args, $applicant_emails );
 
-                    $this->admin_email_notification($recipients, $pid, $args, $this->uploads);                    
+                    $recipients = sanitize_textarea_field( get_post_meta($parent_id, '_recipients_emails', true) );
+                    if( !empty($recipients) ) $recipients = explode("\n", str_replace(array("\r", " "),"", $recipients));
+                    $this->admin_email_notification($recipients, $pid, $args, $this->uploads, $parent->post_author);                    
                 }
 
                 $divert_page = get_option('aol_thankyou_page');
@@ -982,39 +992,40 @@ class Applyonline_Shortcodes{
             return true;
         }
 
-        function admin_email_notification($emails, $post_id, $post, $uploads ){
+        function admin_email_notification($emails, $post_id, $post, $uploads, $post_author ){
             $post = (object)$post;
 
             //send email alert.
             $post_url = admin_url("post.php?post=$post_id&action=edit");
 
-            if( empty($emails) ){
-                $admin_email = get_option('admin_email');
-                
+            if( empty($emails) ){                
                 //Get global recipients
-                $emails_raw = get_option('aol_recipients_emails', $admin_email);
+                $emails_string = sanitize_textarea_field( get_option_fixed('aol_recipients_emails', get_option('admin_email')) );
                 
-                //$emails_raw may contain empty string. 
-                if( empty($emails_raw) ) $emails_raw = $admin_email;
-                $emails = explode("\n", str_replace(array("\r", " "),"", $emails_raw));                
+                $emails = explode("\n", str_replace(array("\r", " "),"", $emails_string) );
             }
+
+            $emails = array_map('sanitize_email', $emails);
+            
             $author_notification = get_option('aol_ad_author_notification');
-            if($author_notification){
-                $ad = get_post($post->post_parent);
-                $author = get_userdata($ad->post_author);
+            if( $author_notification ){
+                $author = get_userdata( $post_author );
                 if( !in_array($author->user_email, $emails) ) array_push($emails, $author->user_email);
             }
-            
+            /*
             // Get the site domain and get rid of www.
             $sitename = strtolower( $_SERVER['SERVER_NAME'] );
             if ( substr( $sitename, 0, 4 ) == 'www.' ) {
                 $sitename = substr( $sitename, 4 );
             }
             $from_email = 'do-not-reply@' . $sitename;
-
-            $subject = sprintf(__('New application for %s', 'ApplyOnline'), wp_specialchars_decode($post->post_title));
-            $subject = str_replace( array('[id]' ,'[title]'), array($post->ID ,$post->post_title), get_option('aol_admin_mail_subject', 'New application [id] for [title]') );
             $headers = array('Content-Type: text/html', "From: ". wp_specialchars_decode(get_bloginfo('name'))." <$from_email>");
+             * 
+             */
+
+            //$subject = sprintf(__('New application for %s', 'ApplyOnline'), sanitize_text_field($post->post_title));
+            $subject = str_replace( array('[id]' ,'[title]'), array($post->ID ,$post->post_title), get_option('aol_admin_mail_subject', 'New application [id] for [title]') );
+            $headers = aol_from_mail_header();
 
             //@todo need a filter hook to modify content of this email message and to add a from field in the message.
             $message=   '<p>'.__('Hi,', 'ApplyOnline').'</p>'
@@ -1031,7 +1042,7 @@ class Applyonline_Shortcodes{
             $message = apply_filters('aol_email_notification', $message, $post_id); //Deprecated.
             $aol_email = apply_filters(
                         'aol_email', 
-                        array( 'to' => $emails, 'subject' => $subject, 'message' => nl2br($message), 'headers' => $headers, 'attachments' => array() ), 
+                        array( 'to' => $emails, 'subject' => $subject, 'message' => $message, 'headers' => $headers, 'attachments' => array() ), 
                         $post_id,
                         $post,
                         $uploads
@@ -1044,50 +1055,5 @@ class Applyonline_Shortcodes{
             do_action('aol_email_after', $emails, $subject, nl2br($message), $headers);
 
             return true;
-        }
-        
-        private function sanitize_post_array(&$value,$key){
-            $value = sanitize_text_field($value);
-        }
-        
-        public function save_setting_template(){
-            // Check the user's permissions.
-
-            if ( ! current_user_can( 'edit_page', $post_id ) ) {
-                return;
-
-            } else {
-
-                    if ( ! current_user_can( 'edit_post', $post_id ) ) {
-                            return;
-                    }
-            }
-
-            /* OK, it's safe for us to save the data now. */
-
-            //Delete fields.
-            $old_keys = "SELECT $wpdb->options WHERE option_name like '_aol_app_%'";
-            $new_keys = array_keys($_POST);
-            $removed_keys = array_diff($old_keys, $new_keys); //List of removed meta keys.
-            foreach($removed_keys as $key => $val):
-                if(substr($val, 0, 3) == '_ad') delete_post_meta($post_id, $val); //Remove meta from the db.
-            endforeach;
-
-            array_walk($_POST[$key], array($this, 'sanitize_post_array')); //Sanitizing each element of the array            
-            // Add new value.
-            foreach ($_POST as $key => $val):
-                // Make sure that it is set.
-                if ( substr($key, 0, 13)=='_aol_feature_' and isset( $val ) ) {
-                    //Sanitize user input.
-                    update_post_meta( $post_id, sanitize_key($key),  sanitize_text_field( $val )); // Add new value.
-                }
-
-                // Make sure that it is set.
-                elseif ( substr($key, 0, 9)=='_aol_app_' and isset( $val ) ) {
-                    $my_data = serialize($val); 
-                    update_post_meta( $post_id, sanitize_key($key),  $my_data); // Add new value.
-                }
-                    //Update the meta field in the database.
-            endforeach;
         }
 }
