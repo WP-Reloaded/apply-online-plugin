@@ -225,18 +225,31 @@ class Applyonline_Admin{
         }
 
         public function admin_notice(){
-            if( is_plugin_active('applyonline-statuses/applyonline-statuses.php') ) echo '<div class="notice notice-warning is-dismissible"><p>'.sprintf(__('%sApplyOnline - Statuses%s extension has been obsoleted after the release of core plugin ApplyOnline 2.1. %sClick Here%s to uninstall this extension.', 'ApplyOnline'), '<strong>', '</strong>', '<a href="'.admin_url().'plugins.php">', '</a>').'</p></div>';
-            if( is_plugin_active('applyonline-filters/applyonline-filters.php') ) echo '<div class="notice notice-warning is-dismissible"><p>'.sprintf(__('%sApplyOnline - Filters%s extension has been obsoleted after the release of core plugin ApplyOnline 2.1. %sClick Here%s to uninstall this extension.', 'ApplyOnline'), '<strong>', '</strong>', '<a href="'.admin_url().'plugins.php">', '</a>').'</p></div>';
+            if( is_plugin_active('applyonline-statuses/applyonline-statuses.php') ) echo '<div class="notice notice-warning"><p>'.sprintf(__('%sApplyOnline - Statuses%s extension has been depricated since ApplyOnline 2.1. %sClick Here%s to uninstall this extension.', 'ApplyOnline'), '<strong>', '</strong>', '<a href="'.admin_url().'plugins.php">', '</a>').'</p></div>';
+            if( is_plugin_active('applyonline-filters/applyonline-filters.php') ) echo '<div class="notice notice-warning"><p>'.sprintf(__('%sApplyOnline - Filters%s extension has been depricated since ApplyOnline 2.1. %sClick Here%s to uninstall this extension.', 'ApplyOnline'), '<strong>', '</strong>', '<a href="'.admin_url().'plugins.php">', '</a>').'</p></div>';
 
+            //Sticky Note unless option is saved.
+            $path = get_option('aol_upload_path');
+            if( empty($path) AND current_user_can('manage_options')){
+                ?>
+                <div class="notice notice-error aol-notice">
+                    <p>
+                        <?php echo sprintf(__( "%sApply Online%s attachments are public. Set a private path to avoid user's senseitive data breach.", 'ApplyOnline' ), '<strong>', '</strong>'); ?> 
+                        <?php echo sprintf(__('%sClick Here%s for settings.', 'ApplyOnline'), '<a href="'.  get_admin_url().'?page=aol-settings">', '</a>'); ?>
+                    </p>
+                </div>
+                <?php
+            }
+            
             //$notices = get_option('aol_dismissed_notices', array()); Obselete in favor of aol_admin_notices since 2.5.1
             $notices = get_option('aol_admin_notices', array('aol_fresh_install'));
             if( empty($notices) OR !current_user_can('manage_options')) return;
             //__( "%sApply Online%s - It's good to %scheck things%s before a long drive.", 'ApplyOnline' )
             ?>
-                <div class="notice notice-warning is-dismissible aol">
+                <div class="notice notice-warning is-dismissible aol-notice">
                     <p>
                         <?php echo sprintf(__( "%sApply Online%s plugin is just installed.", 'ApplyOnline' ), '<strong>', '</strong>'); ?> 
-                        <?php echo sprintf(__('%sClick Here%s for settings or dismiss this notice.', 'ApplyOnline'), '<a href="'.  get_admin_url().'?page=aol-settings">', '</a>'); ?>
+                        <?php echo sprintf(__('%sClick Here%s for settings.', 'ApplyOnline'), '<a href="'.  get_admin_url().'?page=aol-settings">', '</a>'); ?>
                     </p>
                 </div>
             <?php
@@ -1451,7 +1464,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                 'general' => array(
                     'id'        => 'general',
                     'name'      => __( 'General' ,'ApplyOnline' ),
-                    'desc'      => __( 'Global settings for the plugin. Some options can be overwritten from the individual ad editor screen.', 'ApplyOnline' ),
+                    'desc'      => __( 'Global settings for the plugin. Some options can be overwritten from the ad editor screen.', 'ApplyOnline' ),
                     'href'      => null,
                     'classes'   => ' active',
                     'callback'  => array($this, 'tab_general')
@@ -1694,6 +1707,13 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                     </tr>
                     -->
                     <tr>
+                        <th><label for="aol_upload_path"><?php _e('File upload path', 'ApplyOnline'); ?></label></th>
+                        <td>
+                            <input type="text" id="aol_upload_path" class="regular-text" placeholder="<?php echo $aol_upload_path; ?>" name="aol_upload_path" value="<?php echo esc_attr(get_option('aol_upload_path')); ?>"> <?php aol_empty_option_alert('aol_upload_path', $aol_upload_path); ?>
+                            <p class="description"><?php _e("By default attachments are saved in the WordPress upload directory which is public. Set a private path before the root directory of your website, in most cases before the public_html directory. Leave it empty for default upload directory (discouraged).", 'ApplyOnline'); ?> </p>
+                        </td>
+                    </tr>
+                    <tr>
                         <th><label for="aol_recipients_emails"><?php _e('List of e-mails to get application alerts', 'ApplyOnline'); ?></label></th>
                         <td>
                             <textarea id="aol_recipients_emails" class="small-text code" name="aol_recipients_emails" cols="50" rows="5"><?php echo sanitize_textarea_field(get_option_fixed('aol_recipients_emails') ); ?></textarea>
@@ -1832,13 +1852,6 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                         <th><label for="aol_shortcode_readmore"><?php _e('Read More button text', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input type="text" id="aol_shortcode_readmore" class="regular-text" name="aol_shortcode_readmore" value="<?php echo esc_attr(get_option_fixed('aol_shortcode_readmore')); ?>">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label for="aol_upload_path"><?php _e('File upload path', 'ApplyOnline'); ?></label></th>
-                        <td>
-                            <input type="text" id="aol_upload_path" class="regular-text" placeholder="<?php echo $aol_upload_path; ?>" name="aol_upload_path" value="<?php echo esc_attr(get_option('aol_upload_path')); ?>"> <?php aol_empty_option_alert('aol_upload_path', $aol_upload_path); ?>
-                            <p class="description"><?php _e("By default application attachments are saved in WordPress upload folder which is public. So, change your attachments path, preferably outside your website root, to make it private. In most cases any path before public_html directory is good.", 'ApplyOnline'); ?> <?php _e('(Delete and save settings to restore default path.)', 'ApplyOnline'); ?> </p>
                         </td>
                     </tr>
                     <tr>

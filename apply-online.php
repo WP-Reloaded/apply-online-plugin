@@ -11,9 +11,9 @@
  * Plugin Name:       ApplyOnline
  * Plugin URI:        https://wpreloaded.com
  * Description:       Online Application Form Builder and Manager.
- * Version:           2.5.7
- * Author:            Spider Teams
- * Author URI:        https://spiderteams.com
+ * Version:           2.6.1
+ * Author:            Farhan Noor
+ * Author URI:        https://linkedin.com/in/farhan-noor
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       ApplyOnline
@@ -24,7 +24,7 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-define( 'APPLYONLINE_VERSION', '2.5.7' );
+define( 'APPLYONLINE_VERSION', '2.6.1' );
 
 require_once( 'class-addons-update.php' );
 /**

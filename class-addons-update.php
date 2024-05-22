@@ -66,8 +66,7 @@ class AOL_BootStrap
 	 * @param string $update_path
 	 * @param string $plugin_slug
 	 */
-	public function __construct( $current_version, $update_path, $plugin_slug, $license_user = '', $license_key = '' )
-	{
+	public function __construct( $current_version, $update_path, $plugin_slug, $license_user = '', $license_key = '' ){
 		// Set the class public variables
 		$this->current_version = $current_version;
 		$this->update_path = $update_path;
@@ -94,8 +93,7 @@ class AOL_BootStrap
 	 * @param $transient
 	 * @return object $ transient
 	 */
-	public function check_update( $transient )
-	{
+	public function check_update( $transient ){
 		if ( empty( $transient->checked ) ) {
 			return $transient;
 		}
@@ -124,13 +122,11 @@ class AOL_BootStrap
 	 * @param object $arg
 	 * @return bool|object
 	 */
-	public function check_info($obj, $action, $arg)
-	{
-		if (($action=='query_plugins' || $action=='plugin_information') && 
-		    isset($arg->slug) && $arg->slug === $this->slug) {
+	public function check_info($obj, $action, $arg){
+		if ( ($action=='query_plugins' OR $action=='plugin_information') AND isset($arg->slug) AND $arg->slug === $this->slug) {
 			return $this->getRemote('info');
 		}
-		
+
 		return $obj;
 	}
 
@@ -139,8 +135,7 @@ class AOL_BootStrap
 	 * 
 	 * @return string $remote_version
 	 */
-	public function getRemote($action = '')
-	{
+	public function getRemote($action = ''){
 		$params = array(
 			'body' => array(
                         'action'       => $action,
@@ -161,15 +156,3 @@ class AOL_BootStrap
 		return false;
 	}
 }
-/*
-if(!class_exists('wp_autoupdate')):
-    class wp_autoupdate extends AOL_BootStrap{
-        public function __construct($bypass = false)
-        {
-            // call Grandpa's constructor
-            parent::__construct();
-        }
-    }
-endif;
- * 
- */

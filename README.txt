@@ -4,18 +4,18 @@ Donate link: https://wpreloaded.com/shop/
 Tags: Job Board, Form Builder, Contact Form, payment form, Job Manager
 Requires at least: 5.0
 Tested up to: 6.5
-Stable tag: 2.5.7
+Stable tag: 2.6.1
 Requires PHP: 5.2.4
 License: GPLv2 or later
 
 Powerful & intuitive plugin to post ads and start receiving applications online.
 
 == Description ==
-= Job Boards, Course Registrations, School Admissions, and more, all in one place.  =
-Focused on stability and simplicity, with this plugin you can create a job board, advertisement board or open online registration of courses & classes and start receiving applications from your website.
+= Discover a centralized platform for job board, course registration, school admissions, and more.  =
+Focused on stability and simplicity, with this plugin you can create a job board, advertisement board or open online registration of courses & classes and start receiving applications from your website out of the box.
 
 = The Most User Friendly WordPress Application Form Builder and Manager =
-Create stunning application forms using drag and drop Application Form Builder and publish job ads, admission ads, classes ads and manage received applications like a boss. It's not only a Form Builder, but a complete hiring & registration solution. [Click Here](https://wpreloaded.com/plugins/apply-online "World's #1 Online Application Form Builder & Manager") for a live demo.
+Create stunning application forms using drag and drop form builder and publish job ads, admission ads, classes ads and manage received applications like a boss. It's not only a Form Builder, but a complete hiring & registration solution. [Click Here](https://wpreloaded.com/plugins/apply-online "World's #1 Online Application Form Builder & Manager") for a live demo.
 
 = No Designing or Development Skills Required =
 Not a tech savvy? ApplyOnline plugin is the solution. Its intuitive drag and drop form builder is made for you, so you may not need a developer and/or designer to create an Application Form Management System for you. Very light on your website without creating any mess and beautifully integrates without worrying for design issues.
@@ -100,7 +100,7 @@ Default shortcode with all attributes is [aol ads="1,2,3" excerpt="no" type="ad"
 Yes, please check plugin reference at [WP Reloaded](https://wpreloaded.com/plugins/apply-online/reference)
 
 = Does this plugin use remote services? =
-No. However if you use our [pro add ons](https://wpreloaded.com/shop/), then those will upgrade from our servers. For more information, please read our [Documentation](https://wpreloaded.com/plugins/apply-online/reference/) and [Privacy Policy](https://wpreloaded.com/shop/terms-and-conditions/)
+No. However if you use our [premium add-ons](https://wpreloaded.com/shop/) they will upgrade from our servers. For more information, please read our [Documentation](https://wpreloaded.com/plugins/apply-online/reference/) and [Privacy Policy](https://wpreloaded.com/shop/terms-and-conditions/)
 
 == Changelog ==
 = Upcoming =
@@ -108,9 +108,14 @@ Recaptcha integration for secure form submission.
 Required field mark in the received application data.
 Different layout options e.g. grid layout, list layout, sidebar filter, popup form, etc.
 
+= 2.6.1 =
+Fixed: Public file upload path admin notice.
 
-= 2.5.8 =
+= 2.6 =
+New: Admin email subject option in the settings.
+New: Option to use gladd custom size limit for attachment fields in the form builder.
 Fixed: Set admin the default email recipient.
+Fixed: Settings API callback function.
 
 = 2.5.7 =
 Fixed: Empty recipients email option in settings.
@@ -119,13 +124,11 @@ Fixed: Mail header HTML content type.
 = 2.5.6 =
 Fixed: Paragraph field line break issues.
 Fixed: Checkbox & Radio button fields' styling issues.
-
-= 2.5.5 =
-New: Admin email subject option in the plugin's setting.
-New: Custom size limit for attachment fields in the form builder.
-Fixed: PHP warning in class-applyonline.php file.
 Fixed: Security patch for PSID-149593e79c87 & CVE-2023-45756.
 Fixed: Security patch for PSID-e59ab80d07f4 & CVE-2023-24391.
+
+= 2.5.5 =
+Fixed: PHP warning in class-applyonline.php file.
 
 = 2.5.4.2 =
 Fixed: PHP warning in class-applyonline.php file.
@@ -423,6 +426,9 @@ Fixed: Paragraph field text added in the received application & print format.
 * Plugin launched.
 
 == Upgrade Notice ==
+= 2.6.1 =
+ Critical updates. upgrade immediately.
+
 = 2.5.7 =
  Critical updates. upgrade immediately.
 
