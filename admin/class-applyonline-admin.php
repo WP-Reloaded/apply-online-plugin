@@ -57,9 +57,7 @@ class Applyonline_Admin{
                 
                 //Application Print
                 add_action('wp_ajax_application_table_filter_result', array($this, 'application_table_filter_result'));
-                                
-                $this->hooks_to_search_in_post_metas();
-                
+                                                
                 new ApplyOnline_Ad_Options();
                                 
                 new Applyonline_Form_Builder();
@@ -118,9 +116,9 @@ class Applyonline_Admin{
 		 * class.
 		 */
                 $localize = array();
-                $localize['app_submission_message'] = __('Form has been submitted successfully. If required, we will get back to you shortly!', 'ApplyOnline'); 
-                $localize['app_closed_alert'] = __('We are no longer accepting applications for this ad!', 'ApplyOnline'); 
-                $localize['aol_required_fields_notice'] = __('Fields with (*)  are compulsory.', 'ApplyOnline');
+                $localize['app_submission_message'] = esc_html__('Form has been submitted successfully. If required, we will get back to you shortly!', 'ApplyOnline'); 
+                $localize['app_closed_alert'] = esc_html__('We are no longer accepting applications for this ad!', 'ApplyOnline'); 
+                $localize['aol_required_fields_notice'] = esc_html__('Fields with (*)  are compulsory.', 'ApplyOnline');
                 $localize['admin_url'] = admin_url();
                 $localize['aol_url'] = plugins_url( 'apply-online/' );
                 wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/applyonline-admin.js', array( 'jquery', 'jquery-ui-sortable', 'jquery-ui-autocomplete' ), $this->version, TRUE );
@@ -157,7 +155,7 @@ class Applyonline_Admin{
             $statuses = aol_app_statuses();
             foreach ($statuses as $key => $status){
                 (isset($_GET['aol_application_status']) AND $_GET['aol_application_status'] == $key)? $class = 'current' : $class = NULL;
-                $views[$status] = '<a class="'.$class.'" href="'.  admin_url("edit.php?post_type=aol_application&aol_application_status=$key").'">'.__($status, 'ApplyOnline').'</a>';        
+                $views[$status] = '<a class="'.$class.'" href="'.  admin_url("edit.php?post_type=aol_application&aol_application_status=$key").'">'.esc_html__($status, 'ApplyOnline').'</a>';        
             }
             return $views;
         }
@@ -224,9 +222,22 @@ class Applyonline_Admin{
             wp_send_json($ads_arr);
         }
 
-        public function admin_notice(){
-            if( is_plugin_active('applyonline-statuses/applyonline-statuses.php') ) echo '<div class="notice notice-warning"><p>'.sprintf(__('%sApplyOnline - Statuses%s extension has been depricated since ApplyOnline 2.1. %sClick Here%s to uninstall this extension.', 'ApplyOnline'), '<strong>', '</strong>', '<a href="'.admin_url().'plugins.php">', '</a>').'</p></div>';
-            if( is_plugin_active('applyonline-filters/applyonline-filters.php') ) echo '<div class="notice notice-warning"><p>'.sprintf(__('%sApplyOnline - Filters%s extension has been depricated since ApplyOnline 2.1. %sClick Here%s to uninstall this extension.', 'ApplyOnline'), '<strong>', '</strong>', '<a href="'.admin_url().'plugins.php">', '</a>').'</p></div>';
+        public function admin_notice(){            
+            //$notices = get_option('aol_dismissed_notices', array()); Obselete in favor of aol_admin_notices since 2.5.1
+            $notices = get_option('aol_admin_notices', array('aol_fresh_install'));
+            if( empty($notices) OR !current_user_can('manage_options')) return;
+            //esc_html__( "%sApply Online%s - It's good to %scheck things%s before a long drive.", 'ApplyOnline' )
+            ?>
+                <div class="notice notice-info is-dismissible aol-notice">
+                    <p>
+                        <?php echo sprintf(esc_html__( "%sApply Online%s plugin is just installed.", 'ApplyOnline' ), '<strong>', '</strong>'); ?> 
+                        <?php echo sprintf(esc_html__('%sClick Here%s for settings.', 'ApplyOnline'), '<a href="'.  get_admin_url().'?page=aol-settings">', '</a>'); ?>
+                    </p>
+                </div>
+            <?php
+            
+            if( is_plugin_active('applyonline-statuses/applyonline-statuses.php') ) echo '<div class="notice notice-warning"><p>'.sprintf(esc_html__('%sApplyOnline - Statuses%s extension has been depricated since ApplyOnline 2.1. %sClick Here%s to uninstall this extension.', 'ApplyOnline'), '<strong>', '</strong>', '<a href="'.admin_url().'plugins.php">', '</a>').'</p></div>';
+            if( is_plugin_active('applyonline-filters/applyonline-filters.php') ) echo '<div class="notice notice-warning"><p>'.sprintf(esc_html__('%sApplyOnline - Filters%s extension has been depricated since ApplyOnline 2.1. %sClick Here%s to uninstall this extension.', 'ApplyOnline'), '<strong>', '</strong>', '<a href="'.admin_url().'plugins.php">', '</a>').'</p></div>';
 
             //Sticky Note unless option is saved.
             $path = get_option('aol_upload_path');
@@ -234,25 +245,12 @@ class Applyonline_Admin{
                 ?>
                 <div class="notice notice-error aol-notice">
                     <p>
-                        <?php echo sprintf(__( "%sApply Online%s attachments are public. Set a private path to avoid user's senseitive data breach.", 'ApplyOnline' ), '<strong>', '</strong>'); ?> 
-                        <?php echo sprintf(__('%sClick Here%s for settings.', 'ApplyOnline'), '<a href="'.  get_admin_url().'?page=aol-settings">', '</a>'); ?>
+                        <?php echo sprintf(esc_html__( "%sApply Online%s attachments are public. Set a private path to avoid user's senseitive data breach.", 'ApplyOnline' ), '<strong>', '</strong>'); ?> 
+                        <?php echo sprintf(esc_html__('%sClick Here%s for settings.', 'ApplyOnline'), '<a href="'.  get_admin_url().'?page=aol-settings#aol_upload_path">', '</a>'); ?>
                     </p>
                 </div>
                 <?php
-            }
-            
-            //$notices = get_option('aol_dismissed_notices', array()); Obselete in favor of aol_admin_notices since 2.5.1
-            $notices = get_option('aol_admin_notices', array('aol_fresh_install'));
-            if( empty($notices) OR !current_user_can('manage_options')) return;
-            //__( "%sApply Online%s - It's good to %scheck things%s before a long drive.", 'ApplyOnline' )
-            ?>
-                <div class="notice notice-warning is-dismissible aol-notice">
-                    <p>
-                        <?php echo sprintf(__( "%sApply Online%s plugin is just installed.", 'ApplyOnline' ), '<strong>', '</strong>'); ?> 
-                        <?php echo sprintf(__('%sClick Here%s for settings.', 'ApplyOnline'), '<a href="'.  get_admin_url().'?page=aol-settings">', '</a>'); ?>
-                    </p>
-                </div>
-            <?php
+            }            
         }
         
         public function admin_dismiss_notice(){
@@ -277,11 +275,6 @@ class Applyonline_Admin{
          * 
          * @since 1.6
         */
-        function hooks_to_search_in_post_metas(){
-           add_filter('posts_join', array($this, 'cf_search_join' ));
-           add_filter( 'posts_where', array($this, 'cf_search_where' ));
-           add_filter( 'posts_distinct', array($this, 'cf_search_distinct' ));
-        }
         
        function cf_search_join( $join ) {
            global $wpdb;
@@ -346,7 +339,7 @@ class Applyonline_Admin{
     
     class ApplyOnline_Ad_Options{
         public function __construct() {
-            add_action( 'add_meta_boxes', array($this, 'add_meta_boxes'),2 );
+            add_action( 'add_meta_boxes', array($this, 'add_meta_boxes'),1 );
         }
             
         function add_meta_boxes(){
@@ -361,7 +354,7 @@ class Applyonline_Admin{
 
             add_meta_box(
                 'aol_ad_options',
-                '<span class="dashicons dashicons-admin-site"></span> '.__('Ad Options', 'ApplyOnline' ),
+                '<span class="dashicons dashicons-admin-site"></span> '.esc_html__('Ad Options', 'ApplyOnline' ),
                 array($this, 'aol_ad_options'),
                 $screens,
                 'advanced',
@@ -387,39 +380,47 @@ class Applyonline_Admin{
                 $time = date_i18n('H:i' ,$timestamp);
                 $closed_class  =  ($timestamp < time()) ? 'closed' : null;
             }
+            $extra_tabs = apply_filters('aol_ad_options_api', array(), $post);
+
             ob_start(); ?>
             <div class="aol-ad-closing aol-settings aol-meta">
                 <div class="nav-tab-wrapper aol-tabs-wrapper">
-                    <a class="aol-tab nav-tab active" data-id="shortcodes"><?php echo __('Shortcodes', 'ApplyOnline'); ?></a>
-                    <a class="aol-tab nav-tab" data-id="expiration"><?php echo __('Expiration', 'ApplyOnline'); ?></a>
-                    <a class="aol-tab nav-tab" data-id="recipients"><?php _e('Email Recipients', 'ApplyOnline'); ?></a>
+                    <a class="aol-tab nav-tab active" data-id="shortcodes"><?php echo esc_html_e('Shortcodes', 'ApplyOnline'); ?></a>
+                    <a class="aol-tab nav-tab" data-id="expiration"><?php echo esc_html_e('Expiration', 'ApplyOnline'); ?></a>
+                    <a class="aol-tab nav-tab" data-id="recipients"><?php esc_html_e('Email Recipients', 'ApplyOnline'); ?></a>
+                    
                 </div>
-                <div id="shortcodes" class="aol-tab-data wrap">
+                <div id="shortcodes" class="aol-tab-data wrap" style="display:block;">
                     <?php do_action('aol_metabox_before', $post); ?>
-                    <p class="description"><?php _e('Use these shortcodes to display this ad or form on a WordPress page. To list all ads on a page, use [aol] shortcode.', 'ApplyOnline'); ?></p>
-                    <p><label for="ad-shortcode"><?php _e('Ad shortcode','ApplyOnline'); ?></label><input id="ad-shortcode" type="text" value="[aol_ad id=<?php $post->ID; ?>]" readonly></p>
-                    <p><label for="form-shortcode"><?php _e('Form shortcode', 'ApplyOnline'); ?></label><input id="form-shortcode" type="text" value="[aol_form id=<?php $post->ID; ?>]" readonly></p>
-                    <p><a rel="permalink" title="<?php _e('View All Applications', 'ApplyOnline'); ?>" href="<?php echo admin_url('edit.php?post_type=aol_application'); ?>&ad=<?php echo (int)$post->ID; ?>"> <?php _e('View All Applications', 'ApplyOnline'); ?></a></p>
+                    <p class="description"><?php esc_html_e('Use these shortcodes to display this ad or form on a WordPress page. To list all ads on a page, use [aol] shortcode.', 'ApplyOnline'); ?></p>
+                    <p><label for="ad-shortcode"><?php esc_html_e('Ad shortcode','ApplyOnline'); ?></label><input id="ad-shortcode" type="text" value="[aol_ad id=<?php $post->ID; ?>]" readonly></p>
+                    <p><label for="form-shortcode"><?php esc_html_e('Form shortcode', 'ApplyOnline'); ?></label><input id="form-shortcode" type="text" value="[aol_form id=<?php $post->ID; ?>]" readonly></p>
+                    <p><a rel="permalink" href="<?php echo admin_url('edit.php?post_type=aol_application'); ?>&ad=<?php echo (int)$post->ID; ?>"> <?php esc_html_e('View All Applications', 'ApplyOnline'); ?></a></p>
                 </div>
                 <div id="expiration" class="aol-tab-data wrap">
-                    <h3><?php _e('Expiration date and time', 'ApplyOnline'); ?></h3>
-                    <p><i><?php _e('Leave empty to never close this ad.', 'ApplyOnline') ?></i></p>
-                    <input type="text" placeholder="<?php _e('Date'); ?>" name="_aol_ad_closing_date" class="datepicker <?php echo $closed_class; ?>" value="<?php echo $date; ?>" />
-                    <input type="time" placeholder="<?php _e('Time in 24hour format', 'ApplyOnline'); ?>" name="_aol_ad_closing_time" class="datetimepicker" value="<?php echo $time; ?>" />
-                    <p><b><?php _e('Format', 'ApplyOnline'); ?>:</b><i> dd-mm-yyyy</i><br/><b><?php _e('Example', 'WordPress'); ?>:</b> <i><?php echo current_time('j-m-Y'); ?></i><br/></p>
-                    <p class="when-expires"><b><?php _e('When Expires', 'ApplyOnline'); ?>:</b><br /> <label for="hide_form" style="display: inline-block"><input type="radio" id="hide_form" name="_aol_ad_close_type" value="form" <?php echo $close_form; ?> /><?php _e('Hide form only', 'ApplyOnline'); ?></label><br />
-                    <label for="hide_ad" style="display: inline-block"><input type="radio" id="hide_ad" name="_aol_ad_close_type" value="ad" <?php echo $close_ad; ?> /><?php _e('Hide ad completely', 'ApplyOnline'); ?></label></p>                
+                    <h3><?php esc_html_e('Expiration date and time', 'ApplyOnline'); ?></h3>
+                    <p><i><?php esc_html_e('Leave empty to never close this ad.', 'ApplyOnline') ?></i></p>
+                    <input type="text" placeholder="<?php esc_attr_e('Date'); ?>" name="_aol_ad_closing_date" class="datepicker <?php echo $closed_class; ?>" value="<?php echo $date; ?>" />
+                    <input type="time" placeholder="<?php esc_attr_e('Time in 24hour format', 'ApplyOnline'); ?>" name="_aol_ad_closing_time" class="datetimepicker" value="<?php echo $time; ?>" />
+                    <p><b><?php esc_html_e('Format', 'ApplyOnline'); ?>:</b><i> dd-mm-yyyy</i><br/><b><?php esc_html_e('Example', 'WordPress'); ?>:</b> <i><?php echo current_time('j-m-Y'); ?></i><br/></p>
+                    <p class="when-expires"><b><?php esc_html_e('When Expires', 'ApplyOnline'); ?>:</b><br /> <label for="hide_form" style="display: inline-block"><input type="radio" id="hide_form" name="_aol_ad_close_type" value="form" <?php echo $close_form; ?> /><?php esc_html_e('Hide form only', 'ApplyOnline'); ?></label><br />
+                    <label for="hide_ad" style="display: inline-block"><input type="radio" id="hide_ad" name="_aol_ad_close_type" value="ad" <?php echo $close_ad; ?> /><?php esc_html_e('Hide ad completely', 'ApplyOnline'); ?></label></p>                
                 </div>
                 <?php do_action('aol_ad_close_before', $post); ?>
                 <div id="recipients" class="aol-tab-data wrap">
-                    <p class="description"><?php _e('Leave these fields intact to use global settings for the ad.', 'ApplyOnline'); ?></p>
-                    <h3><?php _e('New application alert recipients', 'ApplyOnline'); ?></h3>
+                    <p class="description"><?php esc_html_e('Leave these fields intact to use global settings for the ad.', 'ApplyOnline'); ?></p>
+                    <h3><?php esc_html_e('New application alert recipients', 'ApplyOnline'); ?></h3>
                     <textarea name="_recipients_emails"><?php echo sanitize_textarea_field($recipients); ?></textarea>
-                    <p class="description"><?php _e('One email address in one line. Mail send limit imposed by your web hosting/server may affect mail delivery.', 'ApplyOnline'); ?></p>
+                    <p class="description"><?php esc_html_e('One email address in one line. Mail send limit imposed by your web hosting/server may affect mail delivery.', 'ApplyOnline'); ?></p>
                 </div>
-            </div>
+                 <?php 
+                    foreach($extra_tabs as $tab):
+                        //if( !empty($extra_tabs) ) echo '<div id="'.esc_attr($tab['id']).'" class="aol-tab-data wrap">'.$tab['content'].'</div>';
+                    endforeach;
+                ?>
+           </div>
             <?php 
-                do_action('aol_ad_options', $post);
+                //do_action('aol_ad_options', $post);
                 do_action('aol_metabox_after', $post);
                 echo ob_get_clean();
         }
@@ -450,7 +451,7 @@ class Applyonline_Admin{
 
             add_meta_box(
                 'aol_ad_metas',
-                '<span class="dashicons dashicons-admin-site"></span> '.__('Ad Features', 'ApplyOnline' ),
+                '<span class="dashicons dashicons-admin-site"></span> '.esc_html__('Ad Features', 'ApplyOnline' ),
                 array($this, 'ad_features'),
                 $screens,
                 'advanced',
@@ -502,9 +503,9 @@ class Applyonline_Admin{
                 <tr>
                     <td colspan="2">
                         &nbsp; &nbsp; &nbsp; 
-                        <input type="text" id="adfeature_name" placeholder="<?php _e('Feature','ApplyOnline');?>" /> &nbsp;
-                        <input type="text" id="adfeature_value" placeholder="<?php _e('Value','ApplyOnline');?>" /> &nbsp; 
-                        <div class="button aol-add" id="addFeature"><span class="dashicons dashicons-insert"></span> <?php _e('Add','ApplyOnline');?></div>
+                        <input type="text" id="adfeature_name" placeholder="<?php esc_attr_e('Feature','ApplyOnline');?>" /> &nbsp;
+                        <input type="text" id="adfeature_value" placeholder="<?php esc_attr_e('Value','ApplyOnline');?>" /> &nbsp; 
+                        <div class="button aol-add" id="addFeature"><span class="dashicons dashicons-insert"></span> <?php esc_html_e('Add','ApplyOnline');?></div>
                     </td>
                 </tr>
             </tbody>
@@ -514,8 +515,8 @@ class Applyonline_Admin{
         }
         
         public function ads_extra_columns( $columns ){
-            $columns['date'] = __( 'Published' );
-            $columns['closing'] =  __( 'Closing', 'ApplyOnline' );
+            $columns['date'] = esc_html__( 'Published' );
+            $columns['closing'] =  esc_html__( 'Closing', 'ApplyOnline' );
             return $columns;
         }
         
@@ -563,7 +564,7 @@ class Applyonline_Admin{
         function custom_bulk_actions($actions){
             $stauses = aol_app_statuses_active();
             foreach($stauses as $key => $val){
-                $actions['change_to_'.$key] = sprintf(__('Change to %s'), $val);
+                $actions['change_to_'.$key] = sprintf(esc_html__('Change to %s'), $val);
             }
             return $actions;
         }
@@ -589,12 +590,12 @@ class Applyonline_Admin{
             if($post->post_type == 'aol_application'){
                 $actions = array(); //Empty actions.
                 $filter = isset($_GET['aol_application_status']) ? '&aol_application_status=pending' : NULL;
-                $actions['filters'] = '<a rel="permalink" title="'.__('Filter Similar Applications', 'ApplyOnline').'" href="'.  admin_url('edit.php?post_type=aol_application').'&ad='.$post->post_parent.$filter.'"><span class="dashicons dashicons-filter"></span></a>';
-                $actions['ad'] = '<a rel="permalink" title="'.__('Edit Ad', 'ApplyOnline').'" href="'.  admin_url('post.php?action=edit').'&post='.$post->post_parent.'"><span class="dashicons dashicons-admin-tools"></span></a>';
-                $actions['view'] = '<a rel="permalink" title="'.__('View Ad', 'ApplyOnline').'" target="_blank" href="'.  get_the_permalink($post->post_parent). '"><span class="dashicons dashicons-external"></span></a>';
+                $actions['filters'] = '<a rel="permalink" title="'. esc_attr__('Filter Similar Applications', 'ApplyOnline').'" href="'.  admin_url('edit.php?post_type=aol_application').'&ad='.$post->post_parent.$filter.'"><span class="dashicons dashicons-filter"></span></a>';
+                $actions['ad'] = '<a rel="permalink" title="'.esc_attr__('Edit Ad', 'ApplyOnline').'" href="'.  admin_url('post.php?action=edit').'&post='.$post->post_parent.'"><span class="dashicons dashicons-admin-tools"></span></a>';
+                $actions['view'] = '<a rel="permalink" title="'.esc_attr__('View Ad', 'ApplyOnline').'" target="_blank" href="'.  get_the_permalink($post->post_parent). '"><span class="dashicons dashicons-external"></span></a>';
             }
             elseif( in_array($post->post_type, $types) ){
-                $actions['test'] = '<a rel="permalink" title="'.__('View All Applications', 'ApplyOnline').'" href="'.  admin_url('edit.php?post_type=aol_application').'&ad='.$post->ID.'">'.__('Applications', 'ApplyOnline').'</a>';
+                $actions['test'] = '<a rel="permalink" title="'.esc_attr__('View All Applications', 'ApplyOnline').'" href="'.  admin_url('edit.php?post_type=aol_application').'&ad='.$post->ID.'">'.esc_html__('Applications', 'ApplyOnline').'</a>';
             }
             return apply_filters('aol_application_row_actions', $actions);
         }
@@ -619,7 +620,7 @@ class Applyonline_Admin{
                         if ( in_array ( '_aol_attachment', $keys ) ):
                             $files = get_post_meta ( $post->ID, '_aol_attachment', true );
                             ?>
-                        &nbsp; &nbsp; <small><a href="<?php echo esc_url(get_post_meta ( $post->ID, '_aol_attachment', true )); ?>" target="_blank" ><?php echo __( 'Attachment' , 'ApplyOnline' );?></a></small>
+                        &nbsp; &nbsp; <small><a href="<?php echo esc_url(get_post_meta ( $post->ID, '_aol_attachment', true )); ?>" target="_blank" ><?php echo esc_html__( 'Attachment' , 'ApplyOnline' );?></a></small>
                         <?php 
                         endif; 
                          * 
@@ -636,7 +637,7 @@ class Applyonline_Admin{
         function aol_meta_boxes(){
             add_meta_box(
                 'aol_application',
-                __( 'Application Detail', 'ApplyOnline' ),
+                esc_html__( 'Application Detail', 'ApplyOnline' ),
                 array($this, 'application_sidebar'),
                 'aol_application',
                 'side'
@@ -665,12 +666,15 @@ class Applyonline_Admin{
             ?>
             <div class="submitpost">
                 <div class="minor-publishing-actions">
-                    <p class="post-attributes-label-wrapper"><a href="<?php admin_url(); ?>?aol_page=print&id=<?php echo (int)$post->ID; ?>" class="button button-secondary button-large" target="_blank"><?php esc_html_e('Print Application','ApplyOnline');?></a></p>
+                    <p class="post-attributes-label-wrapper">
+                        <!--<a href="<?php admin_url(); ?>?aol_page=print&id=<?php echo (int)$post->ID; ?>" target="_blank" alt="<?php esc_attr_e('Print Application','ApplyOnline');?>"><span class="dashicons dashicons-printer"></span></a>-->
+                        <a href="<?php admin_url(); ?>?aol_page=print&id=<?php echo (int)$post->ID; ?>" class="button button-secondary button-large" target="_blank"><?php esc_html_e('Print Application','ApplyOnline');?></a>
+                    </p>
                     <?php 
                     do_action('aol_app_updatebox_after');
                     if(current_user_can('delete_applications')){
                     ?>
-                        <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php _e('Application Status','ApplyOnline');?></label></p>
+                        <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php esc_html_e('Application Status','ApplyOnline');?></label></p>
                         <select class="aol_select" name="aol_tag">
                             <?php
                             foreach($stauses as $key => $val){
@@ -679,7 +683,7 @@ class Applyonline_Admin{
                             }
                             ?>
                         </select>
-                        <p class="description"><?php _e('An email will be sent to the applicant on each stats change.', 'ApplyOnline'); ?></p>
+                        <p class="description"><?php esc_html_e('An email will be sent to the applicant on each status change.', 'ApplyOnline'); ?></p>
                 <?php } ?>
                 </div>
                 <div id="major-publishing-actions">
@@ -744,7 +748,7 @@ class Applyonline_Admin{
                                 </div>
 
                                 <div class="col-md-3">
-                                     <?php _e('Application','ApplyOnline');?>
+                                     <?php esc_html_e('Application','ApplyOnline');?>
                                     <h3><?php bloginfo('name'); ?></h3>
                                     <?php add_action('aol_print_header_right', $post); ?>
                                 </div>
@@ -772,7 +776,7 @@ class Applyonline_Admin{
             global $typenow;
             if('aol_application' == $typenow):
             ?>
-                &nbsp; <select id="aol-apps-table-search"><option><?php _e('Filter Applications', 'ApplyOnline'); ?></option></select>
+                &nbsp; <select id="aol-apps-table-search"><option><?php esc_html_e('Filter Applications', 'ApplyOnline'); ?></option></select>
             <?php
             endif;
         }
@@ -787,14 +791,14 @@ class Applyonline_Admin{
         public function applicants_list_columns( $columns ){
             $columns = array (
                 'cb'       => '<input type="checkbox" />',
-                'id'    => __( 'ID', 'ApplyOnline' ),
-                'title'    => __( 'Ad Title', 'ApplyOnline' ),
+                'id'    => esc_html__( 'ID', 'ApplyOnline' ),
+                'title'    => esc_html__( 'Ad Title', 'ApplyOnline' ),
                 'qview'      => NULL,
-                'applicant'=> __( 'Applicant', 'ApplyOnline' ),
-                'taxonomy' => __( 'Status', 'ApplyOnline' ),
+                'applicant'=> esc_html__( 'Applicant', 'ApplyOnline' ),
+                'taxonomy' => esc_html__( 'Status', 'ApplyOnline' ),
             );
             $columns = apply_filters('aol_application_posts_columns', $columns);
-            $columns['date'] = __( 'Date', 'ApplyOnline' );
+            $columns['date'] = esc_html__( 'Date', 'ApplyOnline' );
             return $columns;
         }
 
@@ -825,11 +829,11 @@ class Applyonline_Admin{
                         'TB_iframe' => 'true',
                     ), admin_url( 'admin.php' ) );
 
-                    echo '<a href="' . esc_url($url) . '" class="thickbox" title="'. __('Quick View', 'ApplyOnline').'"><span class="dashicons dashicons-visibility"></span></a>';
+                    echo '<a href="' . esc_url($url) . '" class="thickbox" title="'. esc_attr__('Quick View', 'ApplyOnline').'"><span class="dashicons dashicons-visibility"></span></a>';
                  break;
                 case 'applicant' :
                     if($name === FALSE):
-                        $applicant_name = __('Undefined', 'ApplyOnline');
+                        $applicant_name = esc_html__('Undefined', 'ApplyOnline');
                     else:
                         $applicant = apply_filters( 'aol_applicants_table_name_column', get_post_meta( $post_id, $keys[ $name ], TRUE ), $post_id, $keys[ $name ] );
                         if(is_object($applicant)) $applicant = NULL;
@@ -859,7 +863,7 @@ class Applyonline_Admin{
                         }
                         echo sanitize_text_field(join( ', ', $out ));
                     }/* If no terms were found, output a default message. */ else {
-                        _e( 'Undefined' , 'ApplyOnline');
+                        esc_html_e( 'Undefined' , 'ApplyOnline');
                     }
                     break;
             }
@@ -873,10 +877,13 @@ class Applyonline_Admin{
          * @return  array
          */
        public function application_quick_view() {
+           if( !current_user_can('manage_ads') OR empty( (int)$_GET['app_id']) ) die('Are you nuts?');
+
+            $ad_id  = (int)$_GET['app_id'];
+            $post = get_post( $ad_id );
+           
             define( 'IFRAME_REQUEST', true );
             iframe_header();
-            $ad_id  = !empty( $_GET['app_id'] ) ? $_GET['app_id'] : '';
-            $post = get_post( $ad_id );
             
             $this->aol_application_post_editor($post);
             iframe_footer();
@@ -884,7 +891,7 @@ class Applyonline_Admin{
         }
 
         function application_date_column($status, $post ){
-            if($post->post_type == 'aol_application') $status = __('Received');
+            if($post->post_type == 'aol_application') $status = esc_html__('Received');
             return $status;
         }  
         
@@ -1025,7 +1032,7 @@ class Applyonline_Admin{
 
             add_meta_box(
                 'aol_ad_app_fields',
-                '<span class="dashicons dashicons-admin-site"></span> '.__('Application Form Builder', 'ApplyOnline' ),
+                '<span class="dashicons dashicons-admin-site"></span> '.esc_html__('Application Form Builder', 'ApplyOnline' ),
                 array($this, 'application_form_fields'),
                 $screens,
                 'advanced',
@@ -1035,7 +1042,7 @@ class Applyonline_Admin{
             /*
             add_meta_box(
                 'aol_form_builder',
-                __( 'New Application Form Builder', 'ApplyOnline' ),
+                esc_html__( 'New Application Form Builder', 'ApplyOnline' ),
                 array($this, 'application_form_builder'),
                 $screens,
                 'advanced',
@@ -1087,8 +1094,8 @@ class Applyonline_Admin{
             add_thickbox();
             $adapp_form_generator = empty($temp) ? 'adapp_form_fields' : 'adapp_generator_'.$temp
             ?>
-            <a href="#TB_inline?width=700&height=550&inlineId=<?php echo $adapp_form_generator; ?>" class="thickbox textfield-poup" title="<?php _e('Select a Type', 'ApplyOnline'); ?>">
-                <button type="button" class="button aol-add" ><span class="dashicons dashicons-plus-alt"></span> <?php _e('Add Field', 'ApplyOnline'); ?> </button>
+                <a href="#TB_inline?width=700&height=550&inlineId=<?php echo $adapp_form_generator; ?>" class="thickbox textfield-poup" title="<?php esc_attr_e('Select a Type', 'ApplyOnline'); ?>">
+                <button type="button" class="button aol-add" ><span class="dashicons dashicons-plus-alt"></span> <?php esc_html_e('Add Field', 'ApplyOnline'); ?> </button>
             </a>
             <div id="<?php echo $adapp_form_generator; ?>" class="field-generator adapp_form_fields <?php echo $adapp_form_generator; ?>" style="display:none;">
                 <div class="aol-selectors">
@@ -1109,43 +1116,43 @@ class Applyonline_Admin{
                                 <!--<td><?php echo $this->aol_fields_icons('url'); ?></td>-->
                             </tr>
                             <tr>
-                                <td><?php _e('TextField', 'ApplyOnline'); ?></td>
-                                <td><?php _e('TextArea', 'ApplyOnline'); ?></td>
-                                <td><?php _e('Number', 'ApplyOnline'); ?></td>
-                                <td><?php _e('Email', 'ApplyOnline'); ?></td>
-                                <td><?php _e('Date', 'ApplyOnline'); ?></td>
-                                <td><?php _e('CheckBox', 'ApplyOnline'); ?></td>
-                                <td><?php _e('RadioBox', 'ApplyOnline'); ?></td>
-                                <td><?php _e('DropDown', 'ApplyOnline'); ?></td>
-                                <td><?php _e('Attachment', 'ApplyOnline'); ?></td>
-                                <td><?php _e('Separator', 'ApplyOnline'); ?></td>
-                                <td><?php _e('Paragraph', 'ApplyOnline'); ?></td>
-                                <!--<td><?php _e('URL', 'ApplyOnline'); ?></td>-->
+                                <td><?php esc_html_e('TextField', 'ApplyOnline'); ?></td>
+                                <td><?php esc_html_e('TextArea', 'ApplyOnline'); ?></td>
+                                <td><?php esc_html_e('Number', 'ApplyOnline'); ?></td>
+                                <td><?php esc_html_e('Email', 'ApplyOnline'); ?></td>
+                                <td><?php esc_html_e('Date', 'ApplyOnline'); ?></td>
+                                <td><?php esc_html_e('CheckBox', 'ApplyOnline'); ?></td>
+                                <td><?php esc_html_e('RadioBox', 'ApplyOnline'); ?></td>
+                                <td><?php esc_html_e('DropDown', 'ApplyOnline'); ?></td>
+                                <td><?php esc_html_e('Attachment', 'ApplyOnline'); ?></td>
+                                <td><?php esc_html_e('Separator', 'ApplyOnline'); ?></td>
+                                <td><?php esc_html_e('Paragraph', 'ApplyOnline'); ?></td>
+                                <!--<td><?php esc_html_e('URL', 'ApplyOnline'); ?></td>-->
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div id="aol_new_form" class="aol_form" style="display:none;">
                     <input type="hidden" name="aol_type" value="">
-                    <div class="aol_uid"><label for="adapp_uid">*<?php _e('Unique ID', 'ApplyOnline') ?></label><input class="aol-form-field adapp_uid" type="text" id="adapp_uid" ></div>
-                    <div><label for="adapp_name">*<?php _e('Label', 'ApplyOnline') ?></label><input class="aol-form-field adapp_name" type="text" id="adapp_name" ></div>
-                    <div class="aol_help_text aol_add_field"><label for="adapp_field_help"><?php _e('Help Text', 'ApplyOnline') ?></label><input class="aol-form-field adapp_field_help" id="adapp_field_help" type="text" /></div>
-                    <div class="aol_text aol_add_field"><label for="adapp_text"><?php _e('Text', 'ApplyOnline') ?></label><textarea class="aol-form-field adapp_text" id="adapp_text" type="text" ></textarea><p class="description"><?php _e('To generate a link, use shortcode [link href="https://google.com" title="My Link Title"]', 'ApplyOnline'); ?></p></div>
-                    <div class="aol_text_height aol_add_field"><label fpr="adapp_text_height"><?php _e('Fixed Height', 'ApplyOnline'); ?></label><input class="aol-form-field adapp_text_height" id="adapp_text_height"  type="number" value="0" />px</div>
-                    <div class="aol_placeholder aol_add_field"><label for="adapp_placeholder"><?php _e('Place Holder', 'ApplyOnline') ?></label><input class="aol-form-field adapp_placeholder" type="text" id="adapp_placeholder" ></div>
-    <!--            <div class="aol_value aol_add_field"><label><?php _e('Defult value', 'ApplyOnline') ?></label><input type="text" id="adapp_value" placeholder="<?php _e('Defult value') ?>" ></div>-->
-                    <div class="aol_form_options aol_options aol_add_field"><label for="adapp_field_options"><?php _e('Options', 'ApplyOnline') ?></label><input id="adapp_field_options" class="adapp_field_options" type="text"  placeholder="<?php _e('Option 1, Option 2, Option 3', 'ApplyOnline'); ?>" ></div>
-                    <div class="aol_class"><label for="adapp_class"><?php _e('Classes', 'ApplyOnline') ?></label><input type="text" id="adapp_class" class="aol-form-field adapp_class" ></div>
-                    <div class="aol_file_types"><label for="adapp_file_types">*<?php _e('Allowed Types', 'ApplyOnline') ?></label><input type="text" id="adapp_file_types" class="aol-form-field adapp_file_types" value="<?php echo esc_attr( get_option("aol_allowed_file_types") ); ?>" ><p class="description"><?php _e('Comma seperated values', 'ApplyOnline'); ?></p></div>
-                    <div class="aol_file_max_size"><label for="aol_file_max_size">*<?php _e('Max Size Limit', 'ApplyOnline') ?></label><input type="number" id="adapp_file_max_size" class="adapp_file_max_size" value="<?php echo esc_attr(get_option('aol_form_max_upload_size')); ?>" placeholder="<?php echo floor(wp_max_upload_size()/1000000); ?> " >MB</div>
-                    <div class="aol_limit aol_add_field"><label for="adapp_limit"><?php _e('Charcter Limit', 'ApplyOnline') ?></label><input id="adapp_limit" class="adapp_limit" type="number" min="1"  placeholder="<?php _e('No Limit', 'ApplyOnline'); ?>" ></div>
-                    <div class="aol_preselect aol_add_field"><label for="aol_preselect"><?php _e('Preselect', 'ApplyOnline');?></label><input class="required_preselect adapp_preselect" type="checkbox" id="aol_preselect" checked value="1" /><i class="description"><?php _e('Default first field selection.', 'ApplyOnline'); ?></i> </div>
-                    <div class="aol_notification aol_add_field"><label for="aol_notification"><?php _e('Notify This Email', 'ApplyOnline');?></label><input class="aol_checkbox adapp_notification" type="checkbox" id="aol_notification" value="0" /> </div>
-                    <div class="aol_required aol_add_field"><label for="aol_required"><?php _e('Required Field', 'ApplyOnline');?></label><input class="aol_checkbox adapp_required" type="checkbox" id="aol_required" value="0" /> </div>
-                    <!-- <div class="aol_orientation aol_add_field"><label><?php _e('Orientation', 'ApplyOnline');?></label><label><input class="required_option" type="radio" id="aol_required" checked value="0" /> Horizontal</label> &nbsp; <label><input class="required_option" type="radio" id="aol_required" value="0" />Vertical</label></div> -->
+                    <div class="aol_uid"><label for="adapp_uid">*<?php esc_html_e('Unique ID', 'ApplyOnline') ?></label><input class="aol-form-field adapp_uid" type="text" id="adapp_uid" ></div>
+                    <div><label for="adapp_name">*<?php esc_html_e('Label', 'ApplyOnline') ?></label><input class="aol-form-field adapp_name" type="text" id="adapp_name" ></div>
+                    <div class="aol_help_text aol_add_field"><label for="adapp_field_help"><?php esc_html_e('Help Text', 'ApplyOnline') ?></label><input class="aol-form-field adapp_field_help" id="adapp_field_help" type="text" /></div>
+                    <div class="aol_text aol_add_field"><label for="adapp_text"><?php esc_html_e('Text', 'ApplyOnline') ?></label><textarea class="aol-form-field adapp_text" id="adapp_text" type="text" ></textarea><p class="description"><?php esc_html_e('To generate a link, use shortcode [link href="https://google.com" title="My Link Title"]', 'ApplyOnline'); ?></p></div>
+                    <div class="aol_text_height aol_add_field"><label fpr="adapp_text_height"><?php esc_html_e('Fixed Height', 'ApplyOnline'); ?></label><input class="aol-form-field adapp_text_height" id="adapp_text_height"  type="number" value="0" />px</div>
+                    <div class="aol_placeholder aol_add_field"><label for="adapp_placeholder"><?php esc_html_e('Place Holder', 'ApplyOnline') ?></label><input class="aol-form-field adapp_placeholder" type="text" id="adapp_placeholder" ></div>
+    <!--            <div class="aol_value aol_add_field"><label><?php esc_html_e('Defult value', 'ApplyOnline') ?></label><input type="text" id="adapp_value" placeholder="<?php esc_attr_e('Defult value') ?>" ></div>-->
+                    <div class="aol_form_options aol_options aol_add_field"><label for="adapp_field_options"><?php esc_html_e('Options', 'ApplyOnline') ?></label><input id="adapp_field_options" class="adapp_field_options" type="text"  placeholder="<?php esc_attr_e('Option 1, Option 2, Option 3', 'ApplyOnline'); ?>" ></div>
+                    <div class="aol_class"><label for="adapp_class"><?php esc_html_e('Classes', 'ApplyOnline') ?></label><input type="text" id="adapp_class" class="aol-form-field adapp_class" ></div>
+                    <div class="aol_file_types"><label for="adapp_file_types">*<?php esc_html_e('Allowed Types', 'ApplyOnline') ?></label><input type="text" id="adapp_file_types" class="aol-form-field adapp_file_types" value="<?php echo esc_attr( get_option("aol_allowed_file_types") ); ?>" ><p class="description"><?php esc_html_e('Comma seperated values', 'ApplyOnline'); ?></p></div>
+                    <div class="aol_file_max_size"><label for="aol_file_max_size">*<?php esc_html_e('Max Size Limit', 'ApplyOnline') ?></label><input type="number" id="adapp_file_max_size" class="adapp_file_max_size" value="<?php echo esc_attr(get_option('aol_form_max_upload_size')); ?>" placeholder="<?php echo floor(wp_max_upload_size()/1000000); ?> " >MB</div>
+                    <div class="aol_limit aol_add_field"><label for="adapp_limit"><?php esc_html_e('Charcter Limit', 'ApplyOnline') ?></label><input id="adapp_limit" class="adapp_limit" type="number" min="1"  placeholder="<?php esc_attr_e('No Limit', 'ApplyOnline'); ?>" ></div>
+                    <div class="aol_preselect aol_add_field"><label for="aol_preselect"><?php esc_html_e('Preselect', 'ApplyOnline');?></label><input class="required_preselect adapp_preselect" type="checkbox" id="aol_preselect" checked value="1" /><i class="description"><?php esc_html_e('Default first field selection.', 'ApplyOnline'); ?></i> </div>
+                    <div class="aol_notification aol_add_field"><label for="aol_notification"><?php esc_html_e('Notify This Email', 'ApplyOnline');?></label><input class="aol_checkbox adapp_notification" type="checkbox" id="aol_notification" value="0" /> </div>
+                    <div class="aol_required aol_add_field"><label for="aol_required"><?php esc_html_e('Required Field', 'ApplyOnline');?></label><input class="aol_checkbox adapp_required" type="checkbox" id="aol_required" value="0" /> </div>
+                    <!-- <div class="aol_orientation aol_add_field"><label><?php esc_html_e('Orientation', 'ApplyOnline');?></label><label><input class="required_option" type="radio" id="aol_required" checked value="0" /> Horizontal</label> &nbsp; <label><input class="required_option" type="radio" id="aol_required" value="0" />Vertical</label></div> -->
                     <?php do_action('aol_after_admin_form_fields'); ?>
-                    <p class="description"><?php _e('Fields with (*) are compulsory.', 'ApplyOnline'); ?></p>
-                    <button type="button" class="button aol-add button-primary addField <?php echo esc_attr($temp); ?>" data-temp="<?php echo esc_attr($temp); ?>"><span class="dashicons dashicons-plus-alt"></span> <?php _e('Add Field', 'ApplyOnline'); ?> </button>
+                    <p class="description"><?php esc_html_e('Fields with (*) are compulsory.', 'ApplyOnline'); ?></p>
+                    <button type="button" class="button aol-add button-primary addField <?php echo esc_attr($temp); ?>" data-temp="<?php echo esc_attr($temp); ?>"><span class="dashicons dashicons-plus-alt"></span> <?php esc_html_e('Add Field', 'ApplyOnline'); ?> </button>
                 </div>
             </div>
             
@@ -1203,7 +1210,7 @@ class Applyonline_Admin{
                     echo '<td><span class="dashicons dashicons-menu"></span> &nbsp;<label for="'.$key.'">'.$label.'</label></td>';
                     echo '<td>';
                         empty($tempid) ? do_action('aol_after_form_field', $key) :  do_action('aol_after_application_template_field', $tempid, $key);
-                        echo '<div class="aol-edit-form"><a href="#TB_inline?&inlineId='.$key.'" title="'. esc_attr($types_names[$val['type']]).'" class="thickbox dashicons dashicons-edit"></a><span class="dashicons dashicons-no aol-remove" title="'.__('Delete', 'ApplyOnline').'" ></span></div>';
+                        echo '<div class="aol-edit-form"><a href="#TB_inline?&inlineId='.$key.'" title="'. esc_attr($types_names[$val['type']]).'" class="thickbox dashicons dashicons-edit"></a><span class="dashicons dashicons-no aol-remove" title="'.esc_attr__('Delete', 'ApplyOnline').'" ></span></div>';
                         $this->row_popup($key, $val, $tempid);
                     echo '</td>';
                 echo '</tr>';
@@ -1236,46 +1243,46 @@ class Applyonline_Admin{
             
             echo '<div style="display:none;" id='.$key.'><div class="aol_form" data-id="'.$key.'">';
             echo '<div class="form-group"><label>'.$icon.'</label><span></span></div>';
-            //echo '<div><label>'.__('Type', 'ApplyOnline').'</label><select disabled class="adapp_field_type" name="'.$key.'[type]">'.$fields.'</select></div>';
-            echo '<div class="form-group"><label>*'.__('Unique ID', 'ApplyOnline').'</label><input type="text" disabled value="'.str_replace('_aol_app_', '', $key).'" /></div>';
-            echo '<div class="form-group"><label for="'.$name.'-label">*'.__('Label', 'ApplyOnline').'</label><input id="'.$name.'-label" class="adapp_label" type="text" name="'.$name.'[label]" value="'.$label.'" /></div>';
+            //echo '<div><label>'.esc_html__('Type', 'ApplyOnline').'</label><select disabled class="adapp_field_type" name="'.$key.'[type]">'.$fields.'</select></div>';
+            echo '<div class="form-group"><label>*'.esc_html__('Unique ID', 'ApplyOnline').'</label><input type="text" disabled value="'.str_replace('_aol_app_', '', $key).'" /></div>';
+            echo '<div class="form-group"><label for="'.$name.'-label">*'.esc_html__('Label', 'ApplyOnline').'</label><input id="'.$name.'-label" class="adapp_label" type="text" name="'.$name.'[label]" value="'.$label.'" /></div>';
 
             if($val['type'] == 'paragraph'){
-                echo '<div class="form-group form-group-paragraph"><label>'.__('Text', 'ApplyOnline').'</label><textarea class="aol-form-field" name="'.$name.'[text]" >'.$text.'</textarea><p class="description">'.__('To generate a link, use shortcode [link href="https://google.com" title="My Link Title"]').'</p></div>';
-                echo '<div class="form-group"><label for="'.$name.'-height">'.__('Fixed Height', 'ApplyOnline').'</label><input id="'.$name.'-height" class="aol-form-field" type="number" name="'.$name.'[height]" value="'.$height.'" />px</div>';
+                echo '<div class="form-group form-group-paragraph"><label>'.esc_html__('Text', 'ApplyOnline').'</label><textarea class="aol-form-field" name="'.$name.'[text]" >'.$text.'</textarea><p class="description">'.esc_html__('To generate a link, use shortcode [link href="https://google.com" title="My Link Title"]').'</p></div>';
+                echo '<div class="form-group"><label for="'.$name.'-height">'.esc_html__('Fixed Height', 'ApplyOnline').'</label><input id="'.$name.'-height" class="aol-form-field" type="number" name="'.$name.'[height]" value="'.$height.'" />px</div>';
             } else{
-                echo '<div class="form-group"><label for="'.$name.'-desc">'.__('Help Text', 'ApplyOnline').'</label><input id="'.$name.'-desc" type="text" name="'.$name.'[description]" value="'.$description.'" /></div>';
+                echo '<div class="form-group"><label for="'.$name.'-desc">'.esc_html__('Help Text', 'ApplyOnline').'</label><input id="'.$name.'-desc" type="text" name="'.$name.'[description]" value="'.$description.'" /></div>';
             }
 
             echo '<input type="hidden" name="'.$name.'[type]" value="'.$val['type'].'">';
             if(in_array($val['type'], array('text_area','text','number','email', 'url'))):
-                echo '<div><label for="'.$name.'-placeholder">'.__('Placeholder', 'ApplyOnline').'</label><input id="'.$name.'-placeholder" type="text" name="'.$name.'[placeholder]" value="'.$placeholder.'" /></div>';
+                echo '<div><label for="'.$name.'-placeholder">'.esc_html__('Placeholder', 'ApplyOnline').'</label><input id="'.$name.'-placeholder" type="text" name="'.$name.'[placeholder]" value="'.$placeholder.'" /></div>';
             endif;
             if(in_array($val['type'], array('checkbox','dropdown','radio'))):
-                echo '<div class="aol_options_check"><label>'.__('Options', 'ApplyOnline').'</label><input type="text" name="'.$name.'[options]" value="'.esc_attr($val['options']).'" placeholder="'.__('Option1, Option2, Option3', 'ApplyOnline').'" /></div>';
+                echo '<div class="aol_options_check"><label>'.esc_html__('Options', 'ApplyOnline').'</label><input type="text" name="'.$name.'[options]" value="'.esc_attr($val['options']).'" placeholder="'.esc_attr__('Option1, Option2, Option3', 'ApplyOnline').'" /></div>';
             endif;
-            echo '<div><label for="'.$name.'-classes">'.__('Classes', 'ApplyOnline').'</label><input id="'.$name.'-classes" type="text" name="'.$name.'[class]" value="'.$class.'" /></div>';
+            echo '<div><label for="'.$name.'-classes">'.esc_html__('Classes', 'ApplyOnline').'</label><input id="'.$name.'-classes" type="text" name="'.$name.'[class]" value="'.$class.'" /></div>';
             if( $val['type'] === 'radio' ){
-                echo '<div><label for="'.$name.'-preselect">'.__('Preselect', 'ApplyOnline').'</label><input id="'.$name.'-preselect" type="checkbox" name="'.$name.'[preselect]" value="1" '.$selection.'><i class="description">'.__('Default first field selection.', 'ApplyOnline').'</i></div>';
+                echo '<div><label for="'.$name.'-preselect">'.esc_html__('Preselect', 'ApplyOnline').'</label><input id="'.$name.'-preselect" type="checkbox" name="'.$name.'[preselect]" value="1" '.$selection.'><i class="description">'.esc_html__('Default first field selection.', 'ApplyOnline').'</i></div>';
             }
 
             if(in_array($val['type'], array('text_area','text'))):
-                echo '<div><label for="'.$name.'-limit">'.__('Charchter Limit', 'ApplyOnline').'</label><input id="'.$name.'-limit" type="number" placeholder="No limit" name="'.$name.'[limit]" value="'.$limit.'" /></div>';
+                echo '<div><label for="'.$name.'-limit">'.esc_html__('Charchter Limit', 'ApplyOnline').'</label><input id="'.$name.'-limit" type="number" placeholder="No limit" name="'.$name.'[limit]" value="'.$limit.'" /></div>';
             endif;
 
             if( $val['type'] === 'email' ):
-                echo '<div><label for="'.$name.'-notification">'.__('Notify This Email', 'ApplyOnline').'</label><input id="'.$name.'-notification" class="adpp_notification" type="checkbox" '.$notify.' name="'.$name.'[notify]" value="1" /></div>';
+                echo '<div><label for="'.$name.'-notification">'.esc_html__('Notify This Email', 'ApplyOnline').'</label><input id="'.$name.'-notification" class="adpp_notification" type="checkbox" '.$notify.' name="'.$name.'[notify]" value="1" /></div>';
             endif;
             if(in_array($val['type'], array('checkbox','dropdown','radio','text_area','text','number','email','date','file'))):
                 if($val['type'] == 'file'){
-                    echo '<div><label for="'.$name.'-file-types">'.__('Allowed File Types', 'ApplyOnline').'</label><input id="'.$name.'-file-types" class="aol-form-field file_types_option" type="text" name="'.$name.'[allowed_file_types]" value="'.$types.'" /><p class="description">Comma separated values</p></div>';
-                    echo '<div><label for="'.$name.'_file_max_size">'.__('*Max Size Limit', 'ApplyOnline').'</label><input id="'.$name.'_file_max_size" class="small-text aol-form-field file_max_size" type="number" name="'.$name.'[file_max_size]" value="'.$size.'" />MB</div>';
+                    echo '<div><label for="'.$name.'-file-types">'.esc_html__('Allowed File Types', 'ApplyOnline').'</label><input id="'.$name.'-file-types" class="aol-form-field file_types_option" type="text" name="'.$name.'[allowed_file_types]" value="'.$types.'" /><p class="description">Comma separated values</p></div>';
+                    echo '<div><label for="'.$name.'_file_max_size">'.esc_html__('*Max Size Limit', 'ApplyOnline').'</label><input id="'.$name.'_file_max_size" class="small-text aol-form-field file_max_size" type="number" name="'.$name.'[file_max_size]" value="'.$size.'" />MB</div>';
                 }
-                echo '<div><label for="'.$name.'-required">'.__('Required Field', 'ApplyOnline').'</label><input id="'.$name.'-required" class="required_option" type="checkbox" '.$checked.' name="'.$name.'[required]" value="1" /></div>';
+                echo '<div><label for="'.$name.'-required">'.esc_html__('Required Field', 'ApplyOnline').'</label><input id="'.$name.'-required" class="required_option" type="checkbox" '.$checked.' name="'.$name.'[required]" value="1" /></div>';
             endif;
-            echo '<p class="description">'.__('Fields with (*) are compulsory.', 'ApplyOnline').'</p>';
-            //echo '<div class="button-primary button-required '.$req_class.'">'.__('Required', 'ApplyOnline').'</div> </div>';
-            //echo '<div><label>'.__('Type', 'ApplyOnline').'</label><select disabled class="adapp_field_type" name="'.$key.'[type]">'.$fields.'</select></div>';
+            echo '<p class="description">'.esc_html__('Fields with (*) are compulsory.', 'ApplyOnline').'</p>';
+            //echo '<div class="button-primary button-required '.$req_class.'">'.esc_html__('Required', 'ApplyOnline').'</div> </div>';
+            //echo '<div><label>'.esc_html__('Type', 'ApplyOnline').'</label><select disabled class="adapp_field_type" name="'.$key.'[type]">'.$fields.'</select></div>';
 
             //if(!($val['type']=='text' or $val['type']=='email' or $val['type']=='date' or $val['type']=='text_area' or $val['type']=='file' )):
             echo do_action('aol_after_admin_form_fields', $name, $val);
@@ -1388,18 +1395,18 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
 
     public function plugin_row_meta($links, $file){
         if ( strpos( $file, 'apply-online.php' ) !== false ){
-            $links['settings'] = '<a href="'.  admin_url().'?page=aol-settings">'.__('Settings', 'ApplyOnline').'</a>';
+            $links['settings'] = '<a href="'.  admin_url().'?page=aol-settings">'.esc_html__('Settings', 'ApplyOnline').'</a>';
 	}
 	
 	return $links;
     }
 
     public function sub_menus(){
-        add_menu_page( __('Settings', 'ApplyOnline'), _x('Apply Online', 'Admin Menu', 'ApplyOnline'), 'edit_applications', 'aol-settings', array($this, 'settings_page_callback'), 'dashicons-admin-site',31 );
-        add_submenu_page('aol-settings', __('Settings', 'ApplyOnline'), __('Settings', 'ApplyOnline'), 'delete_others_ads', 'aol-settings');
+        add_menu_page( esc_html__('Settings', 'ApplyOnline'), _x('Apply Online', 'Admin Menu', 'ApplyOnline'), 'edit_applications', 'aol-settings', array($this, 'settings_page_callback'), 'dashicons-admin-site',31 );
+        add_submenu_page('aol-settings', esc_html__('Settings', 'ApplyOnline'), esc_html__('Settings', 'ApplyOnline'), 'delete_others_ads', 'aol-settings');
         $filters = aol_ad_filters();
         foreach($filters as $key => $val){
-            add_submenu_page( 'aol-settings', '', sprintf(__('%s Filter', 'ApplyOnline'), $val['plural']), 'delete_others_ads', "edit-tags.php?taxonomy=aol_ad_".sanitize_key($key)."&post_type=aol_ad", null );            
+            add_submenu_page( 'aol-settings', '', sprintf(esc_html__('%s Filter', 'ApplyOnline'), $val['plural']), 'delete_others_ads', "edit-tags.php?taxonomy=aol_ad_".sanitize_key($key)."&post_type=aol_ad", null );
         }
     }
 
@@ -1463,45 +1470,45 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
         $tabs = array(
                 'general' => array(
                     'id'        => 'general',
-                    'name'      => __( 'General' ,'ApplyOnline' ),
-                    'desc'      => __( 'Global settings for the plugin. Some options can be overwritten from the ad editor screen.', 'ApplyOnline' ),
+                    'name'      => esc_html__( 'General' ,'ApplyOnline' ),
+                    'desc'      => esc_html__( 'Global settings for the plugin. Some options can be overwritten from the ad editor screen.', 'ApplyOnline' ),
                     'href'      => null,
                     'classes'   => ' active',
                     'callback'  => array($this, 'tab_general')
                 ),/*
                 'ui' => array(
                     'id'        => 'ui',
-                    'name'      => __('User Interface' ,'ApplyOnline'),
-                    'desc'      => __( 'Front-end User Iterface Manager', 'ApplyOnline' ),
+                    'name'      => esc_html__('User Interface' ,'ApplyOnline'),
+                    'desc'      => esc_html__( 'Front-end User Iterface Manager', 'ApplyOnline' ),
                     'href'      => null,
                 ),
                  * 
                  */
                 'template' => array(
                     'id'        => 'template',
-                    'name'      => __('Template' ,'ApplyOnline'),
-                    'desc'      => __( 'Application form templates for new ads.', 'ApplyOnline' ),
+                    'name'      => esc_html__('Template' ,'ApplyOnline'),
+                    'desc'      => esc_html__( 'Application form templates for new ads.', 'ApplyOnline' ),
                     'href'      => null,
                     'callback' => array($this, 'tab_template')
                 ),
                 'applications' => array(
                     'id'        => 'applications',
-                    'name'      => __('Applications' ,'ApplyOnline'),
-                    'desc'      => __( 'This section is intended for received applications.', 'ApplyOnline' ),
+                    'name'      => esc_html__('Applications' ,'ApplyOnline'),
+                    'desc'      => esc_html__( 'This section is intended for received applications.', 'ApplyOnline' ),
                     'href'      => null,
                     'callback'  => array($this, 'tab_applications')
                 ),
                 'filters' => array(
                     'id'        => 'filters',
-                    'name'      => __('Ad Filters' ,'ApplyOnline'),
-                    'desc'      => __( 'Display Filters in [aol] shortcode outupt.', 'ApplyOnline' ),
+                    'name'      => esc_html__('Ad Filters' ,'ApplyOnline'),
+                    'desc'      => esc_html__( 'Display Filters in [aol] shortcode outupt.', 'ApplyOnline' ),
                     'href'      => null,
                     'callback'  => array($this, 'tab_filters')
                 ),
                 'types' => array(
                     'id'        => 'types',
-                    'name'      => __('Ad Types' ,'ApplyOnline'),
-                    'desc'      => __( 'Define different types of ads e.g. Careers, Classes, Memberships. These types will appear under All Ads section in WordPress admin panel.', 'ApplyOnline' ),
+                    'name'      => esc_html__('Ad Types' ,'ApplyOnline'),
+                    'desc'      => esc_html__( 'Define different types of ads e.g. Careers, Classes, Memberships. These types will appear under All Ads section in WordPress admin panel.', 'ApplyOnline' ),
                     'href'      => null,
                     'callback'  => array($this, 'tab_types')
                 ),
@@ -1510,15 +1517,15 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
         //Show these tabs at the end.
         $tabs['faqs'] = array(
                     'id'        => 'faqs',
-                    'name'      => __('How Tos' ,'ApplyOnline'),
-                    'desc'      => __('Frequently Asked Questions.' ,'ApplyOnline'),
+                    'name'      => esc_html__('FAQ' ,'ApplyOnline'),
+                    'desc'      => esc_html__('Frequently Asked Questions.' ,'ApplyOnline'),
                     'href'      => null,
                     'callback'  => array($this, 'tab_faqs')
                 );
         $tabs['extend'] = array(
                     'id'        => 'extend',
-                    'name'      => __('Extend' ,'ApplyOnline'),
-                    'desc'      => __('Extend Plugin' ,'ApplyOnline'),
+                    'name'      => esc_html__('Extend' ,'ApplyOnline'),
+                    'desc'      => esc_html__('Extend Plugin' ,'ApplyOnline'),
                     'href'      => 'https://wpreloaded.com/shop/',
                     'capability' => 'manage_options',
                     'callback'  => array($this, 'tab_extend')
@@ -1536,7 +1543,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
             <div class="wrap aol-settings">
                 <h2>
                     <?php _ex('ApplyOnline', 'admin', 'ApplyOnline'); ?> 
-                    <small class="wp-caption alignright"><i> <?php printf(__('version %s', 'ApplyOnline'), $this->version); ?></i></small>
+                    <small class="wp-caption alignright"><i> <?php printf(esc_html__('version %s', 'ApplyOnline'), $this->version); ?></i></small>
                 </h2>
                 <span class="alignright" style="display: none">
                     <a target="_blank" title="Love" class="aol-heart" href="https://wordpress.org/plugins/apply-online/#reviews"><span class="dashicons dashicons-heart"></span></a> &nbsp;
@@ -1678,7 +1685,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                     $submission_alert = 'Form has been submitted successfully with application id [id]. If required, we will get back to you shortly!';
 
                     $message="Hi there,\n\n"
-                        ."Thank you for showing interest in the ad: [title]. Your application with id [id] has been received. We will review your application and contact you if required.\n\n"
+                        ."Thanks for showing interest in the ad: [title]. Your application with id [id] has been received. We will review your application and contact you if required.\n\n"
                         .sprintf(__('Team %s'), get_bloginfo('name'))."\n"
                         .site_url()."\n"
                         ."Please do not reply to this system generated message.";
@@ -1686,7 +1693,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                 ?>
                     <!--
                     <tr>
-                        <th><label for="aol_multistep"><?php _e('Multistep application forms', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_multistep"><?php esc_html_e('Multistep application forms', 'ApplyOnline'); ?></label></th>
                         <td>
                             <label class="switch">
                                 <input type="checkbox" name="aol_multistep" <?php echo sanitize_key(get_option('aol_multistep')) ? 'checked="checked"':Null; ?> >
@@ -1696,33 +1703,26 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_nonce"><?php _e('Security Nonce', 'ApplyOnline'); ?> </label></th>
+                        <th><label for="aol_nonce"><?php esc_html_e('Security Nonce', 'ApplyOnline'); ?> </label></th>
                         <td>
                             <label class="switch">
                                 <input type="checkbox" name="aol_nonce_is_active" <?php echo sanitize_key(get_option('aol_nonce_is_active')) ? 'checked="checked"':Null; ?> >
                                 <span class="slider"></span>
                              </label>
-                            <p class="description"><?php _e('If you have firewall installed (e.g. WordFence) and get Session Expired error on form submissions then disabling nonce might be helpful.', 'ApplyOnline'); ?></p>
+                            <p class="description"><?php esc_html_e('If you have firewall installed (e.g. WordFence) and get Session Expired error on form submissions then disabling nonce might be helpful.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     -->
                     <tr>
-                        <th><label for="aol_upload_path"><?php _e('File upload path', 'ApplyOnline'); ?></label></th>
-                        <td>
-                            <input type="text" id="aol_upload_path" class="regular-text" placeholder="<?php echo $aol_upload_path; ?>" name="aol_upload_path" value="<?php echo esc_attr(get_option('aol_upload_path')); ?>"> <?php aol_empty_option_alert('aol_upload_path', $aol_upload_path); ?>
-                            <p class="description"><?php _e("By default attachments are saved in the WordPress upload directory which is public. Set a private path before the root directory of your website, in most cases before the public_html directory. Leave it empty for default upload directory (discouraged).", 'ApplyOnline'); ?> </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label for="aol_recipients_emails"><?php _e('List of e-mails to get application alerts', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_recipients_emails"><?php esc_html_e('List of e-mails to get application alerts', 'ApplyOnline'); ?></label></th>
                         <td>
                             <textarea id="aol_recipients_emails" class="small-text code" name="aol_recipients_emails" cols="50" rows="5"><?php echo sanitize_textarea_field(get_option_fixed('aol_recipients_emails') ); ?></textarea>
-                            <p class="description"><?php _e('One email address in one line.', 'ApplyOnline'); ?></p>
-                            <p class="description"><?php _e('Mail send limit imposed by your hosting/server provider may effect mail delivery.', 'ApplyOnline'); ?></p>
+                            <p class="description"><?php esc_html_e('One email address in one line.', 'ApplyOnline'); ?></p>
+                            <p class="description"><?php esc_html_e('Mail send limit imposed by your hosting/server provider may effect mail delivery.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_ad_author_notification"><?php _e('Email notification for ad authors', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_ad_author_notification"><?php esc_html_e('Email notification for ad authors', 'ApplyOnline'); ?></label></th>
                         <td>
                             <label class="switch">
                                 <input type="checkbox" name="aol_ad_author_notification" <?php echo get_option('aol_ad_author_notification') ? 'checked="checked"':Null; ?> >
@@ -1732,17 +1732,17 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_progress_bar"><?php _e('Application Form Progress Bar', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_progress_bar"><?php esc_html_e('Application Form Progress Bar', 'ApplyOnline'); ?></label></th>
                         <td>
                             <label class="switch">
                                 <input type="checkbox" name="aol_is_progress_bar" <?php echo get_option('aol_is_progress_bar') ? 'checked="checked"':Null; ?> >
                                 <span class="slider"></span>
                              </label>
-                            <p class="description"><?php _e('Applies to required form fields only.', 'ApplyOnline'); ?> </p>
+                            <p class="description"><?php esc_html_e('Applies to required form fields only.', 'ApplyOnline'); ?> </p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_progress_bar_color"><?php _e('Progress Bar Color Scheme', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_progress_bar_color"><?php esc_html_e('Progress Bar Color Scheme', 'ApplyOnline'); ?></label></th>
                         <td>
                             <label> Foreground <input type="color" name="aol_progress_bar_color[foreground]"  value="<?php echo esc_attr($progress_bar['foreground']); ?>" /></label> &nbsp; 
                             <label> Background <input type="color" name="aol_progress_bar_color[background]"  value="<?php echo esc_attr($progress_bar['background']); ?>" /></label> &nbsp; 
@@ -1750,61 +1750,61 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_application_success_alert"><?php _e('Application submission note', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_application_success_alert"><?php esc_html_e('Application submission note', 'ApplyOnline'); ?></label></th>
                         <td>
                             <textarea class="small-text code" name="aol_application_success_alert" cols="50" rows="4" id="aol_application_success_alert"><?php echo sanitize_text_field( get_option_fixed('aol_application_success_alert', $submission_alert ) ); ?></textarea>
-                            <p class="description"><?php _e('Use [id] for dynamic application ID.', 'ApplyOnline'); ?></p>
+                            <p class="description"><?php esc_html_e('Use [id] for dynamic application ID.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_admin_mail_subject"><?php _e('Email notification subject for admin', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_admin_mail_subject"><?php esc_html_e('Email notification subject for admin', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input class="regular-text" type="text" name="aol_admin_mail_subject" cols="50" rows="3" id="aol_admin_mail_subject" value="<?php echo esc_attr( get_option_fixed('aol_admin_mail_subject', 'New application [id] for [title]' ) ); ?>" />
-                            <p class="description"> <?php _e('Use [id] and [title] to write ad ID and title in the email subject.', 'ApplyOnline'); ?></p>
+                            <p class="description"> <?php esc_html_e('Use [id] and [title] to write ad ID and title in the email subject.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_success_mail_subject"><?php _e('Email notification subject for applicant', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_success_mail_subject"><?php esc_html_e('Email notification subject for applicant', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input class="regular-text" type="text" name="aol_success_mail_subject" cols="50" rows="3" id="aol_success_mail_subject" value="<?php echo esc_attr( get_option_fixed('aol_success_mail_subject', 'Your application for [title]' ) ); ?>" />
-                            <p class="description"> <?php _e('Use [id] and [title] to write ad ID and title in the email subject.', 'ApplyOnline'); ?></p>
+                            <p class="description"> <?php esc_html_e('Use [id] and [title] to write ad ID and title in the email subject.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_success_mail_message"><?php _e('Email notification message', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_success_mail_message"><?php esc_html_e('Email notification message', 'ApplyOnline'); ?></label></th>
                         <td>
                             <textarea class="small-text code" name="aol_success_mail_message" cols="50" rows="10" id="aol_success_mail_message"><?php echo sanitize_textarea_field( get_option_fixed('aol_success_mail_message', $message) ); ?></textarea>
-                            <p class="description"> <?php _e('Ues [title] & [id] to add ad title & its ID number in the mail.', 'ApplyOnline'); ?></p>
+                            <p class="description"> <?php esc_html_e('Ues [title] & [id] to add ad title & its ID number in the mail.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_required_fields_notice"><?php _e('Required form fields notice', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_required_fields_notice"><?php esc_html_e('Required form fields notice', 'ApplyOnline'); ?></label></th>
                         <td>
                             <textarea class="small-text code" name="aol_required_fields_notice" cols="50" rows="3" id="aol_required_fields_notice"><?php echo sanitize_text_field( get_option_fixed('aol_required_fields_notice', 'Fields with (*)  are compulsory.' ) ); ?></textarea>
                             <br />
-                            <button class="button" id="aol_required_fields_button"><?php _e('Default Notice', 'ApplyOnline'); ?></button>
+                            <button class="button" id="aol_required_fields_button"><?php esc_html_e('Default Notice', 'ApplyOnline'); ?></button>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="app_closed_alert"><?php _e('Closed Application alert', 'ApplyOnline'); ?></label></th>
+                        <th><label for="app_closed_alert"><?php esc_html_e('Closed Application alert', 'ApplyOnline'); ?></label></th>
                         <td>
                             <textarea id="app_closed_alert" class="small-text code" name="aol_application_close_message" cols="50" rows="3"><?php echo sanitize_text_field( get_option_fixed('aol_application_close_message', __('We are no longer accepting applications for this ad.', 'ApplyOnline')) ); ?></textarea>
                             <br />
-                            <button id="app_closed_alert_button" class="button"><?php _e('Default Alert', 'ApplyOnline'); ?></button>
+                            <button id="app_closed_alert_button" class="button"><?php esc_html_e('Default Alert', 'ApplyOnline'); ?></button>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_days_for_older_ads_alert"><?php _e('Number of days for older ads email alert.', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_days_for_older_ads_alert"><?php esc_html_e('Number of days for older ads email alert.', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input type="number" id="aol_days_for_older_ads_alert" class="regular-text" name="aol_days_for_older_ads_alert" value="<?php echo (int)get_option_fixed('aol_days_for_older_ads_alert', 0); ?>">
-                            <p class="description"><?php _e('Number of days after Email alert should be sent. No email alerts for zero.', 'ApplyOnline'); ?></p>
+                            <p class="description"><?php esc_html_e('Number of days after Email alert should be sent. No email alerts for zero.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="thanks-page"><?php _e('Thank you page', 'ApplyOnline'); ?></label></th>
+                        <th><label for="thanks-page"><?php esc_html_e('Thank you page', 'ApplyOnline'); ?></label></th>
                         <td>
                             <select id="thank-page" class="aol_select2_filter" style="width: 330px" name="aol_thankyou_page">
-                                <option value=""><?php _e('Not selected', 'ApplyOnline'); ?></option> 
+                                <option value=""><?php esc_html_e('Not selected', 'ApplyOnline'); ?></option> 
                                 <?php 
                                 $selected = get_option('aol_thankyou_page');
 
@@ -1822,67 +1822,74 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_form_heading"><?php _e('Application form title', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_form_heading"><?php esc_html_e('Application form title', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input type="text" id="aol_form_heading" class="regular-text" name="aol_form_heading" value="<?php echo esc_attr(get_option('aol_form_heading', 'Apply Online')); ?>">
-                            <p class="description"><?php _e('Default: Apply Online', 'ApplyOnline'); ?></p>
+                            <p class="description"><?php esc_html_e('Default: Apply Online', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_features_title"><?php _e('Ad features title', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_features_title"><?php esc_html_e('Ad features title', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input type="text" id="aol_features_title" class="regular-text" name="aol_features_title" value="<?php echo esc_attr(get_option('aol_features_title', 'Salient Features')); ?>">
-                            <p class="description"><?php _e('Default: Salient Features', 'ApplyOnline'); ?></p>
+                            <p class="description"><?php esc_html_e('Default: Salient Features', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_application_submit_button"><?php _e('Application form Submit Button', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_application_submit_button"><?php esc_html_e('Application form Submit Button', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input type="text" id="aol_application_submit_button" class="regular-text" name="aol_application_submit_button" value="<?php echo esc_attr(get_option_fixed('aol_application_submit_button', 'Submit')); ?>">
-                            <p class="description"><?php _e('Default: Submit', 'ApplyOnline'); ?></p>
+                            <p class="description"><?php esc_html_e('Default: Submit', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_not_found_alert"><?php _e('Not Found alert text', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_not_found_alert"><?php esc_html_e('Not Found alert text', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input type="text" id="aol_not_found_alert" class="regular-text" name="aol_not_found_alert" value="<?php echo esc_attr(get_option_fixed('aol_not_found_alert', 'Sorry, we could not find what you were looking for.')); ?>">
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_shortcode_readmore"><?php _e('Read More button text', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_shortcode_readmore"><?php esc_html_e('Read More button text', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input type="text" id="aol_shortcode_readmore" class="regular-text" name="aol_shortcode_readmore" value="<?php echo esc_attr(get_option_fixed('aol_shortcode_readmore')); ?>">
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_date_format"><?php _e('Date format for date fields', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_date_format"><?php esc_html_e('Date format for date fields', 'ApplyOnline'); ?></label></th>
                         <td>
-                            <p><?php echo sprintf(__('Update format on Wordpress %sGeneral Settings%s page', 'ApplyOnline'), '<a href="'.admin_url('options-general.php#timezone_string').'" target="_blank" />', '</a>'); ?> </p>
+                            <p><?php echo sprintf(esc_html__('Update format on Wordpress %sGeneral Settings%s page', 'ApplyOnline'), '<a href="'.admin_url('options-general.php#timezone_string').'" target="_blank" />', '</a>'); ?> </p>
                         </td>
                     </tr>                    
                     <tr>
-                        <th><label for="aol_slug"><?php _e('Default Ads slug', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_slug"><?php esc_html_e('Default Ads slug', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input id="aol_slug" type="text" class="regular-text" name="aol_slug" placeholder="ads" value="<?php echo esc_attr(get_option_fixed('aol_slug', 'ads') ); ?>" />
                             <?php $permalink_option = get_option('permalink_structure'); if(empty($permalink_option)): ?>
-                                <p><?php printf(__("This option doesn't work with Plain permalinks structure. Check %sPermalink Settings%s"), '<a href="'.admin_url('options-permalink.php').'">', '</a>'); ?></p>
+                                <p><?php printf(esc_html__("This option doesn't work with Plain permalinks structure. Check %sPermalink Settings%s"), '<a href="'.admin_url('options-permalink.php').'">', '</a>'); ?></p>
                             <?php else: ?>
-                                <p class="description"><?php printf(__('Current permalink is %s', 'ApplyOnline'), '<a href="'.get_post_type_archive_link('aol_ad').'" target="_blank">'.get_post_type_archive_link('aol_ad').'</a>') ?></p>
+                                <p class="description"><?php printf(esc_html__('Current permalink is %s', 'ApplyOnline'), '<a href="'.get_post_type_archive_link('aol_ad').'" target="_blank">'.get_post_type_archive_link('aol_ad').'</a>') ?></p>
                             <?php endif; ?>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_form_max_file_size"><?php _e('Max file attachment size', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_upload_path"><?php esc_html_e('File upload path', 'ApplyOnline'); ?></label></th>
                         <td>
-                            <input id="aol_form_max_upload_size" max="" type="number" name="aol_upload_max_size" placeholder="1" value="<?php echo (int)get_option('aol_upload_max_size', 1); ?>" />MBs
-                            <p class="description"><?php printf(__('Max limit by server is %d MBs', 'ApplyOnline'), floor(wp_max_upload_size()/1000000)); ?></p>
+                            <input type="text" id="aol_upload_path" class="regular-text" placeholder="<?php echo $aol_upload_path; ?>" name="aol_upload_path" value="<?php echo esc_attr(get_option('aol_upload_path')); ?>"> <?php aol_empty_option_alert('aol_upload_path', $aol_upload_path); ?>
+                            <p class="description"><?php esc_html_e("Set a private path, ideally before the root directory of your website; in most cases before the public_html directory. Leave it empty for default upload directory (discouraged).", 'ApplyOnline'); ?> </p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_allowed_file_types"><?php _e('Allowed file types', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_form_max_file_size"><?php esc_html_e('Max file attachment size', 'ApplyOnline'); ?></label></th>
+                        <td>
+                            <input id="aol_form_max_upload_size" max="" type="number" name="aol_upload_max_size" placeholder="1" value="<?php echo (int)get_option('aol_upload_max_size', 1); ?>" />MBs
+                            <p class="description"><?php printf(esc_html__('Max limit by server is %d MBs', 'ApplyOnline'), floor(wp_max_upload_size()/1000000)); ?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="aol_allowed_file_types"><?php esc_html_e('Allowed file types', 'ApplyOnline'); ?></label></th>
                         <td>
                             <textarea id="aol_allowed_file_types" name="aol_allowed_file_types" placeholder="<?php echo esc_attr( get_option("aol_allowed_file_types", ALLOWED_FILE_TYPES) ); ?>" class="code" placeholder="<?php echo esc_attr( get_option("aol_allowed_file_types", ALLOWED_FILE_TYPES) ); ?>" cols="50" rows="2"><?php echo sanitize_text_field( get_option_fixed('aol_allowed_file_types', 'jpg,jpeg,png,doc,docx,pdf,rtf,odt,txt') ); ?></textarea>
-                            <p class="description"><?php printf(__('Comma separated names of file extentions. Default: $s', 'ApplyOnline'), get_option("aol_allowed_file_types", ALLOWED_FILE_TYPES)); ?></p>
+                            <p class="description"><?php printf(esc_html__('Comma separated names of file extentions. Default: $s', 'ApplyOnline'), get_option("aol_allowed_file_types", ALLOWED_FILE_TYPES)); ?></p>
                         </td>
                     </tr>
                     <?php 
@@ -1962,7 +1969,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                                         //if(!empty($temp)):
                                         ?>
                                         <div id="<?php echo esc_attr( $tempid ); ?>" class="templateForm aolFormBuilder">
-                                            <p><input type="text" class="aolTempName" name="<?php echo esc_attr( $tempid ); ?>[templateName]" value="<?php echo esc_attr($temp['templateName']); ?>" placeholder="<?php _e('Template Name', 'ApplyOnline'); ?>" /> <span class="dashicons aol-remove dashicons-trash"></span></p>
+                                            <p><input type="text" class="aolTempName" name="<?php echo esc_attr( $tempid ); ?>[templateName]" value="<?php echo esc_attr($temp['templateName']); ?>" placeholder="<?php esc_attr_e('Template Name', 'ApplyOnline'); ?>" /> <span class="dashicons aol-remove dashicons-trash"></span></p>
                                             <table class="aol_table widefat striped">
                                                 <tbody class="app_form_fields <?php echo $tempid; ?>>">
                                                 <?php $this->aol_form_template($temp, $tempid); ?>
@@ -1975,7 +1982,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                                         <table class="aol_table widefat striped">
                                             <thead>
                                                 <tr>
-                                                    <td colspan="3"><input type="text" name="new[templateName]" placeholder="<?php _e('Template Name', 'ApplyOnline'); ?>" /></td>
+                                                    <td colspan="3"><input type="text" name="new[templateName]" placeholder="<?php esc_attr_e('Template Name', 'ApplyOnline'); ?>" /></td>
                                                 </tr>
                                             </thead>
                                             <tbody class="app_form_fields"></tbody>
@@ -1984,7 +1991,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                                      </div>
                     </div>  
                 <hr />
-                <?php submit_button(__('Save form Templates', 'ApplyOnline')); ?>
+                <?php submit_button(esc_html__('Save form Templates', 'ApplyOnline')); ?>
                 <?php wp_nonce_field( 'aol_awesome_pretty_nonce','aol_default_app_fields' ); ?>
             </form>                
             </div>
@@ -2024,10 +2031,10 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                         <tr>
                             <td></td>
                             <td class="left" id="newmetaleft">
-                                <input type="text" id="ad_filter_singular" placeholder="<?php _e('Singular Name', 'ApplyOnline'); ?>" /> <input type="text" id="ad_filter_plural" placeholder="<?php _e('Plural Name', 'ApplyOnline'); ?>" />
+                                <input type="text" id="ad_filter_singular" placeholder="<?php esc_attr_e('Singular Name', 'ApplyOnline'); ?>" /> <input type="text" id="ad_filter_plural" placeholder="<?php esc_attr_e('Plural Name', 'ApplyOnline'); ?>" />
                             </td>
                             <td class="left" id="newmetaleft">
-                                <div class=""><div class="button aol-add" id="ad_aol_filter"><span class="dashicons dashicons-plus-alt"></span> <?php _e('Add Filter', 'ApplyOnline'); ?></div></div>
+                                <div class=""><div class="button aol-add" id="ad_aol_filter"><span class="dashicons dashicons-plus-alt"></span> <?php esc_html_e('Add Filter', 'ApplyOnline'); ?></div></div>
                             </td>
                         </tr>                        
                     </tfoot>
@@ -2037,7 +2044,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
             <!--Generator -->
             <div class="clearfix clear"></div>
             <div class="clearfix clear"></div>
-            <p class="description"><b><?php _e('IMPORTANT', 'ApplyOnline'); ?></b> <i><?php _e('Filters are used to narrow down ads listing on front-end and work with [aol] shortcode only.'); ?> <?php printf(__('Saved filters are available in %sAd Types%s section.', 'ApplyOnline'), '<strong>', '</strong>'); ?></i></p>
+            <p class="description"><b><?php esc_html_e('IMPORTANT', 'ApplyOnline'); ?></b> <i><?php esc_html_e('Filters are used to narrow down ads listing on front-end and work with [aol] shortcode only.'); ?> <?php printf(esc_html__('Saved filters are available in %sAd Types%s section.', 'ApplyOnline'), '<strong>', '</strong>'); ?></i></p>
             <?php submit_button(); ?>
             </form>
             <?php
@@ -2055,19 +2062,21 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                             settings_fields( 'aol_ads' ); 
                             do_settings_sections( 'aol_ads' );
                             if(!empty($types)): 
+                                //@todo: Show data in tebular form intead of listing.
                                 foreach($types as $key => $type):
                                     $type['filters'] = isset($type['filters']) ? $type['filters'] : array();
                                     //Sanitizing key beforehand as it's used for multiple times.
                                     $key = sanitize_key($key);
                                     $count = wp_count_posts('aol_'.sanitize_key($type['singular']));
                                     echo '<li><p><a href="'. admin_url('edit.php?post_type=aol_'. sanitize_key( $type['singular']) ).'">'.sanitize_text_field( $type['singular'] ) .' ('. sanitize_text_field( $type['plural'] ) .')</a></p>';
-                                        echo '<p><b>'.__('Description', 'ApplyOnline').': </b><input type="text" name="aol_ad_types['.$key.'][description]" value="'. esc_attr( $type['description'] ).'" Placeholder="'.__('Not set', 'ApplyOnline').'"/></p>';
-                                    echo '<p><b>'.__('Shortcode', 'ApplyOnline').': </b><input type="text" readonly value="[aol type=&quot;'.sanitize_key($type['singular']).'&quot;]" /></p>';
-                                    echo '<p><b>'.__('Direct URL', 'ApplyOnline').': <a href="'.get_post_type_archive_link( 'aol_'.$key ).'" target="_blank">'.get_post_type_archive_link( 'aol_'.$key ).'</a></b></p>';
+                                        echo '<p><b>'.esc_html__('Description', 'ApplyOnline').': </b><input type="text" name="aol_ad_types['.$key.'][description]" value="'. esc_attr( $type['description'] ).'" Placeholder="'.esc_attr__('Not set', 'ApplyOnline').'"/></p>';
+                                    echo '<p><b>'.esc_html__('Shortcode', 'ApplyOnline').': </b><input type="text" readonly value="[aol type=&quot;'.sanitize_key($type['singular']).'&quot;]" /></p>';
+                                    echo '<p><b>'.esc_html__('Direct URL', 'ApplyOnline').': <a href="'.get_post_type_archive_link( 'aol_'.$key ).'" target="_blank">'.get_post_type_archive_link( 'aol_'.$key ).'</a></b></p>';
+                                    echo '<p class="description">'.esc_html__("Direct links comes with theme's UI and shortcode comes with plugin's UI", 'ApplyOnline').'</p>';
                                     echo '<input type="hidden" name="aol_ad_types['.$key.'][singular]" value="'.$type['singular'].'"/>';
                                     echo '<input type="hidden" name="aol_ad_types['.$key.'][plural]" value="'.$type['plural'].'"/>';
                                     $this->filters($type['filters'], $key);
-                                    if($key != 'ad') echo ' <button class="button button-small aol-remove button-danger">'.__('Delete', 'ApplyOnline').'</button></li>';
+                                    if($key != 'ad') echo ' <button class="button button-small aol-remove button-danger">'.esc_html__('Delete', 'ApplyOnline').'</button></li>';
                                 endforeach;
                             endif;
                         ?>
@@ -2081,24 +2090,24 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                 <tbody>
                     <tr>
                         <td class="left" id="singular">
-                            <input type="text" id="ad_type_singular" placeholder="<?php _e('Singular e.g. Career', 'ApplyOnline'); ?>" />
+                            <input type="text" id="ad_type_singular" placeholder="<?php esc_attr_e('Singular e.g. Career', 'ApplyOnline'); ?>" />
                         </td>
                         <td class="left" id="plural">
-                            <input type="text" id="ad_type_plural" placeholder="<?php _e('Plural e.g. Careers', 'ApplyOnline'); ?>" />
+                            <input type="text" id="ad_type_plural" placeholder="<?php esc_attr_e('Plural e.g. Careers', 'ApplyOnline'); ?>" />
                         </td>
                         <td class="left" id="desc">
-                            <input type="text" id="ad_type_description" placeholder="<?php _e('Description', 'ApplyOnline'); ?>" />
+                            <input type="text" id="ad_type_description" placeholder="<?php esc_attr_e('Description', 'ApplyOnline'); ?>" />
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <div class=""><div class="button" id="ad_aol_type">Add Type</div></div>
+                            <div class=""><div class="button" id="ad_aol_type"><?php esc_html_e('Add New Ad Type', 'ApplyOnline'); ?></div></div>
                         </td>
                     </tr>
                 </tbody>
                 </table>
                 <div class="clearfix clear"></div>
-                <p class="description"><b><?php _e('IMPORTANT', 'ApplyOnline'); ?></b> <?php printf(__('If you get 404 error on direct links, try saving this section once again.', 'ApplyOnline')); ?></p>
+                <p class="description"><b><?php esc_html_e('IMPORTANT', 'ApplyOnline'); ?></b> <?php printf(esc_html__('If you get 404 error on direct links, try saving this section once again.', 'ApplyOnline')); ?></p>
                 <hr />
                 <?php submit_button(); ?>
         </form>     
@@ -2118,7 +2127,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                     //$cpt is already sanitized.
                     $key = sanitize_key($key);
                     $checked = in_array($key, $set_filters) ? 'checked' : NULL;
-                    echo '<li><input id="filter-'.$cpt.'-'.$key.'" type="checkbox" name="aol_ad_types['.$cpt.'][filters][]" value="'.$key.'" '.$checked.'><label for="filter-'.$cpt.'-'.$key.'">'. sprintf(__('Enable %s filter', 'ApplyOnline'), sanitize_text_field($val['plural'])).'</label></li>';
+                    echo '<li><input id="filter-'.$cpt.'-'.$key.'" type="checkbox" name="aol_ad_types['.$cpt.'][filters][]" value="'.$key.'" '.$checked.'><label for="filter-'.$cpt.'-'.$key.'">'. sprintf(esc_html__('Enable %s filter', 'ApplyOnline'), sanitize_text_field($val['plural'])).'</label></li>';
                 }
                 ?>
             </ul>
@@ -2143,7 +2152,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                         $key = sanitize_key($key);
                         $val = esc_attr($val);
                         $checked = in_array($key, $set_filters) ? 'checked' : NULL;
-                        echo '<li><input type="hidden" name="aol_custom_statuses['.$key.']" value="'.$val.'" /><input id="filter-'.$key.'" type="checkbox" name="aol_app_statuses[]" value="'.$key.'" '.$checked.'><label for="filter-'.$key.'">'.sprintf(__('Enable %s status.', 'ApplyOnline'), $val).'</label>';
+                        echo '<li><input type="hidden" name="aol_custom_statuses['.$key.']" value="'.$val.'" /><input id="filter-'.$key.'" type="checkbox" name="aol_app_statuses[]" value="'.$key.'" '.$checked.'><label for="filter-'.$key.'">'.sprintf(esc_html__('Enable %s status.', 'ApplyOnline'), $val).'</label>';
                         if( !in_array($key, array('pending', 'rejected', 'shortlisted'))) echo '<span class="aol-remove dashicons dashicons-trash button-trash dashicons dashicons-dismiss"></span>';
                         echo '</li>';
                         $i++;
@@ -2157,10 +2166,10 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                <tbody>
                    <tr>
                        <td class="left" id="newmetaleft">
-                           <input type="text" id="ad_status_singular" placeholder="<?php _e('Status Name', 'apply-online'); ?>" />
+                           <input type="text" id="ad_status_singular" placeholder="<?php esc_attr_e('Status Name', 'apply-online'); ?>" />
                        </td>
                        <td class="left" id="newmetaleft">
-                           <div class=""><div class="button aol-add" id="ad_aol_status"><span class="dashicons dashicons-plus-alt"></span> <?php _e('Add Status', 'ApplyOnline'); ?></div></div>
+                           <div class=""><div class="button aol-add" id="ad_aol_status"><span class="dashicons dashicons-plus-alt"></span> <?php esc_html_e('Add Status', 'ApplyOnline'); ?></div></div>
                        </td>
                    </tr>
                    <tr>
@@ -2190,38 +2199,38 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                     do_settings_sections( 'aol_ui_settings_group' );
                     ?>
                     <tr>
-                        <th><label for="aol_submit_button_classes"><?php _e('Submit Button Classes', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_submit_button_classes"><?php esc_html_e('Submit Button Classes', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input type="text" id="aol_submit_button_classes" class="regular-text" name="aol_submit_button_classes" value="<?php echo esc_attr(get_option('aol_submit_button_classes')); ?>">
-                            <p class="description"><?php _e('Extra button classes to ad theme support.', 'ApplyOnline'); ?></p>
+                            <p class="description"><?php esc_html_e('Extra button classes to ad theme support.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_readmore_button_classes"><?php _e('Read More Button Classes', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_readmore_button_classes"><?php esc_html_e('Read More Button Classes', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input type="text" id="aol_readmore_button_classes" class="regular-text" name="aol_readmore_button_classes" value="<?php echo esc_attr(get_option('aol_readmore_button_classes')); ?>">
-                            <p class="description"><?php _e('Extra button classes to ad theme support.', 'ApplyOnline'); ?></p>
+                            <p class="description"><?php esc_html_e('Extra button classes to ad theme support.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_multistep_button_classes"><?php _e('Multistep Buttons Classes', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_multistep_button_classes"><?php esc_html_e('Multistep Buttons Classes', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input type="text" id="aol_multistep_button_classes" class="regular-text" name="aol_multistep_button_classes" value="<?php echo esc_attr(get_option('aol_multistep_button_classes')); ?>">
-                            <p class="description"><?php _e('Extra button classes to ad theme support.', 'ApplyOnline'); ?></p>
+                            <p class="description"><?php esc_html_e('Extra button classes to ad theme support.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="aol_form_classes"><?php _e('Form Classes', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_form_classes"><?php esc_html_e('Form Classes', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input type="text" id="aol_form_classes" class="regular-text" name="aol_form_classes" value="<?php echo esc_attr(get_option('aol_form_classes')); ?>">
-                            <p class="description"><?php _e('Extra form classes to ad theme support.', 'ApplyOnline'); ?></p>
+                            <p class="description"><?php esc_html_e('Extra form classes to ad theme support.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr> 
                     <tr>
-                        <th><label for="aol_form_field_classes"><?php _e('Form Fields Classes', 'ApplyOnline'); ?></label></th>
+                        <th><label for="aol_form_field_classes"><?php esc_html_e('Form Fields Classes', 'ApplyOnline'); ?></label></th>
                         <td>
                             <input type="text" id="aol_form_field_classes" class="regular-text" name="aol_form_field_classes" value="<?php echo esc_attr(get_option('aol_form_field_classes')); ?>">
-                            <p class="description"><?php _e('Extra classes for form fields to ad theme support.', 'ApplyOnline'); ?></p>
+                            <p class="description"><?php esc_html_e('Extra classes for form fields to ad theme support.', 'ApplyOnline'); ?></p>
                         </td>
                     </tr>
                 </table>
@@ -2233,56 +2242,56 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
         $slug = get_option_fixed('aol_slug', 'ads');
         $faqs = array(
             array(
-                'question' => __('How to create an ad?', 'ApplyOnline'),
-                'answer' => __('In your WordPress admin panel, go to "All Ads" menu with globe icon and add a new ad listing here.', 'ApplyOnline')
+                'question' => esc_html__('How to create an ad?', 'ApplyOnline'),
+                'answer' => esc_html__('In your WordPress admin panel, go to "All Ads" menu with globe icon and add a new ad listing here.', 'ApplyOnline')
             ),
             array(
-                'question' => __('How to show ad listings on the front-end?', 'ApplyOnline'),
-                'answer' => __('You may choose either option.', 'ApplyOnline'),
+                'question' => esc_html__('How to show ad listings on the front-end?', 'ApplyOnline'),
+                'answer' => esc_html__('You may choose either option.', 'ApplyOnline'),
             ),
             array(
                 'answer' => array(
-                    __('Write [aol] shortcode in an existing page or add a new page and write shortcode anywhere in the page editor. Now click on VIEW to see all of your ads on front-end.?' ,'ApplyOnline'),
-                    sprintf(__('The url %s lists all the applications using your theme&#39;s default look and feel. %s(If above not working, try saving %s permalinks %s without any changes)' ,'ApplyOnline'), '<b><a href="'.get_post_type_archive_link( 'aol_ad' ).'" target="_blank" >'.get_post_type_archive_link( 'aol_ad' ).'</a></b>', '<br />&nbsp; &nbsp;&nbsp;', '<a href="'.get_admin_url().'options-permalink.php"  >', '</a>')
+                    esc_html__('Write [aol] shortcode in an existing page or add a new page and write shortcode anywhere in the page editor. Now click on VIEW to see all of your ads on front-end.?' ,'ApplyOnline'),
+                    sprintf(esc_html__('The url %s lists all the ads using your theme&#39;s default look and feel. %s(If above not working, try saving %s permalinks %s without any changes)' ,'ApplyOnline'), '<b><a href="'.get_post_type_archive_link( 'aol_ad' ).'" target="_blank" >'.get_post_type_archive_link( 'aol_ad' ).'</a></b>', '<br />&nbsp; &nbsp;&nbsp;', '<a href="'.get_admin_url().'options-permalink.php"  >', '</a>')
                 )
             ),
             array(
-                'question' => __('Ads archive page on front-end shows 404 error or Nothing Found.' ,'ApplyOnline'),
-                'answer' => sprintf(__('Try saving %spermalinks%s without any change.' ,'ApplyOnline'), '<a href="'.get_admin_url().'options-permalink.php"  >', '</a>')
+                'question' => esc_html__('Ads archive page on front-end shows 404 error or Nothing Found.' ,'ApplyOnline'),
+                'answer' => sprintf(esc_html__('Try saving %spermalinks%s without any change.' ,'ApplyOnline'), '<a href="'.get_admin_url().'options-permalink.php"  >', '</a>')
             ),
             array(
-                'question' => __('I have a long application form to fill, how can i facilitate applicant to fill it conveniently?' ,'ApplyOnline'),
-                'answer' => sprintf(__('With %sApplication Tracking System%s extention, applicant can save/update incomplete form for multiple times before final submission.' ,'ApplyOnline'), '<a href="https://wpreloaded.com/product/apply-online-application-tracking-system/" target="_blank" class="strong">', '</a>')
+                'question' => esc_html__('I have a long application form to fill, how can i facilitate applicant to fill it conveniently?' ,'ApplyOnline'),
+                'answer' => sprintf(esc_html__('With %sApplication Tracking System%s extention, applicant can save/update incomplete form for multiple times before final submission.' ,'ApplyOnline'), '<a href="https://wpreloaded.com/product/apply-online-application-tracking-system/" target="_blank" class="strong">', '</a>')
             ),
             array(
-                'question' => __('How can I show selected ads on front-end?' ,'ApplyOnline'),
+                'question' => esc_html__('How can I show selected ads on front-end?' ,'ApplyOnline'),
                 'answer' => array(
-                        __('You can show selected ads on your website by using shortcode with "ads" attribute. Ad ids must be separated with commas i.e. [aol ads="1,2,3"].' ,'ApplyOnline'),
-                        __('To show first 5 ads, use count shortcode attribute i.e. [aol count="5"]')
+                        esc_html__('You can show selected ads on your website by using shortcode with "ads" attribute. Ad ids must be separated with commas i.e. [aol ads="1,2,3"].' ,'ApplyOnline'),
+                        esc_html__('To show first 5 ads, use count shortcode attribute i.e. [aol count="5"]')
                     ),
             ),
             array(
-                'question' => __('Can I show ads without excerpt/summary?' ,'ApplyOnline'),
-                'answer' => __('Yes, use shortcode with "excerpt" attribute i.e. [aol excerpt="no"]' ,'ApplyOnline')
+                'question' => esc_html__('Can I show ads without excerpt/summary?' ,'ApplyOnline'),
+                'answer' => esc_html__('Yes, use shortcode with "excerpt" attribute i.e. [aol excerpt="no"]' ,'ApplyOnline')
             ),
             array(
-                'question' => __('What attributes can i use in the shortcode?' ,'ApplyOnline'),
-                'answer' => __('Shortcode with default attributes is [aol ads="all" count="-1" excerpt="yes" type="ad" display="full"]. Use only required attributes.' ,'ApplyOnline')
+                'question' => esc_html__('What attributes can i use in the shortcode?' ,'ApplyOnline'),
+                'answer' => esc_html__('Shortcode with default attributes is [aol ads="all" count="-1" excerpt="yes" type="ad" display="full"]. Use only required attributes.' ,'ApplyOnline')
             ),
             array(
-                'question' => __('Can I display only application form using shortocode?' ,'ApplyOnline'),
-                'answer' => __(' Yes, [aol_form id="0"] is the shortcode to display a particular application form in WordPress pages or posts. Use correct form id in the shortocode.' ,'ApplyOnline')
+                'question' => esc_html__('Can I display only application form using shortocode?' ,'ApplyOnline'),
+                'answer' => esc_html__(' Yes, [aol_form id="0"] is the shortcode to display a particular application form in WordPress pages or posts. Use correct form id in the shortocode.' ,'ApplyOnline')
             ),
             array(
-                'question' => __('Can I list ads without any fancy styling?' ,'ApplyOnline'),
-                'answer' => __('Yes, use shortcode with "style" attribute to list ads with bullets i.e. [aol display="list"]. To generate an ordered list add another attribute "list-style" i.e. [aol display="list" list-style="ol"].' ,'ApplyOnline')
+                'question' => esc_html__('Can I list ads without any fancy styling?' ,'ApplyOnline'),
+                'answer' => esc_html__('Yes, use shortcode with "style" attribute to list ads with bullets i.e. [aol display="list"]. To generate an ordered list add another attribute "list-style" i.e. [aol display="list" list-style="ol"].' ,'ApplyOnline')
             ),
             array(
-                'question' => __('Filters under ApplyOnline section are not accessible.' ,'ApplyOnline'),
-                'answer' => __('Try deactivating & then reactivating this plugin.' ,'ApplyOnline')
+                'question' => esc_html__('Filters under ApplyOnline section are not accessible.' ,'ApplyOnline'),
+                'answer' => esc_html__('Try deactivating & then reactivating this plugin.' ,'ApplyOnline')
             ),
             array(
-                'question' => __("I Have enabled the filters but they are not visible on the 'ads' page." ,'ApplyOnline'),
+                'question' => esc_html__("I Have enabled the filters but they are not visible on the 'ads' page." ,'ApplyOnline'),
                 'answer' => ''
             ),
             array(
@@ -2312,64 +2321,64 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
         );
         ?>
         <div class="card" style="max-width:100%">
-            <h3><?php _e('How to create an ad?' ,'ApplyOnline'); ?></h3>
-            <?php _e('In your WordPress admin panel, go to "All Ads" menu with globe icon and add a new ad listing here.', 'ApplyOnline'); ?>
+            <h3><?php esc_html_e('How to create an ad?' ,'ApplyOnline'); ?></h3>
+            <?php esc_html_e('In your WordPress admin panel, go to "All Ads" menu with globe icon and add a new ad listing here.', 'ApplyOnline'); ?>
 
-            <h3><?php _e('How to show ad listings on the front-end?' ,'ApplyOnline'); ?></h3>
+            <h3><?php esc_html_e('How to show ad listings on the front-end?' ,'ApplyOnline'); ?></h3>
             <!-- @todo Fix empty return value of aol_slug option. !-->
-            <?php _e('You may choose either option.' ,'ApplyOnline') ?>
+            <?php esc_html_e('You may choose either option.' ,'ApplyOnline') ?>
             <ol>
-                <li><?php _e('Write [aol] shortcode in an existing page or add a new page and write shortcode anywhere in the page editor. Now click on VIEW to see all of your ads on front-end.?' ,'ApplyOnline') ?>
-                <li><?php printf(__('The url %s lists all the applications using your theme&#39;s default look and feel. %s(If above not working, try saving %s permalinks %s without any change)' ,'ApplyOnline'), '<b><a href="'.get_post_type_archive_link( 'aol_ad' ).'" target="_blank" >'.get_post_type_archive_link( 'aol_ad' ).'</a></b>', '<br />&nbsp; &nbsp;&nbsp;', '<a href="'.get_admin_url().'options-permalink.php"  >', '</a>'); ?></li>
+                <li><?php esc_html_e('Write [aol] shortcode in an existing page or add a new page and write shortcode anywhere in the page editor. Now click on VIEW to see all of your ads on front-end.?' ,'ApplyOnline') ?>
+                <li><?php printf(esc_html__('The url %s lists all the applications using your theme&#39;s default look and feel. %s(If above not working, try saving %s permalinks %s without any change)' ,'ApplyOnline'), '<b><a href="'.get_post_type_archive_link( 'aol_ad' ).'" target="_blank" >'.get_post_type_archive_link( 'aol_ad' ).'</a></b>', '<br />&nbsp; &nbsp;&nbsp;', '<a href="'.get_admin_url().'options-permalink.php"  >', '</a>'); ?></li>
             </ol>
-            <h3><?php _e('Application form submission fails and shows Session Expired error.', 'ApplyOnline'); ?></h3>
-            <?php _e('If you have firewall installed such as WordFence or CloudFlare then disabling Security Nonce under General tab will be helpful.', 'ApplyOnline'); ?>
+            <h3><?php esc_html_e('Application form submission fails and shows Session Expired error.', 'ApplyOnline'); ?></h3>
+            <?php esc_html_e('If you have firewall installed such as WordFence or CloudFlare then disabling Security Nonce under General tab will be helpful.', 'ApplyOnline'); ?>
             
-            <h3><?php _e('Ads archive page on front-end shows 404 error or Nothing Found.' ,'ApplyOnline') ?></h3>
-            <?php printf(__('Try saving %spermalinks%s without any change.' ,'ApplyOnline'), '<a href="'.get_admin_url().'options-permalink.php"  >', '</a>'); ?>
+            <h3><?php esc_html_e('Ads archive page on front-end shows 404 error or Nothing Found.' ,'ApplyOnline') ?></h3>
+            <?php printf(esc_html__('Try saving %spermalinks%s without any change.' ,'ApplyOnline'), '<a href="'.get_admin_url().'options-permalink.php"  >', '</a>'); ?>
             
-            <h3><?php _e('I have a long application form to be filled, how can i facilitate applicant to fill it conveniently?' ,'ApplyOnline'); ?></h3>
-            <?php printf(__('With %sApplication Tracking System%s extention, applicant can save/update incomplete form for multiple times before final submission.' ,'ApplyOnline'), '<a href="https://wpreloaded.com/product/apply-online-application-tracking-system/" target="_blank" class="strong">', '</a>'); ?>
+            <h3><?php esc_html_e('I have a long application form to be filled, how can i facilitate applicant to fill it conveniently?' ,'ApplyOnline'); ?></h3>
+            <?php printf(esc_html__('With %sApplication Tracking System%s extention, applicant can save/update incomplete form for multiple times before final submission.' ,'ApplyOnline'), '<a href="https://wpreloaded.com/product/apply-online-application-tracking-system/" target="_blank" class="strong">', '</a>'); ?>
             
-            <h3><?php _e('Can I show selected ads on front-end?' ,'ApplyOnline'); ?></h3>
-            <?php _e('Yes, you can show any number of ads on your website by using shortcode with "ads" attribute. Ad ids must be separated with commas i.e. [aol ads="1,2,3" type="ad"]. Default type is "ad".' ,'ApplyOnline'); ?>
+            <h3><?php esc_html_e('Can I show selected ads on front-end?' ,'ApplyOnline'); ?></h3>
+            <?php esc_html_e('Yes, you can show any number of ads on your website by using shortcode with "ads" attribute. Ad ids must be separated with commas i.e. [aol ads="1,2,3" type="ad"]. Default type is "ad".' ,'ApplyOnline'); ?>
 
-            <h3><?php _e('Can I show ads without excerpt/summary?' ,'ApplyOnline'); ?></h3>
-            <?php _e('Yes, use shortcode with "excerpt" attribute i.e. [aol excerpt="no"]' ,'ApplyOnline'); ?>
+            <h3><?php esc_html_e('Can I show ads without excerpt/summary?' ,'ApplyOnline'); ?></h3>
+            <?php esc_html_e('Yes, use shortcode with "excerpt" attribute i.e. [aol excerpt="no"]' ,'ApplyOnline'); ?>
 
-            <h3><?php _e('What attributes can i use in the shortcode?' ,'ApplyOnline'); ?></h3>
-            <?php printf(__('Shortcode with all attributes and default values is %s. Use only required attributes.' ,'ApplyOnline'), '[aol count="-1" ads="all" excerpt="yes" type="ad" display="full"]'); ?>
+            <h3><?php esc_html_e('What attributes can i use in the shortcode?' ,'ApplyOnline'); ?></h3>
+            <?php printf(esc_html__('Shortcode with all attributes and default values is %s. Use only required attributes.' ,'ApplyOnline'), '[aol count="-1" ads="all" excerpt="yes" type="ad" display="full"]'); ?>
             <ul>
-                <li><?php _e('"count" is used to control number of ads shown in the ads list. e.g. count="10" will show latest 10 ads.', 'ApplyOnline'); ?></li>
-                <li><?php _e('"ads" is used to show selected ads. This attribute accepts ads ids e.g. ads="5,10,70" will show three ads with given ids.', 'ApplyOnline'); ?></li>
-                <li><?php _e('"excerpt" is used to show or hide excerpt in each ad section. It excepts two values yes or no.', 'ApplyOnline'); ?></li>
-                <li><?php _e('"type" attribute is used to show ads from selected ad type only e.g. type="admission"', 'ApplyOnline'); ?></li>
-                <li><?php _e('"display" attribute is used to control the output style of the shortcode. It accepts two display types full or list, ', 'ApplyOnline'); ?></li>
+                <li><?php esc_html_e('"count" is used to control number of ads shown in the ads list. e.g. count="10" will show latest 10 ads.', 'ApplyOnline'); ?></li>
+                <li><?php esc_html_e('"ads" is used to show selected ads. This attribute accepts ads ids e.g. ads="5,10,70" will show three ads with given ids.', 'ApplyOnline'); ?></li>
+                <li><?php esc_html_e('"excerpt" is used to show or hide excerpt in each ad section. It excepts two values yes or no.', 'ApplyOnline'); ?></li>
+                <li><?php esc_html_e('"type" attribute is used to show ads from selected ad type only e.g. type="admission"', 'ApplyOnline'); ?></li>
+                <li><?php esc_html_e('"display" attribute is used to control the output style of the shortcode. It accepts two display types full or list, ', 'ApplyOnline'); ?></li>
             </ul>
 
-            <h3><?php _e('Can I display application form only using shortocode?' ,'ApplyOnline'); ?></h3>
-            <?php _e(' Yes, [aol_form id="0"] is the shortcode to display a particular application form in WordPress pages or posts. Use correct form id in the shortocode.' ,'ApplyOnline'); ?>
+            <h3><?php esc_html_e('Can I display application form only using shortocode?' ,'ApplyOnline'); ?></h3>
+            <?php esc_html_e(' Yes, [aol_form id="0"] is the shortcode to display a particular application form in WordPress pages or posts. Use correct form id in the shortocode.' ,'ApplyOnline'); ?>
             
-            <h3><?php _e('Can I list ads without any fancy styling?' ,'ApplyOnline'); ?></h3>
-            <?php _e('Yes, use shortcode with "style" attribute to list ads with bullets i.e. [aol display="list"]. To generate an ordered list add another attribute "list-style" i.e. [aol display="list" list-style="ol"].' ,'ApplyOnline'); ?>
+            <h3><?php esc_html_e('Can I list ads without any fancy styling?' ,'ApplyOnline'); ?></h3>
+            <?php esc_html_e('Yes, use shortcode with "style" attribute to list ads with bullets i.e. [aol display="list"]. To generate an ordered list add another attribute "list-style" i.e. [aol display="list" list-style="ol"].' ,'ApplyOnline'); ?>
             
-            <h3><?php _e('Filters under ApplyOnline section are not accessible.' ,'ApplyOnline'); ?></h3>
-            <?php _e('Try deactivating & then reactivating this plugin.' ,'ApplyOnline'); ?>
+            <h3><?php esc_html_e('Filters under ApplyOnline section are not accessible.' ,'ApplyOnline'); ?></h3>
+            <?php esc_html_e('Try deactivating & then reactivating this plugin.' ,'ApplyOnline'); ?>
             
-            <h3><?php _e("I Have enabled the filters but they are not visible on the 'ads' page." ,'ApplyOnline'); ?></h3>
-            <?php _e('Possible reasons for not displaying ad filters are given as under:' ,'ApplyOnline'); ?>
+            <h3><?php esc_html_e("I Have enabled the filters but they are not visible on the 'ads' page." ,'ApplyOnline'); ?></h3>
+            <?php esc_html_e('Possible reasons for not displaying ad filters are given as under:' ,'ApplyOnline'); ?>
 
             <ol>
-                <li><?php _e('Filters are visible when you show your ad on front-end using [aol] shortcode only. ' ,'ApplyOnline'); ?></li>
-                <li><?php _e('Make sure Filters are enable under ApplyOnline/Settings/AdTypes section in wordpress Admin Panel.' ,'ApplyOnline'); ?></li>
-                <li><?php _e('On Ad Editor screen in the right siedebar, there is an option to mark the ad for a filter e.g. Categories, Types or Locations.' ,'ApplyOnline'); ?></li>
+                <li><?php esc_html_e('Filters are visible when you show your ad on front-end using [aol] shortcode only. ' ,'ApplyOnline'); ?></li>
+                <li><?php esc_html_e('Make sure Filters are enable under ApplyOnline/Settings/AdTypes section in wordpress Admin Panel.' ,'ApplyOnline'); ?></li>
+                <li><?php esc_html_e('On Ad Editor screen in the right siedebar, there is an option to mark the ad for a filter e.g. Categories, Types or Locations.' ,'ApplyOnline'); ?></li>
             </ol>
             
-            <h3><?php _e('Is plugin not working accordingly or generating 500 internal server error?' ,'ApplyOnline') ?></h3>
-            <?php printf(__("You may need to resolve a theme or plugin conflict with ApplyOnline plugin. %s Click Here %s to fix this conflict." ,'ApplyOnline'), '<a href="https://wpreloaded.com/wordpress-theme-or-plugin-conflicts-and-their-solution/" target="_blank">', '</a>'); ?>            
+            <h3><?php esc_html_e('Is plugin not working accordingly or generating 500 internal server error?' ,'ApplyOnline') ?></h3>
+            <?php printf(esc_html__("You may need to resolve a theme or plugin conflict with ApplyOnline plugin. %s Click Here %s to fix this conflict." ,'ApplyOnline'), '<a href="https://wpreloaded.com/wordpress-theme-or-plugin-conflicts-and-their-solution/" target="_blank">', '</a>'); ?>            
             
-            <h3><?php _e('I am facing a different problem. I may need a new feature in the plugin.' ,'ApplyOnline') ?></h3>
-            <?php printf(__("Please contact us through %s plugin's website %s for more information." ,'ApplyOnline'), '<a href="https://wpreloaded.com/contact-us/" target="_blank">', '</a>'); ?>
+            <h3><?php esc_html_e('I am facing a different problem. I may need a new feature in the plugin.' ,'ApplyOnline') ?></h3>
+            <?php printf(esc_html__("Please contact us through %s plugin's website %s for more information." ,'ApplyOnline'), '<a href="https://wpreloaded.com/contact-us/" target="_blank">', '</a>'); ?>
         </div>    
         <?php
     }
@@ -2377,8 +2386,8 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
     private function tab_extend(){
         ?>
         <div class="card" style="max-width:100%">
-            <p><?php echo __('Looking for more options to put additional power in your hands?' ,'ApplyOnline') ?></p>
-            <p><?php printf(__("There's a range of ApplyOnline extensions availabel. %sClick Here%s for docs and extensions." ,'ApplyOnline'), '<a href="https://wpreloaded.com/shop" target="_blank">', '</a>'); ?></p>
+            <p><?php echo esc_html__('Looking for more options to put additional power in your hands?' ,'ApplyOnline') ?></p>
+            <p><?php printf(esc_html__("There's a range of ApplyOnline extensions availabel. %sClick Here%s for docs and extensions." ,'ApplyOnline'), '<a href="https://wpreloaded.com/shop" target="_blank">', '</a>'); ?></p>
         </div>            
         <?php 
     }

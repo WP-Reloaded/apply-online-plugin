@@ -311,7 +311,8 @@ class Applyonline_Activator {
             
             self::fix_roles();
             self::bug_fix_before_16();
-            //exit(wp_redirect(admin_url('edit.php?post_type=aol_ad&page=settings')));
+            
+            if( !get_option('aol_upload_path') ) update_option('aol_upload_path', realpath(ABSPATH.'../'));
         }
 
         
@@ -339,14 +340,14 @@ class Applyonline_Activator {
                 'publish_applications'       =>FALSE,
                 'create_applications'       =>FALSE,
                 'read_private_applications' =>TRUE,
-                'read'                      =>TRUE,
                 'manage_ads'                =>TRUE,
-                'view_admin_dashboard'      => TRUE, //WooCommerce fix, the alternate read capability.
                 'manage_ad_terms'       => TRUE,
                 'edit_ad_terms'         => TRUE,
                 'delete_ad_terms'       => TRUE,
                 'assign_ad_terms'          => TRUE,
-                'upload_files'          => TRUE
+                //'read'                      =>TRUE,
+                //'view_admin_dashboard'      => TRUE, //WooCommerce fix, the alternate read capability.
+                //'upload_files'          => TRUE
                 );
             
             $role = get_role('administrator');
@@ -358,6 +359,10 @@ class Applyonline_Activator {
 
             //Prepare AOL Manager Role
             //$caps = array_merge($caps, array('delete_others_ads' =>FALSE,'edit_others_ads' =>FALSE));
+            $caps['upload_files'] = TRUE;
+            $caps['read'] = TRUE;
+            $caps['view_admin_dashboard'] = TRUE;
+            
             remove_role('aol_manager');
             add_role('aol_manager', 'AOL Manager', $caps);
 

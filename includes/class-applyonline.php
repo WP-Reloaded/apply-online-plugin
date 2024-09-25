@@ -172,6 +172,11 @@ class Applyonline {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		
+                //Extend WordPress search to include custom fields Join posts and postmeta tables.
+                $this->loader->add_filter('posts_join', $plugin_admin, 'cf_search_join' );
+                $this->loader->add_filter( 'posts_where', $plugin_admin, 'cf_search_where' );
+                $this->loader->add_filter( 'posts_distinct', $plugin_admin, 'cf_search_distinct' );
 
                 $this->loader->add_filter( 'views_edit-aol_application', $plugin_admin, 'status_filters' );
                 
@@ -407,16 +412,17 @@ class Applyonline {
             $args=array(
                 'label' => __( 'Applications', 'ApplyOnline' ),
                 'labels' => $lables,
-                'show_ui'           => true,
-                'public'            => true,
-                'exclude_from_search'=> true,
-                'capability_type'   => array('application', 'applications'),
-                'capabilities'  => array( 'create_posts' => 'create_applications'),
-                'description' =>    __( 'All Applications', 'ApplyOnline' ),
-                'supports' =>       array('comments', 'editor'),
-                'map_meta_cap'      => TRUE,
-                'rewrite'           => array('slug' => 'applications'),
-                'show_in_menu'      => 'aol-settings',
+                'show_ui'               => TRUE,
+                'public'                => TRUE,
+                'exclude_from_search'   => TRUE,
+                'has_archive'           => TRUE,
+                'capability_type'       => array('application', 'applications'),
+                'capabilities'          => array( 'create_posts' => 'create_applications'),
+                'description'           => __( 'All Applications', 'ApplyOnline' ),
+                'supports'              => array('comments', 'editor'),
+                'map_meta_cap'          => TRUE,
+                'rewrite'               => array('slug' => 'applications'),
+                'show_in_menu'          => 'aol-settings',
         );
             register_post_type('aol_application',$args);
             
