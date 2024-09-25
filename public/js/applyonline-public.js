@@ -82,62 +82,50 @@
             /*Ends Textarea Charchter Counter*/
          
             /*Submit Application Form*/
+            /*
             $( ".aol_app_form" ).submit(function(){
                 var datastring = new FormData(document.getElementById("aol_app_form"));
-                $.ajax({
-                        url: aol_public.ajaxurl,
-                        type: 'POST',
-                        dataType: 'json',
-                        data: datastring,
-                        //async: false,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        beforeSend: function(){
-                            $('#aol_form_status').removeClass();
-                            $('#aol_form_status').html('<img src="'+aol_public.url+'/images/loading.gif" />');
-                            $('#aol_form_status').addClass('alert alert-warning');
-                            $(".aol-form-button").prop('disabled', true);
-                        },
-                        success:function(response){
-                            $(document).trigger('afterAppSubmit', response); //Custom event  on ajax completion
-                            
-                            if(response['success']==true){
-                                $('#aol_form_status').removeClass();
-                                $('#aol_form_status').addClass('alert alert-success');
-                                $('#aol_form_status').html(response['message']);
-                                $(".aol-form-button").prop('disabled', false);
-                                if(response['hide_form']==true) $('.aol_app_form').slideUp(); //Show a sliding effecnt.
+                var request = $.ajax({
+                    url: aol_public.ajaxurl,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: datastring,
+                    //async: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function(){
+                        $('#aol_form_status').removeClass();
+                        $('#aol_form_status').html('<img src="'+aol_public.url+'/images/loading.gif" />');
+                        $('#aol_form_status').addClass('alert alert-warning');
+                        $(".aol-form-button").prop('disabled', true);
+                    }
+                });                        
+                request.done( function(response, type, data){
+                    $(document).trigger('afterAppSubmit', response); //Custom event  on ajax completion
+                    if(response['success']==true){
+                        $('#aol_form_status').removeClass();
+                        $('#aol_form_status').addClass('alert alert-success');
+                        $('#aol_form_status').html(response['message']);
+                        $(".aol-form-button").prop('disabled', false);
+                        if(response['hide_form']==true) $('.aol_app_form').slideUp(); //Show a sliding effecnt.
 
-                                //Divert to thank you page. 
-                                if(response.divert != null){
-                                    var page = response.divert;
-                                    window.location.href = stripslashes(page);
-                                }
-                            }
-                            else if(response['success']==false){
-                                $('#aol_form_status').removeClass();
-                                $('#aol_form_status').addClass('alert alert-danger');
-                                $('#aol_form_status').html(response['error']);
-                                $(".aol-form-button").prop('disabled', false);
-                            }
-                            //If response is not jSon.
-                            else{
-                                $('#aol_form_status').addClass('alert alert-danger');
-                                $('#aol_form_status').html('Form saved with errors. Please contact us for more information. ');
-                                $(".aol-form-button").prop('disabled', false);
-                            }
-                        },
-                        error: function(xhr, type, error){
-                            $('#aol_form_status').removeClass();
-                            $('#aol_form_status').addClass('alert alert-danger');
-                            $('#aol_form_status').html('An unexpected error occured: <u>' + xhr.status + ":" + xhr.statusText+'</u>. '+error+'. Please refresh page and try again. If problem presists, please report this issue through Contact Us page. Thanks');
-                            $(".aol-form-button").prop('disabled', false);
-                        },
+                        //Divert to thank you page. 
+                        if(response.divert != null){
+                            var page = response.divert;
+                            window.location.href = stripslashes(page);
+                        }
+                    }
+                });
+                request.fail( function(xhr, type, errorText){
+                        let response = JSON.parse(xhr.responseText);
+                        $('#aol_form_status').removeClass();
+                        $('#aol_form_status').addClass('alert alert-danger');
+                        $('#aol_form_status').html('<h4>'+errorText+'</h4>'+response['message']);
+                        $(".aol-form-button").prop('disabled', false);
                 });
                 return false;
             });
-          
+          */
             //Separator Code
             $('.aol_multistep').click(function(){
                 $('fieldset').hide();
@@ -184,82 +172,50 @@ function update_progress_bar($, field, fields_count){
     //$('.aol_progress').val(filled+'/'+fields_count);
 }
 
-function aol_submit($){
-    var datastring = new FormData(document.getElementById("aol_app_form"));
-    $.ajax({
-            url: aol_public.ajaxurl,
-            type: 'POST',
-            dataType: 'json',
-            data: datastring,
-            //async: false,
-            cache: false,
-            contentType: false,
-            processData: false,
-            beforeSend: function(){
-                $('#aol_form_status').removeClass();
-                $('#aol_form_status').html('<img src="'+aol_public.url+'/images/loading.gif" />');
-                $('#aol_form_status').addClass('alert alert-warning');
-                $(".aol-form-button").prop('disabled', true);
-            },
-            success:function(response){
-                $(document).trigger('afterAppSubmit', response); //Custom event  on ajax completiong
+async function aolSubmitForm( event ) {
+    if ( window.confirm(aol_public.consent_text) == false ) return;
+    event.preventDefault();
+    
+    const submitButton = document.getElementById('aol_app_submit_button');
+    const statusBar = document.getElementById('aol_form_status');
+    const aolForm = event.target;
+    
+    //event.target.setAttribute('disabled', 'disabled');
+    submitButton.setAttribute('disabled', 'disabled');
+    statusBar.classList.remove('alert-danger'); //May be trying again after errors.
+    statusBar.classList.add('alert');
+    statusBar.classList.add('alert-warning');
+    statusBar.innerHTML = '<img src="'+aol_public.url+'/images/loading.gif" />';
+    
+    const formData = new FormData(document.getElementById("aol_app_form"));
+    //formData.append('note', 'hello_world');
 
-                if(response['success']==true){
-                    $('#aol_form_status').removeClass();
-                    $('#aol_form_status').addClass('alert alert-success');
-                    $('#aol_form_status').html(response['message']);
-                    $(".aol-form-button").prop('disabled', false);
-                    if(response['hide_form']==true) $('.aol_app_form').slideUp(); //Show a sliding effecnt.
-
-                    //Divert to thank you page. 
-                    if(response.divert != null){
-                        var page = response.divert;
-                        window.location.href = stripslashes(page);
-                    }
-                }
-                else if(response['success']==false){
-                    $('#aol_form_status').removeClass();
-                    $('#aol_form_status').addClass('alert alert-danger');
-                    $('#aol_form_status').html(response['error']);
-                    $(".aol-form-button").prop('disabled', false);
-                }
-                //If response is not jSon.
-                else{
-                    $('#aol_form_status').addClass('alert alert-danger');
-                    $('#aol_form_status').html('Form saved with errors. Please contact us for more information. ');
-                    $(".aol-form-button").prop('disabled', false);
-                }
-            },
-            error: function(xhr, type, error){
-                $('#aol_form_status').removeClass();
-                $('#aol_form_status').addClass('alert alert-danger');
-                $('#aol_form_status').html('An unexpected error occured: <u>' + xhr.status + ":" + xhr.statusText+'</u>. '+error+'. Please refresh page and try again. If problem presists, please report this issue through Contact Us page. Thanks');
-                $(".aol-form-button").prop('disabled', false);
-            },
-            // Custom XMLHttpRequest
-            /*
-            xhr: function () {
-              $('progress').attr({
-                      value: 0,
-                    });
-              var myXhr = $.ajaxSettings.xhr();
-              if (myXhr.upload) {
-                // For handling the progress of the upload
-                myXhr.upload.addEventListener('progress', function (e) {
-                  if (e.lengthComputable) {
-                    $('progress').attr({
-                      value: e.loaded,
-                      max: e.total,
-                    });
-                  }
-                }, false);
-              }
-              return myXhr;
-            },
-            * 
-            */
+    const response = await fetch(aol_public.ajaxurl, {
+        method: 'POST',
+        body: formData,
+        headers: {'Accept': 'application/json'}
     });
-    return false;
+    const data = await response.json();
+    if( response.status == 200 ){
+
+        statusBar.classList.remove('alert-warning');
+        statusBar.classList.add('alert-info');
+        statusBar.innerHTML = data['message'];
+        if(data['hide_form'] == true){
+            aolForm.classList.toggle('hideout');
+        } //Show a sliding effecnt.
+
+        //Divert to thank you page. 
+        if(data.divert == true){
+            var page = response.divert;
+            window.location.href = stripslashes(page);
+        }
+    } else {
+        statusBar.classList.remove('alert-warning');
+        statusBar.classList.add('alert-danger');
+        statusBar.innerHTML = '<h5 class="error-title">'+response.statusText+'</h5>'+data['message'];
+        submitButton.removeAttribute('disabled');
+    }
 }
 
 function stripslashes (str) {

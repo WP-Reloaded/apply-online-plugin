@@ -544,7 +544,6 @@ function aol_application_data($post){
     }
     
     $keys_order = get_post_meta($post->post_parent, "_aol_fields_order", TRUE);
-    //print_rich($keys); print_rich($keys_order); print_rich(array_mer($keys_order, $keys));
     
     //getting fields order from the order meta, but it may have missed few older form fields.
     //$keys_common = array_intersect($keys_order, $keys);
@@ -629,7 +628,7 @@ function aol_application_data_v2($post, $keys){
 function aol_application_table($post, $classes = 'aol-table widefat striped'){
     ob_start();
     ?>
-<table class="<?php echo sanitize_text_field($classes); ?>">
+    <table class="<?php echo sanitize_text_field($classes); ?>">
         <?php
         $rows = aol_application_data($post);
         foreach ( $rows as $row ):
@@ -643,7 +642,7 @@ function aol_application_table($post, $classes = 'aol-table widefat striped'){
                     }
                     echo '</td>';
                 echo '</tr>';
-        endforeach;;
+        endforeach;
         ?>
     </table>
     <?php
@@ -657,26 +656,26 @@ function aol_application_table($post, $classes = 'aol-table widefat striped'){
 * @param string $action what to do with this? e for encrypt, d for decrypt
 */
 function aol_crypt( $string, $action = 'e' ) {
-// you may change these values to your own
-    $secret_key = wp_salt('my_simple_secret_key');
-    $secret_iv = wp_salt('my_simple_secret_iv');
+    $secret_key = $secret_iv = wp_salt();
     $output = false;
     $encrypt_method = "AES-256-CBC";
     $key = hash( 'sha256', $secret_key );
     $iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
     if( $action == 'e' ) {
-    $output = base64_encode( openssl_encrypt( $string, $encrypt_method, $key, 0, $iv ) );
+        $output = base64_encode( openssl_encrypt( $string, $encrypt_method, $key, 0, $iv ) );
     }
     else if( $action == 'd' ){
-    $output = openssl_decrypt( base64_decode( $string ), $encrypt_method, $key, 0, $iv );
+        $output = openssl_decrypt( base64_decode( $string ), $encrypt_method, $key, 0, $iv );
     }
     return $output;
 }
 
-function print_rich($var){
-    echo '<pre>';
-    print_r($var);
-    echo '</pre>';
+if( !function_exists('print_rich') ){
+    function print_rich($var){
+        echo '<pre>';
+            print_r($var);
+        echo '</pre>';
+    }
 }
 
 function get_aol_ad_options(){
@@ -880,7 +879,4 @@ function is_aol_admin_screen(){
 function aol_sanitize_text_field($str, $strict = FALSE, $allowed = NULL){
     $str = sanitize_text_field($str);
     preg_replace('[^a-z0-9\s]/i', "", $str);
-}
-function aol_test(){
-    echo 'Alhamdulillah, this is working';
 }

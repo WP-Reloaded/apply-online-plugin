@@ -489,8 +489,7 @@ table.aol_ads_features td{
 ol.aol_ads_list li{padding-bottom: 10px;}
 ol.aol_ads_list p{padding: 0px; margin: 0}
 
-#aol_form_status.success{color: #0E0}
-#aol_form_status.error{color: #E00}
+#aol_form_status .error-title{margin-top: 0; font-size: 18px;}
 
 .aol_ad_list p{margin: 0px;}
 .aol_ad_list li{margin-bottom: 20px;}
@@ -519,98 +518,5 @@ ol.aol_ads_list p{padding: 0px; margin: 0}
 .aol-progress-counter{position: absolute; top:0;}
 
 .progress-wrapper{display: none}
-
-/*V 2.4 */
-/*
-* {
-  box-sizing: border-box;
-}
-
-.aol-row::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-[class*="aol-"] {
-  float: left;
-  padding: 15px;
-}
-
-.header {
-  background-color: #9933cc;
-  color: #ffffff;
-  padding: 15px;
-}
-
-.menu ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.menu li {
-  padding: 8px;
-  margin-bottom: 7px;
-  background-color: #33b5e5;
-  color: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
-
-.menu li:hover {
-  background-color: #0099cc;
-}
-
-.aside {
-  background-color: #33b5e5;
-  padding: 15px;
-  color: #ffffff;
-  text-align: center;
-  font-size: 14px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
-
-.footer {
-  background-color: #0099cc;
-  color: #ffffff;
-  text-align: center;
-  font-size: 12px;
-  padding: 15px;
-}
-
-/* For mobile phones: */
-/*
-[class*="aol-"] {
-  width: 100%;
-}
-
-@media only screen and (min-width: 600px) {
-  /* For tablets: *//*
-  .aol-s-1 {width: 8.33%;}
-  .aol-s-2 {width: 16.66%;}
-  .aol-s-3 {width: 25%;}
-  .aol-s-4 {width: 33.33%;}
-  .aol-s-5 {width: 41.66%;}
-  .aol-s-6 {width: 50%;}
-  .aol-s-7 {width: 58.33%;}
-  .aol-s-8 {width: 66.66%;}
-  .aol-s-9 {width: 75%;}
-  .aol-s-10 {width: 83.33%;}
-  .aol-s-11 {width: 91.66%;}
-  .aol-s-12 {width: 100%;}
-}
-@media only screen and (min-width: 768px) {
-  /* For desktop: *//*
-  .aol-1 {width: 8.33%;}
-  .aol-2 {width: 16.66%;}
-  .aol-3 {width: 25%;}
-  .aol-4 {width: 33.33%;}
-  .aol-5 {width: 41.66%;}
-  .aol-6 {width: 50%;}
-  .aol-7 {width: 58.33%;}
-  .aol-8 {width: 66.66%;}
-  .aol-9 {width: 75%;}
-  .aol-10 {width: 83.33%;}
-  .aol-11 {width: 91.66%;}
-  .aol-12 {width: 100%;}
-}*/
+.aol_app_form.hideout{height: 0 !important; }
+.aol_app_form{transition: all 1s ease-in-out; overflow:hidden; height: auto;  }

@@ -3,16 +3,16 @@ Contributors: farhan.noor
 Donate link: https://wpreloaded.com/shop/
 Tags: Job Board, Form Builder, Contact Form, payment form, Job Manager
 Requires at least: 5.0
-Tested up to: 6.5
-Stable tag: 2.6.1
+Tested up to: 6.6
+Stable tag: 2.6.4
 Requires PHP: 5.2.4
 License: GPLv2 or later
 
 Powerful & intuitive plugin to post ads and start receiving applications online.
 
 == Description ==
-= Discover a centralized platform for job board, course registration, school admissions, and more.  =
-Focused on stability and simplicity, with this plugin you can create a job board, advertisement board or open online registration of courses & classes and start receiving applications from your website out of the box.
+= A centralized platform for job board, school admissions, events bookings and more. =
+Focused on stability and simplicity, with this plugin you can create a job board, event bookings or open online registration of courses & classes and start receiving applications from your website out of the box.
 
 = The Most User Friendly WordPress Application Form Builder and Manager =
 Create stunning application forms using drag and drop form builder and publish job ads, admission ads, classes ads and manage received applications like a boss. It's not only a Form Builder, but a complete hiring & registration solution. [Click Here](https://wpreloaded.com/plugins/apply-online "World's #1 Online Application Form Builder & Manager") for a live demo.
@@ -104,12 +104,29 @@ No. However if you use our [premium add-ons](https://wpreloaded.com/shop/) they 
 
 == Changelog ==
 = Upcoming =
+Scroll bar with fixed height for form fields section.
 Recaptcha integration for secure form submission.
 Required field mark in the received application data.
 Different layout options e.g. grid layout, list layout, sidebar filter, popup form, etc.
 
+= 2.6.5 =
+Fixed: 500 Server error.
+Fixed: Replaced jQuery AJAX with JS Fetch API.
+
+
+= 2.6.4 =
+Fixed: Removed NULL values for wp_insert_post function parameters.
+
+= 2.6.3 =
+Fixed: Fixed authorization for Quick View button in applications section in WordPress admin panel.
+Fixed: Security patch for CVE-2024-2036.
+
+= 2.6.2 =
+Fixed: Default file upload path set to private path.
+Fixed: Applications table admin ID column width.
+
 = 2.6.1 =
-Fixed: Public file upload path admin notice.
+Fixed: Critical admin notice if file upload path is public.
 
 = 2.6 =
 New: Admin email subject option in the settings.
@@ -426,6 +443,19 @@ Fixed: Paragraph field text added in the received application & print format.
 * Plugin launched.
 
 == Upgrade Notice ==
+= 2.6.5 =
+ Critical updates. upgrade immediately.
+
+= 2.6.4 =
+ Critical updates. upgrade immediately.
+
+== Upgrade Notice ==
+= 2.6.3 =
+ Critical updates. upgrade immediately.
+
+= 2.6.2 =
+ Critical updates. upgrade immediately.
+
 = 2.6.1 =
  Critical updates. upgrade immediately.
 

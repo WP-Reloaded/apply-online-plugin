@@ -63,7 +63,7 @@ a.aol-stats:hover{color: #000; text-decoration: none; }
 a.aol-help:hover{color: #0A0; text-decoration: none; }
 a.aol-shop:hover{color: #00B; text-decoration: none; }
 
-#ad_types > li{border: 1px solid #ccc; padding: 5px; }
+#ad_types > li{border-bottom: 2px solid #ccc; padding: 5px; }
 
 /*#app_form_fields td:first-child { max-width: 300px;}*/
 /*#app_form_fields td { padding: 0.5em 0;} since 2.0*/
@@ -231,3 +231,7 @@ body.post-type-aol_ad .postbox-header .hndle{justify-content: normal}
     .aol-settings .templateForm{display: none;}
     .aol-tab.active{background: #FFF}
 /* End Options */
+
+.post-type-aol_application .column-id{width: 6em;}
+
+.aol-tab-data{padding: 20px;}
