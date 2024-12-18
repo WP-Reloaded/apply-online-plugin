@@ -380,16 +380,21 @@ function aol_form_field_check($fields){
     endforeach;
 }
         
-/*
- * @field   array   
- * $field
+/**
+ * Depricated: Use method aol_form_generator from ApplyOnline_public class.
+ * 
+ * @param type $fields
+ * @param int $fieldset
+ * @param type $prepend
+ * @param type $post_id
+ * @return string
  */
 function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 0){
     $form_output = NULL;
     foreach($fields as $field):
         //$value = isset($field['value']) ? $field['value'] : NULL;
-        $value = isset($field['val']) ? sanitize_text_field( $field['val'] ) : NULL;
-        $placeholder   = isset($field['placeholder']) ? 'placeholder="'.sanitize_text_field( $field['placeholder'] ).'"' : '';
+        $value = isset($field['val']) ? sanitize_textarea_field( $field['val'] ) : NULL;
+        $placeholder   = isset($field['placeholder']) ? 'placeholder="'.sanitize_text_field( $field['placeholder'] ).'"' : NULL;
         $class         = isset($field['class']) ? esc_attr( $field['class'] ) : NULL;
 
         //Used by Tracker add-on to display saved value.
@@ -435,8 +440,8 @@ function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 
             case 'dropdown':
                 $form_output .= $wrapper_start.'<div id="'.$field_key.'" ><select name="'.$prepend.$field_key.'" id="'.$prepend.$field_key.'" class="form-control '.$class.'" id="'.$prepend.$field_key.'" '.$attributes.' aria-describedby="help'.$field_key.'">';
                 foreach ($field['options'] as $key => $option) {
-                    $checked = ($option == $value) ? 'selected="selected"': NULL; 
-                    $form_output .= '<option class="" value="'.esc_attr($key).'" '.$checked.' >'. sanitize_text_field($option).' </option>';
+                    $selected = ($option == $value) ? 'selected="selected"': NULL; 
+                    $form_output .= '<option class="" value="'.esc_attr($key).'" '.$selected.' >'. sanitize_text_field($option).' </option>';
                 }
                 $form_output .= '</select><span id="help'.$field_key.'" class="help-block">'.$description.'</span></div></div>';
                 break;
@@ -587,7 +592,7 @@ function aol_application_data($post){
 function aol_application_data_v2($post, $keys){
     $meta = get_post_meta($post->ID, "ad_transcript", TRUE);
     foreach($meta as $key => $val){
-        $meta[$key] = maybe_unserialize($val);
+        $meta[$key] = maybe_unserialize(maybe_unserialize($val));
     }
     
     $keys_order = $meta['_aol_fields_order'];

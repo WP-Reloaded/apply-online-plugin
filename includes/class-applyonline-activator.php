@@ -362,7 +362,7 @@ class Applyonline_Activator {
             $caps['upload_files'] = TRUE;
             $caps['read'] = TRUE;
             $caps['view_admin_dashboard'] = TRUE;
-            
+
             remove_role('aol_manager');
             add_role('aol_manager', 'AOL Manager', $caps);
 

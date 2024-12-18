@@ -190,7 +190,6 @@ class Applyonline {
                 $this->loader->add_action('wp_ajax_aol_dismiss_notice', $plugin_admin, 'admin_dismiss_notice');
                 
                 $this->loader->add_filter( 'wp_dropdown_users_args',  $plugin_admin, 'ad_editor_authors_metabox');
-                $this->loader->add_action('wp_ajax_applications_search_and_filter', $plugin_admin, 'applications_search_and_filter');
                 
                 $this->loader->add_action('wp_ajax_aol_all_ads', $plugin_admin, 'get_ads_list');
 	}
@@ -210,7 +209,7 @@ class Applyonline {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
                 
                 /*Schedule Ad*/
-                $this->loader->add_action('pre_get_posts', $plugin_public, 'check_ad_closing_status');
+                $this->loader->add_action( 'pre_get_posts', $plugin_public, 'check_ad_closing_status' );
                 $this->loader->add_action( 'set_current_user', $plugin_public, 'output_attachment' );
 	}
 
@@ -268,8 +267,8 @@ class Applyonline {
             if($saved_version < 2.1){
                 /*Merge Custom Filters to Default Filters*/
                 $default_filters = array(
-                    'category' => array('singular' => __('Category', 'ApplyOnline'), 'plural' => __('Categories', 'ApplyOnline')),
-                    'type' => array('singular' => __('Type', 'ApplyOnline'), 'plural' => __('Types', 'ApplyOnline')),
+                    'category' => array('singular' => esc_html__('Category', 'ApplyOnline'), 'plural' => esc_html__('Categories', 'ApplyOnline')),
+                    'type' => array('singular' => esc_html__('Type', 'ApplyOnline'), 'plural' => esc_html__('Types', 'ApplyOnline')),
                     'location' => array('singular' => esc_html__('Location', 'ApplyOnline'), 'plural' => esc_html__('Locations', 'ApplyOnline'))
                 );
                 $custom_filters = get_option_fixed('aol_custom_filters', array());
@@ -418,9 +417,9 @@ class Applyonline {
                 'has_archive'           => TRUE,
                 'capability_type'       => array('application', 'applications'),
                 'capabilities'          => array( 'create_posts' => 'create_applications'),
+                'map_meta_cap'          => TRUE,
                 'description'           => __( 'All Applications', 'ApplyOnline' ),
                 'supports'              => array('comments', 'editor'),
-                'map_meta_cap'          => TRUE,
                 'rewrite'               => array('slug' => 'applications'),
                 'show_in_menu'          => 'aol-settings',
         );

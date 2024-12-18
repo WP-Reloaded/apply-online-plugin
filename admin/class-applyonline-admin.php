@@ -131,6 +131,8 @@ class Applyonline_Admin{
 	}
         
         function get_ads_list(){
+            if( !current_user_can('manage_ads') ) die('Are you nuts?');
+            
             $types = get_aol_ad_types();
             $posts = get_posts(array('numberposts' => -1, 'post_type' => $types));
             $response = array();
@@ -210,7 +212,8 @@ class Applyonline_Admin{
          * Show data in the Filter Application dropdown on Applications Admin Table
          */
         function application_table_filter_result(){
-            if( !current_user_can('manage_options') ) return;
+            if( !current_user_can('manage_ads') ) die('Are you nuts?');
+            
             //$search = (isset($_GET['search']) AND !empty($_GET['search'])) ? $_GET['search']: NULL;
             $ads = get_posts(array('post_type' => 'aol_ad', 's' => $_GET['search'], 'lang' => '', 'numberposts' => -1));
             $ads_arr = array(); $i = 0;
@@ -254,6 +257,8 @@ class Applyonline_Admin{
         }
         
         public function admin_dismiss_notice(){
+            if( !current_user_can('manage_ads') ) die('Are you nuts?');
+            
             $notices = get_option('aol_admin_notices', array());
             unset($notices['aol_fresh_install']);
             update_option('aol_admin_notices', $notices);
@@ -392,9 +397,9 @@ class Applyonline_Admin{
                 </div>
                 <div id="shortcodes" class="aol-tab-data wrap" style="display:block;">
                     <?php do_action('aol_metabox_before', $post); ?>
-                    <p class="description"><?php esc_html_e('Use these shortcodes to display this ad or form on a WordPress page. To list all ads on a page, use [aol] shortcode.', 'ApplyOnline'); ?></p>
-                    <p><label for="ad-shortcode"><?php esc_html_e('Ad shortcode','ApplyOnline'); ?></label><input id="ad-shortcode" type="text" value="[aol_ad id=<?php $post->ID; ?>]" readonly></p>
-                    <p><label for="form-shortcode"><?php esc_html_e('Form shortcode', 'ApplyOnline'); ?></label><input id="form-shortcode" type="text" value="[aol_form id=<?php $post->ID; ?>]" readonly></p>
+                    <p class="description"><?php esc_html_e('Use these shortcodes to display this ad or form on a WordPress page. To list all ads on a page, use [aol] shortcode instead.', 'ApplyOnline'); ?></p>
+                    <p><label for="ad-shortcode"><?php esc_html_e('Ad shortcode','ApplyOnline'); ?></label><input id="ad-shortcode" type="text" value="[aol_ad id=<?= $post->ID; ?>]" readonly></p>
+                    <p><label for="form-shortcode"><?php esc_html_e('Form shortcode', 'ApplyOnline'); ?></label><input id="form-shortcode" type="text" value="[aol_form id=<?= $post->ID; ?>]" readonly></p>
                     <p><a rel="permalink" href="<?php echo admin_url('edit.php?post_type=aol_application'); ?>&ad=<?php echo (int)$post->ID; ?>"> <?php esc_html_e('View All Applications', 'ApplyOnline'); ?></a></p>
                 </div>
                 <div id="expiration" class="aol-tab-data wrap">
@@ -411,7 +416,7 @@ class Applyonline_Admin{
                     <p class="description"><?php esc_html_e('Leave these fields intact to use global settings for the ad.', 'ApplyOnline'); ?></p>
                     <h3><?php esc_html_e('New application alert recipients', 'ApplyOnline'); ?></h3>
                     <textarea name="_recipients_emails"><?php echo sanitize_textarea_field($recipients); ?></textarea>
-                    <p class="description"><?php esc_html_e('One email address in one line. Mail send limit imposed by your web hosting/server may affect mail delivery.', 'ApplyOnline'); ?></p>
+                    <p class="description"><?php esc_html_e('One email address in one line. Mail send limit imposed by your web hosting/server may affect mail delivery.', 'ApplyOnline'); ?><!--Upgrade to use Mailchimp extension--></p>
                 </div>
                  <?php 
                     foreach($extra_tabs as $tab):
@@ -554,7 +559,7 @@ class Applyonline_Admin{
             // Hook - Applicant Listing - Column Value
             add_action( 'manage_aol_application_posts_custom_column', array ( $this, 'applicants_list_columns_value' ), 10, 2 ); 
             
-            //Filter Aplications based on parent.
+            //Filter Applications based on parent.
             add_action( 'pre_get_posts', array($this, 'applications_filter') );
             
             add_filter( 'bulk_actions-edit-aol_application', array($this, 'custom_bulk_actions') );
@@ -1160,6 +1165,8 @@ class Applyonline_Admin{
         }
         
         function aol_ad_form_render(){
+            if( !current_user_can('manage_ads') ) die('Are you nuts?');
+            
             $post_id = isset($_POST['ad_id']) ? (int)$_POST['ad_id'] : 0;
             $row = get_post_meta($post_id);
             $fields = array();
@@ -1174,6 +1181,8 @@ class Applyonline_Admin{
          * An ajax call to return Application Template Form Fields.
          */
         function template_form_callback(){
+            if( !current_user_can('manage_ads') ) die('Are you nuts?');
+            
             $fields = get_option('aol_form_templates', array());
             $array = $fields[ sanitize_text_field($_POST['template']) ];
             foreach($array as $key => $field){
@@ -1950,10 +1959,9 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                                     update_option ('aol_default_fields_x', $xfields, FALSE);
                                     delete_option('aol_default_fields');
                                 }
-                                
+
                                 //update_option('aol_form_templates', array('english' => $template, 'french' => $template));
                                 $templates = get_option('aol_form_templates', array());
-                                //print_rich($templates);
                                 if(!empty($templates)):
                                     $i = 0;
                                     echo '<h2 class="nav-tab-wrapper aol-template-tabs">';
@@ -2389,6 +2397,6 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
             <p><?php echo esc_html__('Looking for more options to put additional power in your hands?' ,'ApplyOnline') ?></p>
             <p><?php printf(esc_html__("There's a range of ApplyOnline extensions availabel. %sClick Here%s for docs and extensions." ,'ApplyOnline'), '<a href="https://wpreloaded.com/shop" target="_blank">', '</a>'); ?></p>
         </div>            
-        <?php 
+        <?php
     }
  }
