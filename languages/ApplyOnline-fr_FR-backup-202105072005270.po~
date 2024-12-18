@@ -1,0 +1,1338 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Apply Online\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-18 08:08+0000\n"
+"PO-Revision-Date: 2020-07-18 08:09+0000\n"
+"Language-Team: French (France)\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.4.0; wp-5.4.2\n"
+"Last-Translator: \n"
+"Language: fr_FR"
+
+#: admin/class-applyonline-admin.php:121
+msgid ""
+"Form has been submitted successfully. If required, we will get back to you "
+"shortly!"
+msgstr ""
+"Le formulaire a été soumis avec succès. Si nécessaire, nous vous "
+"contacterons sous peu!"
+
+#: admin/class-applyonline-admin.php:122
+msgid "We are no longer accepting applications for this ad!"
+msgstr "Nous n'acceptons plus les candidatures pour cet appel!"
+
+#: admin/class-applyonline-admin.php:123 admin/class-applyonline-admin.php:1598
+msgid "Fields with (*)  are compulsory."
+msgstr "Les champs avec (*) sont obligatoires."
+
+#: admin/class-applyonline-admin.php:149
+#, php-format
+msgid ""
+"%sApplyOnline - Statuses%s extension has been obsoleted after the release of "
+"core plugin ApplyOnline 2.1. %sClick Here%s to uninstall this extension."
+msgstr ""
+"%sApplyOnline - L’extension de Statuses%s a été obsolète après la sortie du "
+"plugin de base ApplyOnline 2.1. %sClick Here%s pour désinstaller cette "
+"extension."
+
+#: admin/class-applyonline-admin.php:150
+#, php-format
+msgid ""
+"%sApplyOnline - Filters%s extension has been obsoleted after the release of "
+"core plugin ApplyOnline 2.1. %sClick Here%s to uninstall this extension."
+msgstr ""
+"%sApplyOnline - L’extension des filtres  %s a été obsolète après la sortie "
+"du plugin de base ApplyOnline 2.1. %sClick Here%s pour désinstaller cette "
+"extension."
+
+#: admin/class-applyonline-admin.php:158
+#, php-format
+msgid "%sApply Online%s plugin is just installed."
+msgstr "%sApply en ligne-Tracker %s vient d’être installé."
+
+#: admin/class-applyonline-admin.php:159
+#, php-format
+msgid "%sClick Here%s for settings or close this message."
+msgstr "%sCliquez ici%s pour fermer ce message."
+
+#: admin/class-applyonline-admin.php:198
+msgid "Expires on"
+msgstr "Expire le"
+
+#: admin/class-applyonline-admin.php:201
+msgid "Time in 24hour format"
+msgstr "24h format"
+
+#: admin/class-applyonline-admin.php:202
+msgid "Leave empty to never close this ad."
+msgstr "Laisser vide si pas de date de fermeture."
+
+#: admin/class-applyonline-admin.php:203
+msgid "Format"
+msgstr "Format"
+
+#: admin/class-applyonline-admin.php:204
+msgid "When Expires"
+msgstr "Expiration"
+
+#: admin/class-applyonline-admin.php:204
+msgid "Hide Form"
+msgstr "Masquer le formulaire"
+
+#: admin/class-applyonline-admin.php:204
+msgid "Hide Ad"
+msgstr "Masquer l'appel"
+
+#: admin/class-applyonline-admin.php:221
+msgid "Ad shortcode"
+msgstr "Appel shortcode"
+
+#: admin/class-applyonline-admin.php:222
+msgid "Form shortcode"
+msgstr "Formulaire shortcode"
+
+#: admin/class-applyonline-admin.php:223 admin/class-applyonline-admin.php:312
+msgid "View All Applications"
+msgstr "Voir toutes les candidatures"
+
+#: admin/class-applyonline-admin.php:307 admin/class-applyonline-admin.php:585
+#, fuzzy
+#| msgid "Filter applications"
+msgid "Filter Applications"
+msgstr "Filtrer les candidature"
+
+#: admin/class-applyonline-admin.php:308 includes/class-applyonline.php:380
+msgid "Edit Ad"
+msgstr "Éditer un Appel"
+
+#: admin/class-applyonline-admin.php:309
+#, fuzzy
+#| msgid "View ad"
+msgid "View Ad"
+msgstr "Voir l'appel"
+
+#: admin/class-applyonline-admin.php:312 admin/class-applyonline-admin.php:1502
+#: includes/class-applyonline.php:414
+msgid "Applications"
+msgstr "Candidatures"
+
+#: admin/class-applyonline-admin.php:365
+msgid "Closing"
+msgstr "Clôture le"
+
+#: admin/class-applyonline-admin.php:450
+msgid "Application Detail"
+msgstr "Détail de l'application"
+
+#: admin/class-applyonline-admin.php:479 admin/class-applyonline-admin.php:537
+msgid "Print Application"
+msgstr "Imprimer candidature"
+
+#: admin/class-applyonline-admin.php:484
+msgid "Application Status"
+msgstr "Statut candidature"
+
+#: admin/class-applyonline-admin.php:497
+msgid "Move to Trash"
+msgstr "Mettre à la corbeille"
+
+#: admin/class-applyonline-admin.php:527 admin/class-applyonline-admin.php:551
+msgid "Application"
+msgstr "Candidature"
+
+#: admin/class-applyonline-admin.php:527
+msgid "Apply online"
+msgstr "E-candidature"
+
+#: admin/class-applyonline-admin.php:599
+msgid "Ad Title"
+msgstr "Titre de l'appel"
+
+#: admin/class-applyonline-admin.php:601
+msgid "Applicant"
+msgstr "Candidat"
+
+#: admin/class-applyonline-admin.php:602 includes/class-applyonline.php:433
+msgid "Status"
+msgstr "Statut"
+
+#: admin/class-applyonline-admin.php:603 admin/class-applyonline-admin.php:943
+msgid "Date"
+msgstr "Date"
+
+#: admin/class-applyonline-admin.php:632
+msgid "Quick View"
+msgstr "Aperçu"
+
+#: admin/class-applyonline-admin.php:636 admin/class-applyonline-admin.php:666
+msgid "Undefined"
+msgstr "Indéfini"
+
+#: admin/class-applyonline-admin.php:745
+msgid "Text Field"
+msgstr "Champ text"
+
+#: admin/class-applyonline-admin.php:746
+msgid "Number Field"
+msgstr "Champ Nombre"
+
+#: admin/class-applyonline-admin.php:747
+msgid "Text Area"
+msgstr "Champ zone texte"
+
+#: admin/class-applyonline-admin.php:748
+msgid "E Mail Field"
+msgstr "Champ Email"
+
+#: admin/class-applyonline-admin.php:749
+msgid "Date Field"
+msgstr "Champ Date"
+
+#: admin/class-applyonline-admin.php:750
+msgid "Check Boxes"
+msgstr "Champ choix multiple"
+
+#: admin/class-applyonline-admin.php:751
+msgid "Radio Buttons"
+msgstr "Champ choix unique"
+
+#: admin/class-applyonline-admin.php:752
+msgid "Dropdown Options"
+msgstr "Menu déroulant"
+
+#: admin/class-applyonline-admin.php:753
+msgid "Attachment Field"
+msgstr "Pièce jointe"
+
+#: admin/class-applyonline-admin.php:755 admin/class-applyonline-admin.php:948
+msgid "Separator"
+msgstr "Séparateur"
+
+#: admin/class-applyonline-admin.php:756 admin/class-applyonline-admin.php:949
+msgid "Paragraph"
+msgstr "Paragraphe"
+
+#: admin/class-applyonline-admin.php:778
+msgid "Ad Features"
+msgstr "Les caractéristiques"
+
+#: admin/class-applyonline-admin.php:787
+msgid "Application Form Builder"
+msgstr "Constructeur de formulaire de candidature"
+
+#: admin/class-applyonline-admin.php:870
+msgid "Feature"
+msgstr "Caractéristique"
+
+#: admin/class-applyonline-admin.php:871
+msgid "Value"
+msgstr "Valeur"
+
+#: admin/class-applyonline-admin.php:884
+msgid "Add Feature"
+msgstr "Ajouter une caractéristique"
+
+#: admin/class-applyonline-admin.php:917
+msgid "Select a Type"
+msgstr "Sélectionnez un Type"
+
+#: admin/class-applyonline-admin.php:918 admin/class-applyonline-admin.php:973
+msgid "Add Field"
+msgstr "Ajouter un champ"
+
+#: admin/class-applyonline-admin.php:939
+msgid "TextField"
+msgstr "Champtext"
+
+#: admin/class-applyonline-admin.php:940
+msgid "TextArea"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:941
+msgid "Number"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:942
+msgid "Email"
+msgstr "E-mail"
+
+#: admin/class-applyonline-admin.php:944
+msgid "CheckBox"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:945
+msgid "RadioBox"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:946
+msgid "DropDown"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:947 includes/applyonline-functions.php:489
+#: includes/applyonline-functions.php:492
+#: includes/applyonline-functions.php:526
+msgid "Attachment"
+msgstr "Pièce jointe"
+
+#: admin/class-applyonline-admin.php:950
+msgid "URL"
+msgstr "Adresse web"
+
+#: admin/class-applyonline-admin.php:957 admin/class-applyonline-admin.php:1057
+msgid "Unique ID"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:958 admin/class-applyonline-admin.php:1058
+msgid "Label"
+msgstr "Titre ou label"
+
+#: admin/class-applyonline-admin.php:959 admin/class-applyonline-admin.php:1064
+msgid "Help Text"
+msgstr "Aide"
+
+#: admin/class-applyonline-admin.php:960 admin/class-applyonline-admin.php:1061
+#: public/class-applyonline-public.php:153
+msgid "Text"
+msgstr "Texte"
+
+#: admin/class-applyonline-admin.php:961 admin/class-applyonline-admin.php:1062
+msgid "Fixed Height"
+msgstr "Hauteur"
+
+#: admin/class-applyonline-admin.php:962
+msgid "PlaceHolder"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:963
+msgid "Defult value"
+msgstr "Valeur par défaut"
+
+#: admin/class-applyonline-admin.php:964 admin/class-applyonline-admin.php:1072
+msgid "Options"
+msgstr "Options"
+
+#: admin/class-applyonline-admin.php:964
+msgid "Option 1, Option 2, Option 3"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:965 admin/class-applyonline-admin.php:1074
+msgid "Classes"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:966
+msgid "Charcter Limit"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:966
+msgid "No Limit"
+msgstr "Pas de limites"
+
+#: admin/class-applyonline-admin.php:967 admin/class-applyonline-admin.php:1076
+msgid "Preselect"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:967 admin/class-applyonline-admin.php:1076
+msgid "Default first field selection."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:968 admin/class-applyonline-admin.php:1084
+msgid "Notify This Email"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:969 admin/class-applyonline-admin.php:1087
+msgid "Required Field"
+msgstr "Requis"
+
+#: admin/class-applyonline-admin.php:970
+msgid "Orientation"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:972 admin/class-applyonline-admin.php:1089
+#: public/class-applyonline-public.php:205
+msgid "Fields with (*) are compulsory."
+msgstr "Les champs avec (*) sont obligatoires."
+
+#: admin/class-applyonline-admin.php:1029
+#: admin/class-applyonline-admin.php:1879
+msgid "Delete"
+msgstr "Éffacer"
+
+#: admin/class-applyonline-admin.php:1069
+msgid "Placeholder"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1072
+msgid "Option1, Option2, Option3"
+msgstr "Option1, Option2, Option3"
+
+#: admin/class-applyonline-admin.php:1080
+msgid "Charchter Limit"
+msgstr "Limites"
+
+#: admin/class-applyonline-admin.php:1129
+msgid "Select a Form Template"
+msgstr "Formulaire type"
+
+#: admin/class-applyonline-admin.php:1133
+msgid "Import an existing ad"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1289
+#: admin/class-applyonline-admin.php:1296
+#: admin/class-applyonline-admin.php:1297
+#: admin/class-applyonline-admin.php:1297
+msgid "Settings"
+msgstr "Paramètres"
+
+#: admin/class-applyonline-admin.php:1296
+msgctxt "Admin Menu"
+msgid "Apply Online"
+msgstr "E-Candidature"
+
+#: admin/class-applyonline-admin.php:1300
+#, php-format
+msgid "%s Filter"
+msgstr "Trie par %s"
+
+#: admin/class-applyonline-admin.php:1367
+msgctxt "admin"
+msgid "Apply Online"
+msgstr "E-Candidature"
+
+#: admin/class-applyonline-admin.php:1368
+msgid "version "
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1481
+msgid "General"
+msgstr "Général"
+
+#: admin/class-applyonline-admin.php:1482
+msgid "Global settings for the plugin."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1496
+msgid "Template"
+msgstr "Modèle"
+
+#: admin/class-applyonline-admin.php:1497
+msgid "Application form templates for new ads."
+msgstr "Candidature modèle pour les nouveaux appels."
+
+#: admin/class-applyonline-admin.php:1503
+msgid "This section is intended for received applications."
+msgstr "Cette section est destinée aux candidatures reçues."
+
+#: admin/class-applyonline-admin.php:1508
+#: includes/applyonline-functions.php:189
+msgid "Ad Filters"
+msgstr "Filtres Appel"
+
+#: admin/class-applyonline-admin.php:1509
+msgid "Display Filters in [aol] shortcode outupt."
+msgstr "Afficher les filtres dans la sortie de shortcode [aol]."
+
+#: admin/class-applyonline-admin.php:1514
+msgid "Ad Types"
+msgstr "Types d'appel"
+
+#: admin/class-applyonline-admin.php:1515
+msgid ""
+"Define different types of ads e.g. Careers, Classes, Memberships. These "
+"types will appear under All Ads section."
+msgstr ""
+"Définir plusieurs types d'appels ex. Formation, Stage. Ils apparaitrons en "
+"dessous de la section Appel."
+
+#: admin/class-applyonline-admin.php:1522
+msgid "How Tos"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1523
+msgid "Frequently Asked Questions."
+msgstr "Frequently Asked Questions."
+
+#: admin/class-applyonline-admin.php:1528
+msgid "Extend"
+msgstr "Étendre"
+
+#: admin/class-applyonline-admin.php:1529
+msgid "Extend Plugin"
+msgstr "Étendre le plugin"
+
+#: admin/class-applyonline-admin.php:1558
+msgid "Multistep application forms"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1569
+msgid "Security Nonce"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1575
+msgid ""
+"If you have firewall installed and get Session Expired error on form "
+"submission then disabling nonce might be helpful."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1579
+msgid "Email alerts for ad authors"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1589
+msgid "List of e-mails to get application alerts"
+msgstr ""
+"Liste des mails qui reçoivent les alertes lors d'un nouvelle candidature"
+
+#: admin/class-applyonline-admin.php:1592
+msgid "Just one email id in one line."
+msgstr "Un email par ligne."
+
+#: admin/class-applyonline-admin.php:1596
+msgid "Required form fields notice"
+msgstr "Alerte de champ requis"
+
+#: admin/class-applyonline-admin.php:1600
+msgid "Default Notice"
+msgstr "Champ requis"
+
+#: admin/class-applyonline-admin.php:1604
+msgid "Closed Application alert"
+msgstr "Candidature Fermée"
+
+#: admin/class-applyonline-admin.php:1606
+#: public/class-applyonline-public.php:190
+msgid "We are no longer accepting applications for this ad."
+msgstr "Nous n'acceptons plus les candidatures pour cet appel."
+
+#: admin/class-applyonline-admin.php:1608
+msgid "Default Alert"
+msgstr "Message d'alerte par défaut"
+
+#: admin/class-applyonline-admin.php:1612
+msgid "Thank you page"
+msgstr "Page de remerciement"
+
+#: admin/class-applyonline-admin.php:1615
+msgid "Not selected"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1634
+msgid "Application form title"
+msgstr "Titre du formulaire de candidature"
+
+#: admin/class-applyonline-admin.php:1637
+msgid "Default: Apply Online"
+msgstr "E-Candidatures"
+
+#: admin/class-applyonline-admin.php:1641
+msgid "Ad features title"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1644
+msgid "Default: Salient Features"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1648
+msgid "Application form Submit Button"
+msgstr "Bouton de soumission de la candidature"
+
+#: admin/class-applyonline-admin.php:1651
+msgid "Default: Submit"
+msgstr "Envoyer"
+
+#: admin/class-applyonline-admin.php:1655
+msgid "Read More button text"
+msgstr "Texte boutton En savoir plus"
+
+#: admin/class-applyonline-admin.php:1658
+msgid "Default: Read More. It appears in each ad on ads listing page."
+msgstr ""
+"Par défaut: En savoir plus. Il apparaît dans chaque annonce sur la page de "
+"liste des appels."
+
+#: admin/class-applyonline-admin.php:1662
+msgid "File upload path"
+msgstr "Chemin de téléchargement de fichier"
+
+#: admin/class-applyonline-admin.php:1665
+msgid ""
+"By default application attachments are saved in WordPress upload folder "
+"which is public. So, change your attachments path, preferably outside your "
+"website root, to make it private. In most cases any path before public_html "
+"directory is good."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1665
+msgid "(Delete and save settings to restore default path.)"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1669
+msgid "Date format for date fields"
+msgstr "Format date pour les champs date"
+
+#: admin/class-applyonline-admin.php:1671
+#, php-format
+msgid "Update format on Wordpress %sGeneral Settings%s page"
+msgstr "Mise à jour du format sur Wordpress dans %sParamètres généraux%s"
+
+#: admin/class-applyonline-admin.php:1675
+msgid "Ads slug"
+msgstr "Alias des appels"
+
+#: admin/class-applyonline-admin.php:1681
+#, php-format
+msgid "Current permalink is %s"
+msgstr "Permalien courant est %s"
+
+#: admin/class-applyonline-admin.php:1686
+msgid "Max file attachment size"
+msgstr "Taille maximale des pièces jointes"
+
+#: admin/class-applyonline-admin.php:1689
+#, php-format
+msgid "Max limit by server is %d MBs"
+msgstr "Limite maximale par serveur est %d MBs"
+
+#: admin/class-applyonline-admin.php:1693
+msgid "Allowed file types"
+msgstr "Les types de fichiers autorisés"
+
+#: admin/class-applyonline-admin.php:1696
+msgid "Comma separated names of file extentions. Default: "
+msgstr "Noms d'extensions de fichier séparés par des virgules. Défaut: "
+
+#: admin/class-applyonline-admin.php:1776
+#: admin/class-applyonline-admin.php:1789
+msgid "Template Name"
+msgstr "Modèle"
+
+#: admin/class-applyonline-admin.php:1798
+msgid "Save form Templates"
+msgstr "Enregistrer les modèles de formulaire"
+
+#: admin/class-applyonline-admin.php:1837
+msgid "Singular name"
+msgstr "Singular name"
+
+#: admin/class-applyonline-admin.php:1837
+msgid "Plural Name"
+msgstr "Nom pluriel"
+
+#: admin/class-applyonline-admin.php:1840
+msgid "Add Filter"
+msgstr "Ajouter un filtre"
+
+#: admin/class-applyonline-admin.php:1850
+#: admin/class-applyonline-admin.php:1910
+msgid "IMPORTANT"
+msgstr "IMPORTANT"
+
+#: admin/class-applyonline-admin.php:1850
+#, php-format
+msgid "Saved filters are available in %sAd Types%s section."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1873
+#: admin/class-applyonline-admin.php:1899
+msgid "Description"
+msgstr "Description"
+
+#: admin/class-applyonline-admin.php:1873
+msgid "Not set"
+msgstr "Pas encore défini"
+
+#: admin/class-applyonline-admin.php:1874
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: admin/class-applyonline-admin.php:1875
+msgid "Direct URL"
+msgstr "URL directe"
+
+#: admin/class-applyonline-admin.php:1893
+msgid "Singular e.g. Career"
+msgstr "Singulier par exemple Carrière"
+
+#: admin/class-applyonline-admin.php:1896
+msgid "Plural e.g. Careers"
+msgstr "Pluriel, par exemple Carrières"
+
+#: admin/class-applyonline-admin.php:1910
+msgid ""
+"If you get 404 error on direct links, try saving this section once again."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:1926
+#, php-format
+msgid "Enable %s filter"
+msgstr "Activer le filtre %s"
+
+#: admin/class-applyonline-admin.php:1950
+#, php-format
+msgid "Enable %s status."
+msgstr "Activer %s statut."
+
+#: admin/class-applyonline-admin.php:1967
+msgid "Add Status"
+msgstr "Ajouter un statut"
+
+#: admin/class-applyonline-admin.php:1997
+msgid "Submit Button Classes"
+msgstr "Soumettre des classes de boutons"
+
+#: admin/class-applyonline-admin.php:2000
+#: admin/class-applyonline-admin.php:2007
+#: admin/class-applyonline-admin.php:2014
+msgid "Extra button classes to ad theme support."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2004
+msgid "Read More Button Classes"
+msgstr "Classes boutton"
+
+#: admin/class-applyonline-admin.php:2011
+msgid "Multistep Buttons Classes"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2018
+msgid "Form Classes"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2021
+msgid "Extra form classes to ad theme support."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2025
+msgid "Form Fields Classes"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2028
+msgid "Extra classes for form fields to ad theme support."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2040
+#: admin/class-applyonline-admin.php:2119
+msgid "How to create an ad?"
+msgstr "Comment créer un appel?"
+
+#: admin/class-applyonline-admin.php:2041
+#: admin/class-applyonline-admin.php:2120
+msgid ""
+"In your WordPress admin panel, go to \"All Ads\" menu with globe icon and "
+"add a new ad listing here."
+msgstr ""
+"Dans votre panneau d'administration WordPress, accédez au menu \"Toutes les "
+"annonces\" avec l'icône en forme de globe et ajoutez une nouvelle liste de "
+"publicité ici."
+
+#: admin/class-applyonline-admin.php:2044
+#: admin/class-applyonline-admin.php:2122
+msgid "How to show ad listings on the front-end?"
+msgstr "Comment afficher des annonces sur le front-end?"
+
+#: admin/class-applyonline-admin.php:2045
+#: admin/class-applyonline-admin.php:2124
+msgid "You may choose either option."
+msgstr "Vous pouvez choisir l'une ou l'autre option."
+
+#: admin/class-applyonline-admin.php:2049
+#: admin/class-applyonline-admin.php:2126
+msgid ""
+"Write [aol] shortcode in an existing page or add a new page and write "
+"shortcode anywhere in the page editor. Now click on VIEW to see all of your "
+"ads on front-end.?"
+msgstr ""
+"Écrivez [aol] un shortcode dans une page existante ou ajoutez une nouvelle "
+"page et écrivez un shortcode n'importe où dans l'éditeur de page. Cliquez "
+"maintenant sur VIEW pour voir toutes vos annonces en front-end.?"
+
+#: admin/class-applyonline-admin.php:2050
+#: admin/class-applyonline-admin.php:2127
+#, php-format
+msgid ""
+"The url %s lists all the applications using your theme&#39;s default look "
+"and feel. %s(If above not working, try saving %s permalinks %s without any "
+"change)"
+msgstr ""
+"L'URL%s répertorie toutes les applications utilisant l'apparence par défaut "
+"de votre thème. %s (si ci-dessus ne fonctionne pas, essayez d'économiser %s "
+"liens permanents %s sans aucune modification)"
+
+#: admin/class-applyonline-admin.php:2054
+#: admin/class-applyonline-admin.php:2132
+msgid "Ads archive page on front-end shows 404 error or Nothing Found."
+msgstr ""
+"La page d'archive des annonces sur le front-end indique une erreur 404 ou "
+"rien trouvé."
+
+#: admin/class-applyonline-admin.php:2055
+#: admin/class-applyonline-admin.php:2133
+#, php-format
+msgid "Try saving %spermalinks%s without any change."
+msgstr "Essayez d’enregistrer %s permalinks %s sans aucune modification."
+
+#: admin/class-applyonline-admin.php:2058
+msgid ""
+"I have a long application form to fill, how can i facilitate applicant to "
+"fill it conveniently?"
+msgstr ""
+"J'ai un long formulaire à remplir, comment puis-je aider le demandeur à le "
+"remplir facilement?"
+
+#: admin/class-applyonline-admin.php:2059
+#: admin/class-applyonline-admin.php:2136
+#, php-format
+msgid ""
+"With %sApplication Tracking System%s extention, applicant can save/update "
+"incomplete form for multiple times before final submission."
+msgstr ""
+"Avec l'extension %sApplication Tracking System%s, la personne peut "
+"enregistrer / mettre à jour un formulaire incomplet plusieurs fois avant la "
+"soumission finale."
+
+#: admin/class-applyonline-admin.php:2062
+msgid "How can I show selected ads on front-end?"
+msgstr "Puis-je diffuser des annonces sélectionnées sur le front-end?"
+
+#: admin/class-applyonline-admin.php:2064
+msgid ""
+"You can show selected ads on your website by using shortcode with \"ads\" "
+"attribute. Ad ids must be separated with commas i.e. [aol ads=\"1,2,3\"]."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2069
+#: admin/class-applyonline-admin.php:2141
+msgid "Can I show ads without excerpt/summary?"
+msgstr "Puis-je diffuser des annonces sans extrait / résumé?"
+
+#: admin/class-applyonline-admin.php:2070
+#: admin/class-applyonline-admin.php:2142
+msgid "Yes, use shortcode with \"excerpt\" attribute i.e. [aol excerpt=\"no\"]"
+msgstr ""
+"Oui, utilisez un shortcode avec l'attribut \"extrait\", à savoir [aol "
+"extrait = \"non\"]"
+
+#: admin/class-applyonline-admin.php:2073
+#: admin/class-applyonline-admin.php:2144
+msgid "What attributes can i use in the shortcode?"
+msgstr "Quels attributs puis-je utiliser dans le shortcode?"
+
+#: admin/class-applyonline-admin.php:2074
+msgid ""
+"Shortcode with default attributes is [aol ads=\"all\" count=\"-1\" "
+"excerpt=\"yes\" type=\"ad\" display=\"full\"]. Use only required attributes."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2077
+msgid "Can I display only application form using shortocode?"
+msgstr ""
+"Puis-je afficher le formulaire de demande uniquement à l'aide d'un shortcode?"
+
+#: admin/class-applyonline-admin.php:2078
+#: admin/class-applyonline-admin.php:2155
+msgid ""
+" Yes, [aol_form id=\"0\"] is the shortcode to display a particular "
+"application form in WordPress pages or posts. Use correct form id in the "
+"shortocode."
+msgstr ""
+" Oui, [aol_form id = \"0\"] est le shortcode permettant d’afficher un "
+"formulaire de candidature particulier dans les pages ou les publications "
+"WordPress. Utilisez l'identifiant de formulaire correct dans le shortocode."
+
+#: admin/class-applyonline-admin.php:2081
+#: admin/class-applyonline-admin.php:2157
+msgid "Can I list ads without any fancy styling?"
+msgstr "Puis-je afficher des annonces sans style?"
+
+#: admin/class-applyonline-admin.php:2082
+#: admin/class-applyonline-admin.php:2158
+msgid ""
+"Yes, use shortcode with \"style\" attribute to list ads with bullets i.e. "
+"[aol display=\"list\"]. To generate an ordered list add another attribute "
+"\"list-style\" i.e. [aol display=\"list\" list-style=\"ol\"]."
+msgstr ""
+"Oui, utilisez un shortcode avec l'attribut \"style\" pour répertorier les "
+"annonces avec puces, c'est-à-dire [aol display = \"list\"]. Pour générer une "
+"liste ordonnée, ajoutez un autre attribut \"list-style\", c'est-à-dire [aol "
+"display = \"list\" list-style = \"ol\"]."
+
+#: admin/class-applyonline-admin.php:2085
+#: admin/class-applyonline-admin.php:2160
+msgid "Filters under ApplyOnline section are not accessible."
+msgstr "Les filtres de la section ApplyOnline ne sont pas accessibles."
+
+#: admin/class-applyonline-admin.php:2086
+#: admin/class-applyonline-admin.php:2161
+msgid "Try deactivating & then reactivating this plugin."
+msgstr "Essayez de désactiver puis de réactiver ce plugin."
+
+#: admin/class-applyonline-admin.php:2089
+#: admin/class-applyonline-admin.php:2163
+msgid "I Have enabled the filters but they are not visible on the 'ads' page."
+msgstr ""
+"J'ai activé les filtres mais ils ne sont pas visibles sur la page "
+"\"annonces\"."
+
+#: admin/class-applyonline-admin.php:2129
+msgid "Application form submission fails and shows Session Expired error."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2130
+msgid ""
+"If you have firewall installed such as WordFence or CloudFlare then "
+"disabling Security Nonce under General tab will be helpful."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2135
+msgid ""
+"I have a long application form to be filled, how can i facilitate applicant "
+"to fill it conveniently?"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2138
+msgid "Can I show selected ads on front-end?"
+msgstr "Puis-je diffuser des annonces sélectionnées sur le front-end?"
+
+#: admin/class-applyonline-admin.php:2139
+msgid ""
+"Yes, you can show any number of ads on your website by using shortcode with "
+"\"ads\" attribute. Ad ids must be separated with commas i.e. [aol ads=\"1,2,"
+"3\" type=\"ad\"]. Default type is \"ad\"."
+msgstr ""
+"Oui, vous pouvez diffuser un nombre illimité d'annonces sur votre site Web "
+"en utilisant un shortcode avec l'attribut \"ads\". Les identifiants "
+"d’annonce doivent être séparés par des virgules, à savoir [aol ads = \"1,2,"
+"3\" type = \"ad\"]. Le type par défaut est \"ad\"."
+
+#: admin/class-applyonline-admin.php:2145
+#, php-format
+msgid ""
+"Shortcode with all attributes and default values is %s. Use only required "
+"attributes."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2147
+msgid ""
+"\"count\" is used to control number of ads shown in the ads list. e.g. "
+"count=\"10\" will show latest 10 ads."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2148
+msgid ""
+"\"ads\" is used to show selected ads. This attribute accepts ads ids e.g. "
+"ads=\"5,10,70\" will show three ads with given ids."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2149
+msgid ""
+"\"excerpt\" is used to show or hide excerpt in each ad section. It excepts "
+"two values yes or no."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2150
+msgid ""
+"\"type\" attribute is used to show ads from selected ad type only e.g. "
+"type=\"admission\""
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2151
+msgid ""
+"\"display\" attribute is used to control the output style of the shortcode. "
+"It accepts two display types full or list, "
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2154
+msgid "Can I display application form only using shortocode?"
+msgstr ""
+"Puis-je afficher le formulaire de demande uniquement à l'aide d'un shortcode?"
+
+#: admin/class-applyonline-admin.php:2164
+msgid "Possible reasons for not displaying ad filters are given as under:"
+msgstr ""
+"Les raisons possibles pour ne pas afficher les filtres de publicité sont "
+"indiquées sous:"
+
+#: admin/class-applyonline-admin.php:2167
+msgid ""
+"Filters are visible when you show your ad on front-end using [aol] shortcode "
+"only. "
+msgstr ""
+"Les filtres sont visibles lorsque vous diffusez votre annonce en utilisant "
+"uniquement le shortcode [aol]. "
+
+#: admin/class-applyonline-admin.php:2168
+msgid ""
+"Make sure Filters are enable under ApplyOnline/Settings/AdTypes section in "
+"wordpress Admin Panel."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2169
+msgid ""
+"On Ad Editor screen in the right siedebar, there is an option to mark the ad "
+"for a filter e.g. Categories, Types or Locations."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2172
+msgid ""
+"Is plugin not working accordingly or generating 500 internal server error?"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2173
+#, php-format
+msgid ""
+"You may need to resolve a theme or plugin conflict with ApplyOnline plugin. "
+"%s Click Here %s to fix this conflict."
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2175
+msgid ""
+"I am facing a different problem. I may need a new feature in the plugin."
+msgstr ""
+"Je suis confronté à un problème différent. J'ai peut-être besoin d'une "
+"nouvelle fonctionnalité dans le plugin."
+
+#: admin/class-applyonline-admin.php:2176
+#, php-format
+msgid "Please contact us through %s plugin's website %s for more information."
+msgstr ""
+"S'il vous plaît nous contacter par %s website du plugin %s pour plus "
+"d'information."
+
+#: admin/class-applyonline-admin.php:2184
+msgid "Looking for more options to put additional power in your hands?"
+msgstr ""
+
+#: admin/class-applyonline-admin.php:2185
+#, php-format
+msgid ""
+"There's a range of ApplyOnline extensions availabel. %sClick Here%s for docs "
+"and extensions."
+msgstr ""
+
+#: includes/applyonline-functions.php:141
+#: public/class-applyonline-public.php:271
+msgid "Ad"
+msgstr ""
+
+#: includes/applyonline-functions.php:141
+#: includes/applyonline-functions.php:240 includes/class-applyonline.php:381
+#: public/class-applyonline-public.php:271
+msgid "Ads"
+msgstr "Appels"
+
+#: includes/applyonline-functions.php:141 includes/class-applyonline.php:385
+#: includes/class-applyonline.php:388
+msgid "All Ads"
+msgstr "Les appels"
+
+#: includes/applyonline-functions.php:196
+#: includes/class-applyonline-activator.php:302
+#: includes/class-applyonline.php:271
+msgid "Pending"
+msgstr "En attente"
+
+#: includes/applyonline-functions.php:196
+#: includes/class-applyonline-activator.php:302
+#: includes/class-applyonline.php:271
+msgid "Rejected"
+msgstr "Rejeté"
+
+#: includes/applyonline-functions.php:196
+#: includes/class-applyonline-activator.php:302
+#: includes/class-applyonline.php:271
+msgid "Shortlisted"
+msgstr "Présélectionné"
+
+#: includes/applyonline-functions.php:239
+msgid "ad"
+msgstr "appel"
+
+#: includes/applyonline-functions.php:298
+msgid "Link is missing"
+msgstr "Lien manquant"
+
+#: includes/applyonline-functions.php:299
+msgid "Title is missing"
+msgstr "Titre manquant"
+
+#: includes/applyonline-functions.php:354
+msgid "e.g."
+msgstr "ex."
+
+#: includes/class-applyonline-activator.php:42
+#: includes/class-applyonline-activator.php:279
+#: includes/class-applyonline.php:260
+msgid "Category"
+msgstr "Catégorie"
+
+#: includes/class-applyonline-activator.php:42
+#: includes/class-applyonline-activator.php:279
+#: includes/class-applyonline.php:260
+msgid "Categories"
+msgstr "Catégories"
+
+#: includes/class-applyonline-activator.php:43
+#: includes/class-applyonline-activator.php:280
+#: includes/class-applyonline.php:261
+msgid "Type"
+msgstr "Type"
+
+#: includes/class-applyonline-activator.php:43
+#: includes/class-applyonline-activator.php:280
+#: includes/class-applyonline.php:261
+msgid "Types"
+msgstr "Les types"
+
+#: includes/class-applyonline-activator.php:44
+#: includes/class-applyonline-activator.php:281
+#: includes/class-applyonline.php:262
+msgid "Location"
+msgstr "Lieu"
+
+#: includes/class-applyonline-activator.php:44
+#: includes/class-applyonline-activator.php:281
+#: includes/class-applyonline.php:262
+msgid "Locations"
+msgstr "Lieux"
+
+#: includes/class-applyonline.php:304 includes/class-applyonline.php:340
+#, php-format
+msgid "Add New %s"
+msgstr "Ajouter nouvel  %s"
+
+#: includes/class-applyonline.php:305
+#, php-format
+msgid "New %s"
+msgstr "Nouveau %s"
+
+#: includes/class-applyonline.php:306 includes/class-applyonline.php:338
+#, php-format
+msgid "Edit %s"
+msgstr "Éditer %s"
+
+#: includes/class-applyonline.php:307
+#, php-format
+msgid "View %s"
+msgstr "Voir %s"
+
+#: includes/class-applyonline.php:308 includes/class-applyonline.php:334
+#, php-format
+msgid "Search %s"
+msgstr "Recherche %s"
+
+#: includes/class-applyonline.php:335
+#, php-format
+msgid "All %s"
+msgstr "Tous %s"
+
+#: includes/class-applyonline.php:336
+#, php-format
+msgid "Parent %s"
+msgstr "Parent %s"
+
+#: includes/class-applyonline.php:337
+#, php-format
+msgid "Parent %s:"
+msgstr "Parent %s:"
+
+#: includes/class-applyonline.php:339
+#, php-format
+msgid "Update %s"
+msgstr "Mettre à jour %s"
+
+#: includes/class-applyonline.php:341
+#, php-format
+msgid "New %s Name"
+msgstr "Nouveau %s Nom"
+
+#: includes/class-applyonline.php:378
+msgid "Create Ad"
+msgstr "Créer un Appel"
+
+#: includes/class-applyonline.php:379
+msgid "New Ad"
+msgstr "Nouvel Appel"
+
+#: includes/class-applyonline.php:410 includes/class-applyonline.php:411
+msgid "No applications found."
+msgstr "Aucune candidature trouvées."
+
+#: includes/class-applyonline.php:420
+msgid "All Applications"
+msgstr "Toutes les applications"
+
+#: includes/class-applyonline.php:508
+#, php-format
+msgid "%s is oversized. Must be under %s MB"
+msgstr "%s est trop lourd. Il doit être en dessous de  %s MB"
+
+#: includes/class-applyonline.php:515
+#, php-format
+msgid "Invalid file %s. Allowed file types are %s"
+msgstr "Fichier invalide %s. Les fichiers autorisés sont %s"
+
+#: includes/class-applyonline.php:544
+msgid "Session Expired, please try again"
+msgstr "Session expirée; veuillez recommencer"
+
+#: includes/class-applyonline.php:568
+#, php-format
+msgid "%s is invalid."
+msgstr "%s est invalide."
+
+#: includes/class-applyonline.php:574 includes/class-applyonline.php:580
+#, php-format
+msgid "%s is required."
+msgstr "%s est requis."
+
+#: includes/class-applyonline.php:675
+msgid ""
+"Form has been submitted successfully. If required, we will get back to you "
+"soon!"
+msgstr ""
+
+#: includes/class-applyonline.php:708
+msgid "Thank you for your application"
+msgstr ""
+
+#: includes/class-applyonline.php:713 includes/class-applyonline.php:775
+msgid "Hi,"
+msgstr ""
+
+#: includes/class-applyonline.php:715
+#, php-format
+msgid ""
+"Thank you for showing your interest in %s advertisement at %s. Your "
+"application has been received with id %s. If reqiured we shell get back to "
+"you shortly."
+msgstr ""
+
+#: includes/class-applyonline.php:717
+msgid "Regards,"
+msgstr ""
+
+#: includes/class-applyonline.php:721
+msgid "Please do not reply to the system generated message."
+msgstr ""
+
+#: includes/class-applyonline.php:770
+#, php-format
+msgid "New application for %s"
+msgstr "Nouvelle Candidature %s"
+
+#: includes/class-applyonline.php:777
+#, php-format
+msgid "A new application for the ad %1$s has been received on %2$s website."
+msgstr ""
+
+#: includes/class-applyonline.php:779
+#, php-format
+msgid "%sClick Here%s to access this application."
+msgstr "%sCliquez ici%s pour accéder à cette candidature."
+
+#: includes/class-applyonline.php:781
+msgid "Thank you"
+msgstr ""
+
+#: includes/class-applyonline.php:783
+#, php-format
+msgid "This is an automated response from Apply Online plugin on %s"
+msgstr "Il s'agit d'une réponse automatisée - %s"
+
+#: public/class-applyonline-public.php:153
+msgid "Check Box"
+msgstr ""
+
+#: public/class-applyonline-public.php:153
+msgid "Drop Down"
+msgstr ""
+
+#: public/class-applyonline-public.php:153
+msgid "Radio"
+msgstr ""
+
+#: public/class-applyonline-public.php:153
+msgid "File"
+msgstr "Fichier"
+
+#: public/class-applyonline-public.php:153
+msgid "Seprator"
+msgstr ""
+
+#: public/class-applyonline-public.php:173
+msgid "Form ID is missing"
+msgstr "L'identifiant du formulaire est manquant"
+
+#: public/class-applyonline-public.php:187
+msgctxt "public"
+msgid "Apply Online"
+msgstr "Candidature en ligne"
+
+#: public/class-applyonline-public.php:197
+msgid "Submit"
+msgstr "Soumettre"
+
+#: public/class-applyonline-public.php:283
+msgid ""
+"If the application does not load after a few seconds, please try the "
+"following:"
+msgstr ""
+
+#: public/class-applyonline-public.php:284
+msgid "Open the application in a new tab. "
+msgstr ""
+
+#: public/class-applyonline-public.php:285
+msgid "Try using a different browser. "
+msgstr ""
+
+#: public/class-applyonline-public.php:286
+msgid "Try switching to a more stable network connection. "
+msgstr ""
+
+#: public/class-applyonline-public.php:287
+msgid "Report this problem to the development team. "
+msgstr ""
+
+#: public/class-applyonline-public.php:390
+#, php-format
+msgctxt "Filter Dropdown"
+msgid "%s - All"
+msgstr "%s Tous"
+
+#: public/class-applyonline-public.php:402
+msgid "Filter"
+msgstr "Filtre"
+
+#: public/class-applyonline-public.php:453
+msgid "Read More"
+msgstr "En savoir plus"
+
+#: public/class-applyonline-public.php:480
+msgid "Sorry, we could not find what you were looking for."
+msgstr "Désolé, nous n'avons pas pu trouver ce que vous cherchiez."
+
+#. Name of the plugin
+msgid "Apply Online"
+msgstr "E-Candidature"
+
+#. Description of the plugin
+msgid "Online Application Form Builder and Manager"
+msgstr ""
+
+#. URI of the plugin
+msgid "https://wpreloaded.com"
+msgstr ""
+
+#. Author of the plugin
+msgid "Spider Teams"
+msgstr "Spider Teams"
+
+#. Author URI of the plugin
+msgid "https://spiderteams.com/home"
+msgstr ""

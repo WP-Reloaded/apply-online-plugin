@@ -169,7 +169,7 @@
                 e.preventDefault();
                 var tempID = aol_sanitize_text_field( $(this).data('temp') );
                 var wrapper = $(this).closest('.aol_form');
-                
+
                 //var fieldNameRaw = $('#adapp_name').val(); // Get Raw value.
                 var fieldNameRaw = aol_sanitize_text_field( wrapper.find('.adapp_name').val() ); // Get Raw value.
                 //var fieldName = md5(fieldNameRaw)

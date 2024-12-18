@@ -33,7 +33,7 @@
 #aol_application.postbox .inside .minor-publishing-actions{padding: 0 12px 12px}
 
 .app_form_fields table{border-spacing: 0; border-collapse: collapse; }
-.aol_table input[type="text"]{min-width: 180px;}
+.aol_table input[type="text"]{min-width: 180px; padding: 5px 10px;}
 table.aol_table tr{background: #EEE; border: 3px solid #FFF;}
 table.aol_table tr td{padding: 5px 10px}
 .aol_table label .dashicons{color: #CCC; font-size: 20px; vertical-align: middle; }

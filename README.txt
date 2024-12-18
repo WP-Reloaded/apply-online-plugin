@@ -1,11 +1,11 @@
 === ApplyOnline - Application Form Builder and Manager ===
 Contributors: farhan.noor
 Donate link: https://wpreloaded.com/shop/
-Tags: Job Board, Form Builder, Contact Form, payment form, Job Manager
+Tags: Careers, Custom Form, Contact Form, Form Builder, Payment Form
 Requires at least: 5.0
-Tested up to: 6.6
-Stable tag: 2.6.4
-Requires PHP: 5.2.4
+Tested up to: 6.7
+Stable tag: 2.6.7
+Requires PHP: 5.4
 License: GPLv2 or later
 
 Powerful & intuitive plugin to post ads and start receiving applications online.
@@ -108,6 +108,12 @@ Scroll bar with fixed height for form fields section.
 Recaptcha integration for secure form submission.
 Required field mark in the received application data.
 Different layout options e.g. grid layout, list layout, sidebar filter, popup form, etc.
+
+= 2.6.7 =
+Fixed: Broken Access Control.
+
+= 2.6.6 =
+Fixed: 500 Server error.
 
 = 2.6.5 =
 Fixed: 500 Server error.
@@ -443,6 +449,12 @@ Fixed: Paragraph field text added in the received application & print format.
 * Plugin launched.
 
 == Upgrade Notice ==
+= 2.6.7 =
+ Security patch, upgrade immediately.
+
+= 2.6.6 =
+ Critical updates. upgrade immediately.
+
 = 2.6.5 =
  Critical updates. upgrade immediately.
 

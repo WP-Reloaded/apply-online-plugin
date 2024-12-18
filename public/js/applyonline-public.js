@@ -82,6 +82,9 @@
             /*Ends Textarea Charchter Counter*/
          
             /*Submit Application Form*/
+            $( ".aol_app_form" ).submit(function(){
+                aolSubmitForm(event);
+            });
             /*
             $( ".aol_app_form" ).submit(function(){
                 var datastring = new FormData(document.getElementById("aol_app_form"));
@@ -173,7 +176,9 @@ function update_progress_bar($, field, fields_count){
 }
 
 async function aolSubmitForm( event ) {
-    if ( window.confirm(aol_public.consent_text) == false ) return;
+    if(!aolEmpty(aol_public.consent_text)){
+        if ( window.confirm(aol_public.consent_text) == false ) return;        
+    }
     event.preventDefault();
     
     const submitButton = document.getElementById('aol_app_submit_button');
@@ -196,11 +201,11 @@ async function aolSubmitForm( event ) {
         headers: {'Accept': 'application/json'}
     });
     const data = await response.json();
+    let message = !aolEmpty(data['message']) ? data['message'] : 'Something went wrong. Please try again or contact support.';
     if( response.status == 200 ){
-
         statusBar.classList.remove('alert-warning');
         statusBar.classList.add('alert-info');
-        statusBar.innerHTML = data['message'];
+        statusBar.innerHTML = message;
         if(data['hide_form'] == true){
             aolForm.classList.toggle('hideout');
         } //Show a sliding effecnt.
@@ -213,7 +218,7 @@ async function aolSubmitForm( event ) {
     } else {
         statusBar.classList.remove('alert-warning');
         statusBar.classList.add('alert-danger');
-        statusBar.innerHTML = '<h5 class="error-title">'+response.statusText+'</h5>'+data['message'];
+        statusBar.innerHTML = '<h5 class="error-title">'+response.statusText+'</h5>'+message;
         submitButton.removeAttribute('disabled');
     }
 }
@@ -237,4 +242,18 @@ function limitText(limitField, limitNum) {
     if (limitField.value.length > limitNum) {
         limitField.value = limitField.value.substring(0, limitNum);
     } 
+}
+
+function aolEmpty(e) {
+  switch (e) {
+    case "":
+    case 0:
+    case "0":
+    case null:
+    case false:
+    case undefined:
+      return true;
+    default:
+      return false;
+  }
 }
