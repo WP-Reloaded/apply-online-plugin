@@ -52,7 +52,7 @@ function get_aol_option($option, $default = NULL){
  * @return   array     Application form fields.
  */
 function aol_form($post_id = 0){
-    $aol = new SinglePostTemplate();
+    $aol = new AOL_Single_Post_Template();
     return $aol->application_form($post_id);
 }
 
@@ -90,7 +90,7 @@ function aol_form_button($id = 'aol_app_submit_button', $title = NULL, $classes 
  */
 
 function aol_form_fields($post_id = 0){
-    $aol = new SinglePostTemplate();
+    $aol = new AOL_Single_Post_Template();
     return $aol->application_form_fields($post_id);
 }
 
@@ -103,7 +103,7 @@ function aol_form_fields($post_id = 0){
  * @return   array     Application form fields.
  */
 function aol_features($style = 'table'){
-    $aol = new SinglePostTemplate();
+    $aol = new AOL_Single_Post_Template();
     return $aol->ad_features(0, $style);
 }
 

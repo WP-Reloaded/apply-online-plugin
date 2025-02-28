@@ -502,6 +502,7 @@
                     data: {
                         action: 'aol_template_render',
                         template: temp,
+                        nonce: aol_admin.nonce,
                     },
                     beforeSend: function(){
                         $('.template_loading_status').html('<img src="'+decodeURI(aol_admin.aol_url)+'images/loading.gif">');

@@ -4,7 +4,7 @@ Donate link: https://wpreloaded.com/shop/
 Tags: Careers, Custom Form, Contact Form, Form Builder, Payment Form
 Requires at least: 5.0
 Tested up to: 6.7
-Stable tag: 2.6.7
+Stable tag: 2.6.7.2
 Requires PHP: 5.4
 License: GPLv2 or later
 
@@ -108,6 +108,12 @@ Scroll bar with fixed height for form fields section.
 Recaptcha integration for secure form submission.
 Required field mark in the received application data.
 Different layout options e.g. grid layout, list layout, sidebar filter, popup form, etc.
+
+= 2.6.7.2 =
+New: Nonce for template forms for added security.
+
+= 2.6.7.1 =
+Fixed: Fatal error on form submission due to incorrect PHP class name.
 
 = 2.6.7 =
 Fixed: Broken Access Control.
@@ -449,6 +455,12 @@ Fixed: Paragraph field text added in the received application & print format.
 * Plugin launched.
 
 == Upgrade Notice ==
+= 2.6.7.2 =
+ Maintenance and security releases, upgrade immediately.
+
+= 2.6.7.1 =
+ Maintenance release, upgrade immediately.
+
 = 2.6.7 =
  Security patch, upgrade immediately.
 
