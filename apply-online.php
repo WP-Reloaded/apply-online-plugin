@@ -24,7 +24,7 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-define( 'APPLYONLINE_VERSION', '2.6.7.2' );
+define( 'APPLYONLINE_VERSION', '2.6.7.x' );
 
 require_once( 'class-addons-update.php' );
 /**
