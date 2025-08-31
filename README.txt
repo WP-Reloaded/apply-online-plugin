@@ -113,121 +113,121 @@ Different layout options e.g. grid layout, list layout, sidebar filter, popup fo
 New: Nonce for template forms for added security.
 
 = 2.6.7.1 =
-Fixed: Fatal error on form submission due to incorrect PHP class name.
+Fix: Fatal error on form submission due to incorrect PHP class name.
 
 = 2.6.7 =
-Fixed: Broken Access Control.
+Fix: Broken Access Control.
 
 = 2.6.6 =
-Fixed: 500 Server error.
+Fix: 500 Server error.
 
 = 2.6.5 =
-Fixed: 500 Server error.
-Fixed: Replaced jQuery AJAX with JS Fetch API.
+Fix: 500 Server error.
+Fix: Replaced jQuery AJAX with JS Fetch API.
 
 
 = 2.6.4 =
-Fixed: Removed NULL values for wp_insert_post function parameters.
+Fix: Removed NULL values for wp_insert_post function parameters.
 
 = 2.6.3 =
-Fixed: Fixed authorization for Quick View button in applications section in WordPress admin panel.
-Fixed: Security patch for CVE-2024-2036.
+Fix: Fixed authorization for Quick View button in applications section in WordPress admin panel.
+Fix: Security patch for CVE-2024-2036.
 
 = 2.6.2 =
-Fixed: Default file upload path set to private path.
-Fixed: Applications table admin ID column width.
+Fix: Default file upload path set to private path.
+Fix: Applications table admin ID column width.
 
 = 2.6.1 =
-Fixed: Critical admin notice if file upload path is public.
+Fix: Critical admin notice if file upload path is public.
 
 = 2.6 =
 New: Admin email subject option in the settings.
 New: Option to use gladd custom size limit for attachment fields in the form builder.
-Fixed: Set admin the default email recipient.
-Fixed: Settings API callback function.
+Fix: Set admin the default email recipient.
+Fix: Settings API callback function.
 
 = 2.5.7 =
-Fixed: Empty recipients email option in settings.
-Fixed: Mail header HTML content type.
+Fix: Empty recipients email option in settings.
+Fix: Mail header HTML content type.
 
 = 2.5.6 =
-Fixed: Paragraph field line break issues.
-Fixed: Checkbox & Radio button fields' styling issues.
-Fixed: Security patch for PSID-149593e79c87 & CVE-2023-45756.
-Fixed: Security patch for PSID-e59ab80d07f4 & CVE-2023-24391.
+Fix: Paragraph field line break issues.
+Fix: Checkbox & Radio button fields' styling issues.
+Fix: Security patch for PSID-149593e79c87 & CVE-2023-45756.
+Fix: Security patch for PSID-e59ab80d07f4 & CVE-2023-24391.
 
 = 2.5.5 =
-Fixed: PHP warning in class-applyonline.php file.
+Fix: PHP warning in class-applyonline.php file.
 
 = 2.5.4.2 =
-Fixed: PHP warning in class-applyonline.php file.
+Fix: PHP warning in class-applyonline.php file.
 
 = 2.5.4.1 =
-Fixed: Attachment link in the Printable version of the received application.
+Fix: Attachment link in the Printable version of the received application.
 
 = 2.5.4 =
 New: Application IDs in the Application table in the WordPress admin panel.
 New: Option to write ad title in the email subject.
 New: Security patch for PSID-baadd6626a79 & CVE-2023-46080.
-Fixed: Email issues due to missing charset in the email header.
+Fix: Email issues due to missing charset in the email header.
 
 = 2.5.3 =
-Fixed: Attachment link for received application forms.
+Fix: Attachment link for received application forms.
 
 = 2.5.2 =
-Fixed: Attachment field issue in the received application data.
-Fixed: Security issues.
+Fix: Attachment field issue in the received application data.
+Fix: Security issues.
 
 = 2.5.1 =
-Fixed: Progress-bar for text-area field.
-Fixed: Data sanitization and validation issues.
+Fix: Progress-bar for text-area field.
+Fix: Data sanitization and validation issues.
 
 = 2.5 =
 New: Application form progress bar.
 New: Option to overwrite global settings for each ad from the ad editor screen.
-Fixed: Select2 library inclusion in admin panel.
+Fix: Select2 library inclusion in admin panel.
 
 = 2.4.4 =
-Fixed: Max File Type option appearing in all field types in the form builder.
+Fix: Max File Type option appearing in all field types in the form builder.
 
 = 2.4.3 =
-Fixed: File type field for File Attachment field.
+Fix: File type field for File Attachment field.
 
 = 2.4.2 =
-Fixed: Email Notification issues.
-Fixed: Application submission confirmation at the application page.
+Fix: Email Notification issues.
+Fix: Application submission confirmation at the application page.
     
 = 2.4.1 =
-Fixed: Added support for PHP 8
+Fix: Added support for PHP 8
 
 = 2.4 =
 New: Email notification subject &  message option in the plugin setting.
 New: Keyword Search added in application filter on ads listing page.
-Fixed: Application data hidden after upgrading from an older version.
-Fixed: Paragraph field text added in the received application & print format.
+Fix: Application data hidden after upgrading from an older version.
+Fix: Paragraph field text added in the received application & print format.
 
 = 2.3 =
 * New: Exclude attributed for [aol] shortcode.
 * New: aol_before_application & aol_after_application Action hooks added for received applications.
-* Fixed: Bulk edit options updated.
+* Fix: Bulk edit options updated.
 
 = 2.2.2 =
-* Fixed: Character limit on some form fields in Application Form Builder.
-* Fixed: Required field option in application form builder.
+* Fix: Character limit on some form fields in Application Form Builder.
+* Fix: Required field option in application form builder.
 
 = 2.2.1 =
-* Fixed: Nonce security switch default value in ApplyOnline settings.
-* Fixed: Selection of Notify This Email option in Application Form Builder.
+* Fix: Nonce security switch default value in ApplyOnline settings.
+* Fix: Selection of Notify This Email option in Application Form Builder.
 
 = 2.2 =
 * New: Import existing form in Application Form Builder.
 * New: Applicant Email notification.
-* Fixed: Saving ad transcript along with application for consistency.
-* Fixed: Form fields drag & drop issue in templates.
+* Fix: Saving ad transcript along with application for consistency.
+* Fix: Form fields drag & drop issue in templates.
 
 = 2.1.1 =
-* Fixed: After applying filters scroll moves to top of the page instead of filters section.
-* Fixed: Session Expired error on form submission by introducing a new settings field.
+* Fix: After applying filters scroll moves to top of the page instead of filters section.
+* Fix: Session Expired error on form submission by introducing a new settings field.
 
 = 2.1 =
 * New: Quick View button for received applications.
@@ -235,131 +235,131 @@ Fixed: Paragraph field text added in the received application & print format.
 * New: Separate admin dashboard for plugin.
 * New: Custom filters for ads listing.
 * New: Custom statuses for received applications.
-* Fixed: Checkboxes option didn't get selected when someone clicks on the option name.
-* Fixed: AOL Managers access to Ad Types.
-* Fixed: Translation issues at some places.
+* Fix: Checkboxes option didn't get selected when someone clicks on the option name.
+* Fix: AOL Managers access to Ad Types.
+* Fix: Translation issues at some places.
 
 = 2.0.6 =
-* Fixed: Invalid Ad Type name shown under All Ads section in WordPress admin panel.
+* Fix: Invalid Ad Type name shown under All Ads section in WordPress admin panel.
 
 = 2.0.5 =
-* Fixed: Front-end design issues.
+* Fix: Front-end design issues.
 
 = 2.0.4 =
-* Fixed: Radio Button default selection issue in Application Form Builder.
-* Fixed: Application Form Builder saves form field with empty UID.
-* Fixed: [aol_form] and [aol_ad] shortcodes did not display form.
+* Fix: Radio Button default selection issue in Application Form Builder.
+* Fix: Application Form Builder saves form field with empty UID.
+* Fix: [aol_form] and [aol_ad] shortcodes did not display form.
 
 = 2.0.3 =
-* Fixed: Print Form fields order.
+* Fix: Print Form fields order.
 
 = 2.0.2 =
-* Fixed: Filter name shown multiple times under each ad on ads listing page generated with [aol] shortcode.
-* Fixed: Time always saved as 11:59pm.
+* Fix: Filter name shown multiple times under each ad on ads listing page generated with [aol] shortcode.
+* Fix: Time always saved as 11:59pm.
 
 = 2.0.1 =
-* Fixed: Template Form Builder in Apply Online/Settings section.
+* Fix: Template Form Builder in Apply Online/Settings section.
 
 = 2.0 =
 * New: Enhanced Form Builder with great user interface.
 * New: More options for each form field type.
-* Fixed: Required fields notice when Application Tracking System is installed.
+* Fix: Required fields notice when Application Tracking System is installed.
 
 = 1.9.98 =
-* Fixed: DropDown field 1st value not included.
-* Fixed: Radio button 1st value selected.
+* Fix: DropDown field 1st value not included.
+* Fix: Radio button 1st value selected.
 
 = 1.9.97 =
-* Fixed: Access to attachment in received application.
-* Fixed: Ad not shown after plugin update.
+* Fix: Access to attachment in received application.
+* Fix: Ad not shown after plugin update.
 
 = 1.9.96 =
-* Fixed: Security issues.
-* Fixed: Locally included 3rd party scripts.
+* Fix: Security issues.
+* Fix: Locally included 3rd party scripts.
 
 = 1.9.95 =
-* Fixed: Security issues.
+* Fix: Security issues.
 
 = 1.9.92 =
-* Fixed: Thumbnail margin issue.
-* Fixed: Lower case alphabets for labels on Application page in admin panel.
-* Fixed: Unwanted &amp string in the email alerts.
+* Fix: Thumbnail margin issue.
+* Fix: Lower case alphabets for labels on Application page in admin panel.
+* Fix: Unwanted &amp string in the email alerts.
 
 = 1.9.91 =
-* Fixed: Uploads folder path.
-* Fixed: Unnecessary CSS links in admin panel.
+* Fix: Uploads folder path.
+* Fix: Unnecessary CSS links in admin panel.
 
 = 1.9.9.9 =
-* Fixed: Warnings on Application page.
-* Fixed: Form builder for wrong form field titles.
-* Fixed: Required field warning for removed form fields.
+* Fix: Warnings on Application page.
+* Fix: Form builder for wrong form field titles.
+* Fix: Required field warning for removed form fields.
 
 = 1.9.9.8 =
-* Fixed: Option to delist complete ad or hide only application from after closing date.
+* Fix: Option to delist complete ad or hide only application from after closing date.
 * New: Paragraphs between form fields introduced.
-* Fixed: Date picker on ad editor.
+* Fix: Date picker on ad editor.
 
 = 1.9.9.7 =
-* Fixed: Fixed file format issue for File upload field in settings.
-* Fixed: Date picker on ad editor.
-* Fixed: Applicant name on applications listing page in admin panel.
+* Fix: Fixed file format issue for File upload field in settings.
+* Fix: Date picker on ad editor.
+* Fix: Applicant name on applications listing page in admin panel.
 
 = 1.9.9.6 =
-* Fixed: Subject & message of admin email alert.
+* Fix: Subject & message of admin email alert.
 
 = 1.9.9.5 =
-* Fixed: Shortcode ads archive without content.
+* Fix: Shortcode ads archive without content.
 
 = 1.9.9.4 =
-* Fixed: Unexpected error on Application submission.
+* Fix: Unexpected error on Application submission.
 
 = 1.9.9.2 =
-* Fixed: Menu & plugin name disappear issue.
+* Fix: Menu & plugin name disappear issue.
 
 = 1.9.9.1 =
-* Fixed: Thumbnail on [aol] shortcode archive.
+* Fix: Thumbnail on [aol] shortcode archive.
 
 = 1.9.9 =
-* Fixed: Styling issues.
-* Fixed: Submit button text replacement.
-* Fixed: Read More button by [aol] shortcode text replacement
+* Fix: Styling issues.
+* Fix: Submit button text replacement.
+* Fix: Read More button by [aol] shortcode text replacement
 * Updated: FAQs section.
 * Added: Download link for attachments in received applications.
 
 = 1.9.8.1 =
-* Fixed: Filter base permalinks.
+* Fix: Filter base permalinks.
 
 = 1.9.8 =
-* Fixed: Application submission error of Form field Separator .
+* Fix: Application submission error of Form field Separator .
 
 = 1.9.7 =
-* Fixed: Compatibility issues with Captcha addon.
+* Fix: Compatibility issues with Captcha addon.
 
 = 1.9.6 =
-* Fixed: File upload form field styling.
-* Fixed: Underscore in fields separator title.
-* Fixed: Ad closing date.
-* Fixed: Other CSS issues.
+* Fix: File upload form field styling.
+* Fix: Underscore in fields separator title.
+* Fix: Ad closing date.
+* Fix: Other CSS issues.
 
 = 1.9.5 =
-* Fixed: 404 error for custom ad types after plugin re-activation.
+* Fix: 404 error for custom ad types after plugin re-activation.
 
 = 1.9.4 =
-* Fixed: AOL Manager role's capabilities issue.
-* Fixed: Application status change issue.
+* Fix: AOL Manager role's capabilities issue.
+* Fix: Application status change issue.
 
 = 1.9.3 =
-* Fixed: Hidden form after plugin update to 1.9.3
-* Fixed: PHP Warning on ads archive page.
+* Fix: Hidden form after plugin update to 1.9.3
+* Fix: PHP Warning on ads archive page.
 
 = 1.9.2 =
-* Fixed: Ad types direct links 404 error.
-* Fixed: Custom ad types detail page 404 error.
+* Fix: Ad types direct links 404 error.
+* Fix: Custom ad types detail page 404 error.
 
 = 1.9.1 =
-* Fixed: Conflict with Applyonline eMail add-on. 
-* Fixed: Application status issues.
-* Fixed: Issues with [aol_form] shortocde.
+* Fix: Conflict with Applyonline eMail add-on. 
+* Fix: Application status issues.
+* Fix: Issues with [aol_form] shortocde.
 
 = 1.9 =
 * New: Ads filters.
@@ -367,89 +367,89 @@ Fixed: Paragraph field text added in the received application & print format.
 * New: Application statuses.
 * New: Form fields separators. 
 * New: More hooks & filters.
-* Fixed: minified JavaScript files.
+* Fix: minified JavaScript files.
 
 = 1.8.3 =
-* Fixed: jquery-ui-sortable library attachment.
+* Fix: jquery-ui-sortable library attachment.
 
 = 1.8.2 =
-* Fixed: Application form fields sorting.
+* Fix: Application form fields sorting.
 
 = 1.8.1 =
-* Fixed: Apply Online Metabox hook.
+* Fix: Apply Online Metabox hook.
 
 = 1.8 =
 * New: Thumbnail support for ads.
 * New: More hooks to extend the plugin for [add-ons](https://wpreloaded.com/shop "World's #1 Online Application Form Builder & Manager")
-* Fixed: Compulsory fields default notice.
-* Fixed: Language issues.
+* Fix: Compulsory fields default notice.
+* Fix: Language issues.
 
 = 1.7.2 =
-* Fixed: Form submitted but unexpected form submission failed message.
-* Fixed: Required form field option for newly generated field in ad editor.
+* Fix: Form submitted but unexpected form submission failed message.
+* Fix: Required form field option for newly generated field in ad editor.
 
 = 1.7.1 =
-* Fixed: Required form fields notice.
-* Fixed: Date format for date form fields.
+* Fix: Required form fields notice.
+* Fix: Date format for date form fields.
 
 = 1.7 =
 * New: Application Print facility. 
 * New: [aol_ad] shortcode to show single ad anywhere in the website.
 * New: [aol_form] shortcode to show form anywhere in the website.
 * New: Add-on support.
-* Fixed: Warnings on custom template page single-aol_ad.php
-* Fixed: Translation issues.
+* Fix: Warnings on custom template page single-aol_ad.php
+* Fix: Translation issues.
 
 = 1.6.3 =
-* Fixed: Underscores between words of form fields names.
+* Fix: Underscores between words of form fields names.
 * New: Application removal option.
 
 = 1.6.2 =
-* Fixed: Salient Features heading when no feature is provided on single ad page.
+* Fix: Salient Features heading when no feature is provided on single ad page.
 
 = 1.6.1 =
-* Fixed: Hidden items of AOL Menu.
+* Fix: Hidden items of AOL Menu.
 
 = 1.6 =
 * New: AOL Manager user role.
 * New: Comments system for hiring staff to discuss an application.
 * New: Email validation for form input field.
 * New: More hooks and functions to extend the plugin.
-* Fixed: Improved search of applications in admin panel.
+* Fix: Improved search of applications in admin panel.
 
 
 = 1.5.1 =
-* Fixed: Removed odd alert at the time of application submission.
+* Fix: Removed odd alert at the time of application submission.
 
 = 1.5 =
-* Fixed: Default file field issue in settings. 
+* Fix: Default file field issue in settings. 
 * New: aol_content filter hook introduced to control the output of [aol] shortcode.
 * New: aol_features function added to show application featres in custom template.
 * New: aol_application function added to show application form in custom template.
 
 = 1.4 =
-* Fixed: Email issue. 
+* Fix: Email issue. 
 * New: Custom file upload field in ad editor introduced.
-* Fixed: Overall enhancement.
+* Fix: Overall enhancement.
 
 = 1.3 =
-* Fixed: Application Form Fields delete issue. 
-* Fixed: Delete button disappears in application form fields in post editor.
+* Fix: Application Form Fields delete issue. 
+* Fix: Delete button disappears in application form fields in post editor.
 * New: Templates/Default Fields introduced.
 
 
 = 1.2.1 =
-* Fixed: Link to new application in email alert.
+* Fix: Link to new application in email alert.
 
 = 1.2 =
 * New: **Plugin Settings** introduced.
 * New: List of recipient to get application alerts.
-* Fixed: Overall enhancement. 
+* Fix: Overall enhancement. 
 
 = 1.1 =
 * New: **Categories** introduced.
 * New: **Shortcode** updated.
-* Fixed: Bug for CV / resume attachment in application form.
+* Fix: Bug for CV / resume attachment in application form.
 
 = 1.0 =
 * Plugin launched.

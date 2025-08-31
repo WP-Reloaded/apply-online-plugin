@@ -186,7 +186,8 @@ async function aolSubmitForm( event ) {
     const aolForm = event.target;
     
     //event.target.setAttribute('disabled', 'disabled');
-    submitButton.setAttribute('disabled', 'disabled');
+    //submitButton.setAttribute('disabled', 'disabled');
+    submitButton.disabled = TRUE;
     statusBar.classList.remove('alert-danger'); //May be trying again after errors.
     statusBar.classList.add('alert');
     statusBar.classList.add('alert-warning');
@@ -201,7 +202,7 @@ async function aolSubmitForm( event ) {
         headers: {'Accept': 'application/json'}
     });
     const data = await response.json();
-    let message = !aolEmpty(data['message']) ? data['message'] : 'Something went wrong. Please try again or contact support.';
+    let message = !aolEmpty(data['message']) ? data['message'] : 'Something went wrong. Please try again or contact support. Thanks!';
     if( response.status == 200 ){
         statusBar.classList.remove('alert-warning');
         statusBar.classList.add('alert-info');
@@ -219,7 +220,8 @@ async function aolSubmitForm( event ) {
         statusBar.classList.remove('alert-warning');
         statusBar.classList.add('alert-danger');
         statusBar.innerHTML = '<h5 class="error-title">'+response.statusText+'</h5>'+message;
-        submitButton.removeAttribute('disabled');
+        //submitButton.removeAttribute('disabled');
+        submitButton.disabled = false;
     }
 }
 

@@ -75,7 +75,7 @@ class Applyonline_Public {
 		 * class.
 		 */
 
-                wp_enqueue_style('aol-jquery-ui', plugin_dir_url(__FILE__).'css/jquery-ui.min.css');
+                //wp_enqueue_style('aol-jquery-ui', plugin_dir_url(__FILE__).'css/jquery-ui.min.css');
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/applyonline-public.css', array(), $this->version, 'all' );
 	}
 
@@ -388,11 +388,11 @@ class Applyonline_Shortcodes{
             $archive_wraper_classes = apply_filters('aol_archive_wrapper_classes', array('aol-ad-outer-wrapper'));
             $wraper_classes = apply_filters('aol_ad_wrapper_classes', array('aol-ad-inner-wrapper'));
             //$title_wrapper = apply_filters('aol_ad_title_wrapper', 'div');
-            $title_classes = apply_filters('aol_ad_title_wrapper_classes', array('panel-heading'));
-            $body_classes = apply_filters('aol_ad_body_wrapper_classes', array('panel-body'));
+            $title_classes = apply_filters('aol_ad_title_wrapper_classes', array('card-header'));
+            $body_classes = apply_filters('aol_ad_body_wrapper_classes', array('card-body'));
             $thumb_wrapper = apply_filters('aol_ad_thumb_wrapper', 'div');
             $thumb_classes= apply_filters('aol_ad_thumb_classes', array('aol-thumbnail', 'pull-md-left', 'center-sm-block'));
-            $footer_classes = apply_filters('aol_ad_footer_wrapper_classes', array('panel-footer'));
+            $footer_classes = apply_filters('aol_ad_footer_wrapper_classes', array('card-footer'));
             
             $order = apply_filters('aol_grid_element_order', array('title', 'body_start', 'meta', 'thumbnail', 'excerpt', 'body_close', 'footer'));
             $a = shortcode_atts( array(
@@ -443,23 +443,24 @@ class Applyonline_Shortcodes{
             //$show_filter = get_option('aol_show_filter', 1);
             $filters = aol_ad_cpt_filters($a['type']);
             $filter_count = count($filters);
+            $multi_rows = $filter_count > 4 ? 'aol-filter-rows' : NULL;
             ob_start();
             do_action('aol_before_shortcode', $a, $filters);
             if(!(empty($filters) OR $a['filter'] == 'no' )){
-                    echo '<div class="well well-lg">'; //Started well
-                        echo '<form method="post" class="form-horizontal" id="aol_'.esc_attr($a['type']).'_form" action="#aol_'.esc_attr($a['type']).'_form">';
-                            echo '<div class="form-group">'; //1st row Started'
+                    echo '<form method="post" class="" id="aol_'.esc_attr($a['type']).'_form" action="#aol_'.esc_attr($a['type']).'_form">';
+                        echo '<div class="aol-filter-wrapper">'; //Started well
+                            echo '<div class="aol-filter-row '.$multi_rows.'">'; //1st row Started'
                             //$col_count = $filter_count < 4 ? 12/($filter_count+1) : 3;
                             $col_count = floor(12/($filter_count));
-                            //$offset = in_array($col_count, array(5,7,9)) ? 'aol-md-offset-1' : NULL;
+                            //$offset = in_array($col_count, array(5,7,9)) ? 'aol-col aol-md-offset-1' : NULL;
                             //elseif($col_count == 5) 
                             $i = 0;
                             foreach ($filters as $key => $filter){
                                 //Sanitizing Key beforehand.
                                 $key = sanitize_key($key);
                                 //$Fclass = ((isset($_REQUEST['filter']) AND $_REQUEST['filter']) == 'aol_ad_'. $key) ? 'selected' : NULL;
-                                echo '<div class="aol-md-'.(int)$col_count.'">';
-                                    echo '<select name="'.esc_attr($key).'" class="aol-filter-select form-control"><option value="">'. sprintf(esc_html__('%s - All', 'Filter Dropdown', 'ApplyOnline'), esc_html__($filter['plural'], 'ApplyOnline') ).'</option>';
+                                echo '<div class="aol-filter">';
+                                    echo '<select name="'.esc_attr($key).'" class="aol-select-box form-control"><option value="">'. sprintf(esc_html__('%s - All', 'Filter Dropdown', 'ApplyOnline'), esc_html__($filter['plural'], 'ApplyOnline') ).'</option>';
                                     $args = array(
                                         'taxonomy' => 'aol_ad_'. $key,
                                         'hide_empty' => true,
@@ -474,10 +475,10 @@ class Applyonline_Shortcodes{
                                 $i++;
                             }
                             echo '</div>'; //Ended 1st row
-                        echo '<div class="form-group">'; //2nd row started
-                        echo '<div class="aol-md-10"><input type="text" name="aol_seach_keyword" class="form-control" placeholder="'.esc_html__('Search Keyword', 'ApplyOnline').'" value="'. esc_attr($search_keyword).'"></div>';
-                        echo '<div class="aol-md-2"><button class="fusion-button button btn btn-info btn-block aol-filter-button">'.esc_html__('Filter', 'ApplyOnline').'</button></div>';
-                        echo '</div></form>'; //2nd row closed, form closed 
+                        echo '<div class="aol-filter-row">'; //2nd row started
+                        echo '<div class="aol-filter aol-md-10"><input type="text" name="aol_seach_keyword" class="form-control" placeholder="'.esc_html__('Search Keyword', 'ApplyOnline').'" value="'. esc_attr($search_keyword).'"></div>';
+                        echo '<div class="aol-filter aol-md-2"><button class="fusion-button button btn btn-primary btn-block aol-filter-button">'.esc_html__('Filter', 'ApplyOnline').'</button></div>';
+                        echo '</form></div>'; //2nd row closed, form closed 
                     echo '</div>'; //Ended Well
             }
             if(!empty($posts)):
@@ -486,7 +487,7 @@ class Applyonline_Shortcodes{
                 echo '<div class="'. esc_attr(implode(' ', $archive_wraper_classes)).'">';
                 $post_count = 0;
                 foreach($posts as $post): setup_postdata($post);
-                    $wrapper_inner_classes = apply_filters('aol_ad_inner_wrapper_classes', array('panel', 'panel-default'), $post);
+                    $wrapper_inner_classes = apply_filters('aol_ad_inner_wrapper_classes', array('card'), $post);
                     /* Getting Post Status*/
                     $timestamp = (int)get_post_meta($post->ID, '_aol_ad_closing_date', true);
                     $timestamp = apply_filters('aol_ad_closing_date', $timestamp, $post);
@@ -499,8 +500,9 @@ class Applyonline_Shortcodes{
                     if($a['display'] == 'list'): echo '<li>'. apply_filters('aol_shortcode_list', '<a href="'.get_the_permalink($post).'">'.$post->post_title.'</a>').'</li>';
                     else:
                         do_action('aol_before_ad', $post_count, $post->post_count);
-                        echo '<div class="'. esc_attr(implode(' ', $wraper_classes)).' aol_ad_'.$post->ID.'">';
-                            echo '<div class="'. esc_attr( implode(' ', $wrapper_inner_classes) ).' '.$status.'">';
+                        $classes = esc_attr( implode(' ', $wrapper_inner_classes) ).' '.$status;
+                        //echo '<div class="'. esc_attr(implode(' ', $wraper_classes)).' aol_ad_'.$post->ID.'">';
+                            echo '<div id="aol-ad-'.$post->ID.'" class="'.$classes.'">';
                             foreach($order as $index):
                                 switch ($index):
                                     case 'title':
@@ -527,13 +529,13 @@ class Applyonline_Shortcodes{
                                             'readmore' => sprintf(
                                                     '<a href="%s" ><button class="%s">%s</button></a>',
                                                     get_the_permalink($post),
-                                                    'fusion-button button read-more btn btn-info',
+                                                    'fusion-button button read-more btn btn-primary',
                                                     esc_html__( 'Read More', 'ApplyOnline' )
                                                     )
                                             );
                                         $body = apply_filters('aol_shortcode_body', $body, $post);
                                         do_action('aol_shortcode_before_body', $post);
-                                        if($a['excerpt'] != 'no') echo '<p>'. sanitize_text_field( $body['excerpt'] ).'</p>';
+                                        if($a['excerpt'] != 'no') echo '<p class="card-text">'. sanitize_text_field( $body['excerpt'] ).'</p>';
                                         echo '<div class="clearfix"></div>';
                                         echo apply_filters('aol_shortcode_button', $body['readmore']);
                                         do_action('aol_shortocde_after_body', $post);
@@ -548,7 +550,7 @@ class Applyonline_Shortcodes{
                                     break;
                                 endswitch;
                             endforeach;
-                        echo "</div></div>"; //Closing inner & outer wrapers.
+                        echo "</div>"; //Closing card.
                         do_action('aol_after_ad', $post_count, $post->post_count);
                         if($a['display'] == 'list') echo "</$lstyle>";
                     endif; //End aol display check
