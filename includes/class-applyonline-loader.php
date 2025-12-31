@@ -3,7 +3,7 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       http://wpreloaded.com/farhan-noor
+ * @link       
  * @since      1.0.0
  *
  * @package    Applyonline

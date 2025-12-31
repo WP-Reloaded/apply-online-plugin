@@ -3,7 +3,7 @@
 /**
  * Fired during plugin activation
  *
- * @link       http://wpreloaded.com/farhan-noor
+ * @link       
  * @since      1.0.0
  *
  * @package    Applyonline
@@ -212,23 +212,12 @@ class Applyonline_Activator {
                     'aol_ad_location',
                     array('slug' => 'paris', 'description'=>'Ads for Paris')
                 );
-            
-            //Insert default fields.
-            $fields = array (
-                '_aol_app_name' => 
-                array (
-                  'type' => 'text',
-                  'options' => '',
-                  'label' => 'Name',
-                ),
-                '_aol_app_email' => 
-                array (
-                  'type' => 'email',
-                  'options' => '',
-                  'label' => 'E Mail',
-                ),
-            );
 
+            Applyonline_updater::fix_roles();
+            Applyonline_updater::bug_fix_before_16();            
+        }
+        
+        static function set_defaults(){
             $templates = array (
                 'templatedefault' => 
                 array (
@@ -258,6 +247,7 @@ class Applyonline_Activator {
                     ),
                 ),
               );
+            if(!get_option('aol_form_templates')) update_option('aol_form_templates', $templates);
 
             $types = array(
                 'ad' => 
@@ -268,24 +258,26 @@ class Applyonline_Activator {
                   'singular' => 'Ad',
                   'plural' => 'Ads',
                 ));
+            if(!get_option('aol_ad_types')) update_option('aol_ad_types', $types);
 
             $default_filters = array(
                 'category' => array('singular' => __('Category', 'ApplyOnline'), 'plural' => __('Categories', 'ApplyOnline')),
                 'type' => array('singular' => __('Type', 'ApplyOnline'), 'plural' => __('Types', 'ApplyOnline')),
                 'location' => array('singular' => esc_html__('Location', 'ApplyOnline'), 'plural' => esc_html__('Locations', 'ApplyOnline'))
             );
+            if(!get_option('aol_ad_filters')) update_option('aol_ad_filters', $default_filters);
 
             /*
              * Make sure it do not overwrite previously saved settings on plugin reactivation
-             */
+             * Depricated: aol_dismissed_notices option since 2.6.7.2
             $notices = get_option('aol_dismissed_notices', array());
             $notices = array_diff($notices,array('aol'));
-            update_option('aol_dismissed_notices', $notices);            
+            update_option('aol_dismissed_notices', $notices);
+             * 
+             */
+            if( !get_option('aol_admin_notices') ) update_option( 'aol_admin_notices', ['aol_fresh_install'] );
 
-            if( !get_option('aol_admin_notices') ) update_option('aol_admin_notices', array('aol_fresh_install'));
-
-            update_option('aol_progress_bar_color', array('foreground' => '#222222', 'background' => '#dddddd', 'counter' => '#888888'));
-            if(!get_option('aol_form_templates')) update_option('aol_form_templates', $templates);
+            if(!get_option('aol_progress_bar_color')) update_option('aol_progress_bar_color', array('foreground' => '#222222', 'background' => '#dddddd', 'counter' => '#888888'));
             if(!get_option('aol_recipients_emails')) update_option('aol_recipients_emails', get_option('admin_email'));
             if(!get_option('aol_ad_author_notification')) update_option('aol_ad_author_notification', 1);
             if(!get_option('aol_allowed_file_types')) update_option('aol_allowed_file_types', 'jpg,jpeg,png,doc,docx,pdf,rtf,odt,txt');
@@ -297,8 +289,6 @@ class Applyonline_Activator {
             if(!get_option('aol_show_filter')) update_option('aol_show_filter', 0);
             //if(!get_option('aol_ad_filters')) update_option('aol_ad_filters', array('category', 'type', 'location'));
             if(!get_option('aol_application_close_message')) update_option('aol_application_close_message', 'We are no longer accepting applications for this ad. Contact us for more details.');
-            if(!get_option('aol_ad_types')) update_option('aol_ad_types', $types);
-            if(!get_option('aol_ad_filters')) update_option('aol_ad_filters', $default_filters);
             if(!get_option('aol_mail_footer')) update_option('aol_mail_footer', "\n\nThank you\n".get_bloginfo('name')."\n".site_url()."n------\nPlease do not reply to this system generated message.");
             if(!get_option('aol_custom_statuses')) update_option('aol_custom_statuses', array('pending' => __('Pending', 'ApplyOnline'), 'rejected'=> __('Rejected', 'ApplyOnline'), 'shortlisted' => __('Shortlisted', 'ApplyOnline')));
             if(!get_option('aol_nonce_is_active', 1)) update_option('aol_nonce_is_active', 1);
@@ -308,82 +298,6 @@ class Applyonline_Activator {
                         ."Please do not reply to this system generated message.");
             if(!get_option('aol_success_mail_subject')) update_option('aol_success_mail_subject', 'Your application for [title]');
             if(!get_option('aol_admin_mail_subject')) update_option('aol_admin_mail_subject', 'New application [id] for [title]');
-            
-            self::fix_roles();
-            self::bug_fix_before_16();
-            
             if( !get_option('aol_upload_path') ) update_option('aol_upload_path', realpath(ABSPATH.'../'));
-        }
-
-        
-        static function fix_roles(){
-            $caps = array(
-                'delete_ads' =>TRUE,
-                'delete_others_ads' =>TRUE,
-                'delete_published_ads' =>TRUE,
-                'edit_ads' =>TRUE,
-                'edit_others_ads' =>TRUE,
-                'edit_private_ads' =>TRUE,
-                'edit_published_ads' =>TRUE,
-                'publish_ads' =>TRUE,
-                'read_private_ads' =>TRUE,
-                'delete_applications' =>TRUE,
-                'delete_others_applications'=>TRUE,
-                'delete_published_applications' =>TRUE,
-                'edit_application'         =>TRUE,
-                'read_application'         =>TRUE,
-                //'delete_application'         =>TRUE,
-                'edit_applications'         =>TRUE,
-                'edit_others_applications'  =>TRUE,
-                'edit_private_applications' =>TRUE,
-                'edit_published_applications'=>TRUE,
-                'publish_applications'       =>FALSE,
-                'create_applications'       =>FALSE,
-                'read_private_applications' =>TRUE,
-                'manage_ads'                =>TRUE,
-                'manage_ad_terms'       => TRUE,
-                'edit_ad_terms'         => TRUE,
-                'delete_ad_terms'       => TRUE,
-                'assign_ad_terms'          => TRUE,
-                //'read'                      =>TRUE,
-                //'view_admin_dashboard'      => TRUE, //WooCommerce fix, the alternate read capability.
-                //'upload_files'          => TRUE
-                );
-            
-            $role = get_role('administrator');
-                
-            $role->remove_cap( 'edit_ratings' ); //Fixing bug in version 1.9.92
-            foreach($caps as $cap => $val){
-                $role->add_cap( $cap, $val );
-            }
-
-            //Prepare AOL Manager Role
-            //$caps = array_merge($caps, array('delete_others_ads' =>FALSE,'edit_others_ads' =>FALSE));
-            $caps['upload_files'] = TRUE;
-            $caps['read'] = TRUE;
-            $caps['view_admin_dashboard'] = TRUE;
-
-            remove_role('aol_manager');
-            add_role('aol_manager', 'AOL Manager', $caps);
-
-            do_action('activate_applyonline');
-        }
-        
-        /**
-         * This function fixes a bug in versions prior to 1.6
-         * 
-         * The Bug: Application form fields(Post Metas) were serialized twice before save. 
-         * 
-         * The Fix: Check each app form field and converts it from dual serialized to single serialized value.
-         * 
-         * @since 1.6
-         * 
-         */
-        static function bug_fix_before_16(){
-            global $wpdb;
-            $fields = $wpdb->get_results("SELECT post_id, meta_key, meta_value FROM $wpdb->posts INNER JOIN $wpdb->postmeta ON ID=post_id WHERE post_type = 'aol_ad' AND meta_key LIKE '_aol_app_%'");
-            foreach ($fields as $field){
-                if (is_string(unserialize($field->meta_value))) update_post_meta ($field->post_id, $field->meta_key, unserialize(unserialize($field->meta_value)));
-            }
         }
 }

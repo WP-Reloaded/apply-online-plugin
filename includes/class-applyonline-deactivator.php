@@ -3,7 +3,7 @@
 /**
  * Fired during plugin deactivation
  *
- * @link       http://wpreloaded.com/farhan-noor
+ * @link       
  * @since      1.0.0
  *
  * @package    Applyonline

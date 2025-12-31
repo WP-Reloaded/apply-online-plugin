@@ -75,10 +75,10 @@ class AOL_BootStrap
 		$this->license_user = $license_user;
 		$this->license_key = $license_key;
 
-		// Set the Plugin Slug
+		// Set the Plugin Slug	
 		$this->plugin_slug = $plugin_slug;
 		list ($t1, $t2) = explode( '/', $plugin_slug );
-		$this->slug = str_replace( '.php', '', $t2 );
+		$this->slug = str_replace( '.php', '', $t2 );		
 
 		// define the alternative API for updating checking
 		add_filter( 'pre_set_site_transient_update_plugins', array( &$this, 'check_update' ) );
@@ -88,7 +88,7 @@ class AOL_BootStrap
 	}
 
 	/**
-	 * Add our self-hosted auto update plugin to the filter transient
+	 * Add our self-hosted autoupdate plugin to the filter transient
 	 *
 	 * @param $transient
 	 * @return object $ transient

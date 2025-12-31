@@ -131,6 +131,23 @@ class Applyonline_Admin{
                 wp_enqueue_script( 'jquery-ui-datepicker');
 	}
         
+        function show_all_post_statuses_in_admin( $query ) {
+            // Only modify the query if it's in the admin panel and the main query
+            if ( is_admin() && $query->is_main_query() && is_post_type_archive('aol_application') ) {
+                // Check if we are on the 'edit.php' screen (Applications list)
+                global $pagenow;
+                if ( $pagenow == 'edit.php' ) {
+                    // Get all possible application statuses
+                    if ( empty( $_GET['post_status'] ) || $_GET['post_status'] === 'all' ) {
+            
+                        // Set to 'any' to include all statuses except those excluded from search
+                        // (Note: 'any' usually excludes 'trash' and 'auto-draft' by default)
+                        $query->set( 'post_status', 'any' );
+                    }
+                }
+            }
+        }
+        
         function get_ads_list(){
             if( !current_user_can('manage_ads') ) die('Are you nuts?');
             
@@ -153,16 +170,6 @@ class Applyonline_Admin{
             return $args;
         }
  
-        function status_filters($views){
-            unset($views['mine']); unset($views['publish']);
-            $statuses = aol_app_statuses();
-            foreach ($statuses as $key => $status){
-                (isset($_GET['aol_application_status']) AND $_GET['aol_application_status'] == $key)? $class = 'current' : $class = NULL;
-                $views[$status] = '<a class="'.$class.'" href="'.  admin_url("edit.php?post_type=aol_application&aol_application_status=$key").'">'.esc_html__($status, 'apply-online').'</a>';        
-            }
-            return $views;
-        }
-
         /**
 	 * Save the meta when the post is saved.
 	 *
@@ -228,7 +235,7 @@ class Applyonline_Admin{
 
         public function admin_notice(){            
             //$notices = get_option('aol_dismissed_notices', array()); Obselete in favor of aol_admin_notices since 2.5.1
-            $notices = get_option('aol_admin_notices', array('aol_fresh_install'));
+            $notices = get_option('aol_admin_notices', ['aol_fresh_install']);
             if( empty($notices) OR !current_user_can('manage_options')) return;
             //esc_html__( "%sApply Online%s - It's good to %scheck things%s before a long drive.", 'apply-online' )
             ?>
@@ -537,35 +544,74 @@ class Applyonline_Admin{
         }
     }
     
+    /**
+     * @todo: Move this class to a seperate file in the admin folder.
+     */
     class Applyonline_Applications{
         public function __construct(){
-                
+            add_action( 'init', [$this, 'custom_statuses'], 1 );
+            //add_action( 'views_edit-aol_application', [$this, 'status_filters'] ); 
             //Add Application data to the Application editor. 
             add_action ( 'edit_form_after_title', array ( $this, 'aol_application_post_editor' ) );
             add_filter('post_row_actions',array($this, 'aol_post_row_actions'), 10, 2);
             add_action('admin_init', array($this, 'alter_metaboxes_on_application_page'));
             add_action( 'add_meta_boxes', array($this, 'aol_meta_boxes'),1 );
-            add_action('save_post_aol_application', array($this, 'save_application'));
+            add_filter( 'wp_insert_post_data', [$this, 'save_application'], 10, 2 );
             add_action('init', array($this, 'application_print'));
             add_action('manage_posts_extra_tablenav', array($this, 'applications_table_filter') );
-            
+
             /*Preview or Quickview an application.*/
             add_action( 'admin_action_aol_modal_box', array ( $this, 'application_quick_view') );
-            
+
             add_filter( 'post_date_column_status', array($this, 'application_date_column'), 10, 2);
 
             // Hook - Applicant Listing - Column Name
             add_filter( 'manage_edit-aol_application_columns', array ( $this, 'applicants_list_columns' ) );
 
-            // Hook - Applicant Listing - Column Value
+            //Hook - Applicant Listing - Column Value
             add_action( 'manage_aol_application_posts_custom_column', array ( $this, 'applicants_list_columns_value' ), 10, 2 ); 
-            
+
             //Filter Applications based on parent.
             add_action( 'pre_get_posts', array($this, 'applications_filter') );
             
             add_filter( 'bulk_actions-edit-aol_application', array($this, 'custom_bulk_actions') );
             add_filter( 'handle_bulk_actions-edit-aol_application', array($this, 'my_bulk_action_handler'), 10, 3 );
         }
+
+        /**
+         * This function handles/shows custom statuses in Applications Admin table.
+         * If no post is assigned to a particular status, admin table will not show that status in the list.
+         */
+        function custom_statuses(){
+            $statuses = aol_app_statuses();
+            foreach( $statuses as $status ):
+                register_post_status( 
+                    $status,
+                    array(
+                        'label' => $status,
+                        'label_count' => _n_noop( $status.' <span class="count">(%s)</span>', $status.' <span class="count">(%s)</span>'),
+                        'public' => true,
+                        'show_in_admin_all_list'    => true,
+                        'show_in_admin_status_list' => true,
+                    ) 
+                );
+            endforeach;
+        }
+        
+        /**
+         * Depricated in favor of custom_statuses().
+         */
+        function status_filters($views){
+            unset($views['mine']); unset($views['publish']);
+            $statuses = aol_app_statuses();
+            foreach ($statuses as $key => $status){
+                (isset($_GET['aol_application_status']) AND $_GET['aol_application_status'] == $key)? $class = 'current' : $class = NULL;
+                //$views[$status] = '<a class="'.$class.'" href="'.  admin_url("edit.php?post_type=aol_application&aol_application_status=$key").'">'.esc_html__($status, 'apply-online').'</a>';        
+                $views[$status] = '<a class="'.$class.'" href="'.  admin_url("edit.php?post_status=$key&post_type=aol_application").'">'.esc_html__($status, 'apply-online').'</a>';        
+            }
+            return $views;
+        }
+
         
         function custom_bulk_actions($actions){
             $stauses = aol_app_statuses_active();
@@ -654,20 +700,23 @@ class Applyonline_Admin{
             remove_meta_box('commentstatusdiv', 'aol_application', 'normal'); //Hide discussion meta box.
             remove_meta_box('submitdiv', 'aol_application', 'side');
         }
-            
-        function save_application($post_id){
-            if ( wp_is_post_revision( $post_id ) ) return;
-            // Check if this post is in default category
-            if ( isset($_POST['aol_tag']) AND !empty($_POST['aol_tag']) ){
-                $term = sanitize_key($_POST['aol_tag']);
-                $result = current_user_can('delete_applications') ? wp_set_post_terms( $post_id, $term, 'aol_application_status' ): array();
-                do_action('aol_application_status_change', $result[0], $post_id);
+        
+        /**
+         * 
+         * @param array $data Posta data to be saved in the database.
+         * @param array $postarr Raw data.
+         * @return type $data
+         */
+        function save_application($data, $postarr){
+            if( $data['post_type'] == 'aol_application' AND isset($postarr['application_status']) AND !empty($postarr['application_status']) ){
+                $data['post_status'] = sanitize_key($postarr['application_status']);
             }
+            //echo '<pre>'; print_r($data); echo '</pre>'; die();
+            return $data;
         }
         
         function application_sidebar(){
             global $post;
-            $post_terms = get_the_terms( $post->ID, 'aol_application_status');
             $stauses = aol_app_statuses_active();
             ?>
             <div class="submitpost">
@@ -681,10 +730,10 @@ class Applyonline_Admin{
                     if(current_user_can('delete_applications')){
                     ?>
                         <p class="post-attributes-label-wrapper"><label class="post-attributes-label" for="parent_id"><?php esc_html_e('Application Status','apply-online');?></label></p>
-                        <select class="aol_select" name="aol_tag">
+                        <select class="aol_select" name="application_status">
                             <?php
                             foreach($stauses as $key => $val){
-                                $selected = ( $key == $post_terms[0]->slug ) ? 'selected' : NULL;
+                                $selected = ( $key == $post->post_status ) ? 'selected' : NULL;
                                 echo '<option value="'. sanitize_key($key).'" '.$selected.'>'. esc_html__($val, 'apply-online').'</option>';
                             }
                             ?>
@@ -786,7 +835,7 @@ class Applyonline_Admin{
             <?php
             endif;
         }
-        
+
         /**
          * Applicant Listing - Column Name
          *
@@ -800,8 +849,9 @@ class Applyonline_Admin{
                 'id'    => esc_html__( 'ID', 'apply-online' ),
                 'title'    => esc_html__( 'Ad Title', 'apply-online' ),
                 'qview'      => NULL,
-                'applicant'=> esc_html__( 'Applicant', 'apply-online' ),
-                'taxonomy' => esc_html__( 'Status', 'apply-online' ),
+                //'applicant'=> esc_html__( 'Applicant', 'apply-online' ),
+                'status' => esc_html__( 'Status', 'apply-online' ),
+                'taxonomy' => esc_html__( 'Old Status', 'apply-online' ),
             );
             $columns = apply_filters('aol_application_posts_columns', $columns);
             $columns['date'] = esc_html__( 'Date', 'apply-online' );
@@ -817,12 +867,17 @@ class Applyonline_Admin{
          * @return  void
          */
         public function applicants_list_columns_value( $column, $post_id ){
-            $keys = get_post_custom_keys( $post_id ); $values = get_post_meta($post_id); 
+            //Depricated due to perfomrance issues.
+            /*
+            $keys = get_post_custom_keys( $post_id );
+            $values = get_post_meta($post_id);
             $new = array();
             foreach($values as $key => $val){
                 $new[$key]=$val[0];
             }
             $name = aol_array_find('Name', $keys);
+             * 
+             */
             switch ( $column ) {
                 case 'id' :
                     echo $post_id;
@@ -837,6 +892,7 @@ class Applyonline_Admin{
 
                     echo '<a href="' . esc_url($url) . '" class="thickbox" title="'. esc_attr__('Quick View', 'apply-online').'"><span class="dashicons dashicons-visibility"></span></a>';
                  break;
+                //Depricated due to perfomrance issues.
                 case 'applicant' :
                     if($name === FALSE):
                         $applicant_name = esc_html__('Undefined', 'apply-online');
@@ -852,6 +908,9 @@ class Applyonline_Admin{
                         );
                     endif;
                     echo sanitize_text_field($applicant_name); 
+                    break;
+                case 'status' :
+                    echo sanitize_text_field( get_post_status($post_id) );
                     break;
                 case 'taxonomy' :
                     //$parent_id = wp_get_post_parent_id( $post_id ); // get_post_field ( 'post_parent', $post_id );
