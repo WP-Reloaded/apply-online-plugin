@@ -51,7 +51,7 @@
                 current.text(characterCount);
 
 
-                /*This isn't entirely necessary, just playin around*/
+                /*This isn't entirely necessary, just playing around*/
                 if (characterCount < 70) {
                   current.css('color', '#666');
                 }
@@ -140,40 +140,39 @@
             });
           
             /* Progress Bar*/
-            var fields_required = $('.aol-form-group.required');
-            var fields_count = fields_required.length;
-            if(fields_count > 0) {
-                $('.progress-wrapper').show();
-                update_progress_bar($, fields_required, fields_count);
-                $(fields_required).find('input, textarea').change(function(){
-                    update_progress_bar($, fields_required, fields_count);
-                });                                                 
-            }
             /*End Progress Bar*/
         })
 
 })( jQuery );
 
-function update_progress_bar($, field, fields_count){
-    var filled = 0;
-    $(field).each(function(){
-        //If child input field is a checkbox or radio.
-        if( $(this).find('input').attr('type') == 'checkbox' || $(this).find('input').attr('type') == 'radio' ){
-            if($(this).find('input').is(':checked')) { // zero-length string AFTER a trim
-                filled++;
-            }
-        }
-        else{
-            if($.trim( $(this).find('input, textarea').val() ).length ) { // zero-length string AFTER a trim
-                filled++;
-            }            
-        }
-    });
-    filled_pecentage = (filled/fields_count)*100;
-    $('.aol-progress-count').css('width',filled_pecentage+'%');
-    $('.aol-progress-counter').text(filled+'/'+fields_count);
-    //$('.aol_progress').val(filled+'/'+fields_count);
+//New Progress Bar.
+const form = document.getElementById('aol_app_form');
+const requiredFields = form.querySelectorAll('[required]');
+const progressBar = document.getElementById('aol-progress-bar');
+const progressText = document.getElementById('aol-progress-counter');
+
+function updateProgress() {
+  let filled = 0;
+
+  requiredFields.forEach(field => {
+    if (field.checkValidity()) {
+      filled++;
+    }
+  });
+
+  const percent = Math.round((filled / requiredFields.length) * 100);
+
+  progressBar.style.width = percent + '%';
+  progressText.textContent = `${percent}% completed`;
 }
+
+// Listen to all changes
+form.addEventListener('input', updateProgress);
+form.addEventListener('change', updateProgress);
+
+// Initial state
+updateProgress();
+//End Progress Bar
 
 async function aolSubmitForm( event ) {
     if(!aolEmpty(aol_public.consent_text)){

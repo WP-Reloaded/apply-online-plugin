@@ -851,7 +851,6 @@ class Applyonline_Admin{
                 'qview'      => NULL,
                 //'applicant'=> esc_html__( 'Applicant', 'apply-online' ),
                 'status' => esc_html__( 'Status', 'apply-online' ),
-                'taxonomy' => esc_html__( 'Old Status', 'apply-online' ),
             );
             $columns = apply_filters('aol_application_posts_columns', $columns);
             $columns['date'] = esc_html__( 'Date', 'apply-online' );
@@ -911,25 +910,6 @@ class Applyonline_Admin{
                     break;
                 case 'status' :
                     echo sanitize_text_field( get_post_status($post_id) );
-                    break;
-                case 'taxonomy' :
-                    //$parent_id = wp_get_post_parent_id( $post_id ); // get_post_field ( 'post_parent', $post_id );
-                    $terms = get_the_terms( $post_id, 'aol_application_status' );
-                    $statuses = aol_app_statuses();
-                    if ( ! empty( $terms ) ) {
-                        $out = array ();
-                        foreach ( $terms as $term ){
-                            $status_name = isset($statuses[$term->slug]) ? $statuses[$term->slug] : $term->name;
-                            $out[] = sprintf( 
-                                    '<a href="%s">%s</a>', 
-                                    esc_url( add_query_arg( array ( 'post_type' => 'aol_application', 'aol_application_status' => $term->slug ), 'edit.php' ) ),
-                                    esc_html( sanitize_term_field( 'name', __($status_name, 'apply-online'), $term->term_id, 'aol_application_status', 'display' ) )
-                            );
-                        }
-                        echo sanitize_text_field(join( ', ', $out ));
-                    }/* If no terms were found, output a default message. */ else {
-                        esc_html_e( 'Undefined' , 'apply-online');
-                    }
                     break;
             }
         }                
@@ -1624,9 +1604,9 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                     <?php 
                         foreach($tabs as $tab){
                             if( isset($tab['capability']) AND !current_user_can($tab['capability']) ) continue;
-                            $href = empty($tab['href']) ? null : 'href="'.$tab['href'].'" target="_blank"';
+                            $href = empty($tab['href']) ? null : 'href="'.esc_url($tab['href']).'" target="_blank"';
                             $classes = isset($tab['classes']) ? $tab['classes'] : null;
-                            echo '<a class="nav-tab aol-tab '. esc_attr($classes).'" data-id="'.esc_attr($tab['id']).'" '.esc_url($href).'>'.sanitize_text_field($tab['name']).'</a>';
+                            echo '<a class="nav-tab aol-tab '. esc_attr($classes).'" data-id="'.esc_attr($tab['id']).'" '.$href.'>'.sanitize_text_field($tab['name']).'</a>';
                         }
                     ?>
                 </h2>

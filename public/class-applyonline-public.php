@@ -99,12 +99,12 @@ class Applyonline_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/applyonline-public.js', array( 'jquery','jquery-ui-datepicker' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/applyonline-public.js', array( 'jquery','jquery-ui-datepicker' ), $this->version, TRUE );
                 //wp_enqueue_script( 'aol-charcounter', plugin_dir_url( __FILE__ ) . 'js/cct_embed.min.js', array(), $this->version, false );
                 $aol_js_vars = array(
                         'ajaxurl' => admin_url ( 'admin-ajax.php' ),
                         'date_format'   => get_option('aol_date_format', 'dd-mm-yy'),
-                        'url'    => plugins_url(NULL, __DIR__),
+                        'url'    => plugins_url('', __DIR__),
                         'consent_text' => get_option('aol_form_consent', FALSE),//esc_html__('Do you really want to submit this form?', 'ApplyOnline'),
                 );
                 wp_localize_script (
@@ -245,9 +245,9 @@ class AOL_Single_Post_Template{
                 $css_color = preg_match($css_pattern, $progress_bar['counter']) ? $progress_bar['counter'] : NULL;
             ?>
             <style>
-                .aol-progress{background-color: <?php echo $css_bg; ?>}
-                .aol-progress-count{background-color: <?php echo $css_fg; ?>}
-                .aol-progress-counter{color: <?php echo $css_color; ?>}
+                #aol-progress-wrapper{background-color: <?php echo $css_bg; ?>}
+                #aol-progress-bar{background-color: <?php echo $css_fg; ?>}
+                #aol-progress-counter{color: <?php echo $css_color; ?>}
             </style>
             <form class="aol_app_form aol_app_form_<?php echo (int)$post_id; ?>" name="aol_app_form" id="aol_app_form" enctype="multipart/form-data"  data-toggle="validator" action="#aol_app_form">
                 <?php
@@ -272,9 +272,8 @@ class AOL_Single_Post_Template{
                     <div class="progress-wrapper">
                         <span><?php echo sanitize_text_field(get_option('aol_progress_bar_title', 'Application Progress')); ?></span>
                         <!--<progress value="0" max="100" style="width: 100%">3/5</progress>-->
-                        <div class="aol-progress">
-                            <div class="aol-progress-count"></div>
-                            <span class="aol-progress-counter"></span>
+                        <div id="aol-progress-wrapper">
+                            <div id="aol-progress-bar"><span id="aol-progress-counter">0%</span></div>
                         </div>                    
                     </div>
                 <?php endif; ?>
