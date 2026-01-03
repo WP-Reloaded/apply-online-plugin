@@ -4,7 +4,7 @@ Donate link: https://wpreloaded.com/shop/
 Tags: WP Form, Custom Form, Contact Form, Form Builder, Payment Form
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 2.6.7.2
+Stable tag: 2.6.7.3
 Requires PHP: 5.4
 License: GPLv2 or later
 
@@ -111,7 +111,9 @@ Different layout options e.g. grid layout, list layout, sidebar filter, popup fo
 
 == 2.6.7.3 =
 New: Filter hook aol_application_success_response.
-Fixed: Application Statuses.
+Fixed: Application Statuses moved from terms to posts table.
+Fixed: Actions after plugin update moved to separate class.
+Fixed: PHP warnings on plugin settings page.
 
 = 2.6.7.2 =
 New: Nonce for template forms for added security.
@@ -459,6 +461,9 @@ Fixed: Paragraph field text added in the received application & print format.
 * Plugin launched.
 
 == Upgrade Notice ==
+= 2.6.7.3 =
+ Maintenance and security releases, upgrade immediately.
+
 = 2.6.7.2 =
  Maintenance and security releases, upgrade immediately.
 
