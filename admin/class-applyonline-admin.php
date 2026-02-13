@@ -117,7 +117,7 @@ class Applyonline_Admin{
 		 */
                 $localize = array();
                 $localize['app_submission_message'] = esc_html__('Form has been submitted successfully. If required, we will get back to you shortly!', 'apply-online'); 
-                $localize['app_closed_alert'] = esc_html__('We are no longer accepting applications for this ad!', 'apply-online'); 
+                $localize['app_closed_alert'] = esc_html__('The submission deadline for this ad has passed. Please contact support for more details.', 'apply-online'); 
                 $localize['aol_required_fields_notice'] = esc_html__('Fields with (*)  are compulsory.', 'apply-online');
                 $localize['admin_url'] = admin_url();
                 $localize['aol_url'] = plugins_url( 'apply-online/' );
@@ -417,7 +417,7 @@ class Applyonline_Admin{
                     <input type="time" placeholder="<?php esc_attr_e('Time in 24hour format', 'apply-online'); ?>" name="_aol_ad_closing_time" class="datetimepicker" value="<?php echo $time; ?>" />
                     <p><b><?php esc_html_e('Format', 'apply-online'); ?>:</b><i> dd-mm-yyyy</i><br/><b><?php esc_html_e('Example', 'WordPress'); ?>:</b> <i><?php echo current_time('j-m-Y'); ?></i><br/></p>
                     <p class="when-expires"><b><?php esc_html_e('When Expires', 'apply-online'); ?>:</b><br /> <label for="hide_form" style="display: inline-block"><input type="radio" id="hide_form" name="_aol_ad_close_type" value="form" <?php echo $close_form; ?> /><?php esc_html_e('Hide form only', 'apply-online'); ?></label><br />
-                    <label for="hide_ad" style="display: inline-block"><input type="radio" id="hide_ad" name="_aol_ad_close_type" value="ad" <?php echo $close_ad; ?> /><?php esc_html_e('Hide ad completely', 'apply-online'); ?></label></p>                
+                    <label for="hide_ad" style="display: inline-block"><input type="radio" id="hide_ad" name="_aol_ad_close_type" value="ad" <?php echo $close_ad; ?> /><?php esc_html_e('Hide form & unlist ad', 'apply-online'); ?></label></p>                
                 </div>
                 <?php do_action('aol_ad_close_before', $post); ?>
                 <div id="recipients" class="aol-tab-data wrap">
@@ -1867,7 +1867,7 @@ class Applyonline_Settings extends Applyonline_Form_Builder{
                     <tr>
                         <th><label for="app_closed_alert"><?php esc_html_e('Closed Application alert', 'apply-online'); ?></label></th>
                         <td>
-                            <textarea id="app_closed_alert" class="small-text code" name="aol_application_close_message" cols="50" rows="3"><?php echo sanitize_text_field( get_option_fixed('aol_application_close_message', __('We are no longer accepting applications for this ad.', 'apply-online')) ); ?></textarea>
+                            <textarea id="app_closed_alert" class="small-text code" name="aol_application_close_message" cols="50" rows="3"><?php echo sanitize_text_field( get_option_fixed('aol_application_close_message', __('The submission deadline for this ad has passed. Please contact support for more details.', 'apply-online')) ); ?></textarea>
                             <br />
                             <button id="app_closed_alert_button" class="button"><?php esc_html_e('Default Alert', 'apply-online'); ?></button>
                         </td>

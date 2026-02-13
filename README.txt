@@ -4,7 +4,7 @@ Donate link: https://wpreloaded.com/shop/
 Tags: WP Form, Custom Form, Contact Form, Form Builder, Payment Form
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 2.6.7.6
+Stable tag: 2.6.7.7
 Requires PHP: 7.0
 License: GPLv2 or later
 
@@ -112,6 +112,7 @@ Secure mail with SMTP options.
 
 == 2.6.7.7 =
 Fixed: WP Warning on front-end "Translation loading for the apply-online domain was triggered too early."
+New: REST API replacing classic WP AJAX.
 
 == 2.6.7.6 =
 Fixed: Read More button text.

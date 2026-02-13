@@ -53,7 +53,7 @@ class Applyonline_Public {
 
                 new AOL_Single_Post_Template($plugin_name, $version); //Passing 2 parameters to the child
                 new Applyonline_Shortcodes();
-                new Applyonline_AjaxHandler();
+                //new Applyonline_AjaxHandler(); Depricated
 	}
 
 	/**
@@ -237,10 +237,9 @@ class AOL_Single_Post_Template{
             $progress_bar = get_option('aol_progress_bar_color', array('foreground' => '#222222', 'background' => '#dddddd', 'counter' => '#888888'));
             ob_start();
 
-            echo '<h3 class="aol-heading">'. esc_html_x('Apply Online', 'public', 'apply-online').'</h3>';
             //If closing date has passed away.
             if( !empty($date) AND $date < time() )
-                return '<span class="alert alert-warning">'. get_option_fixed('aol_application_close_message', esc_html__('We are no longer accepting applications for this ad.', 'apply-online')).'</span>';
+                return '<div class="alert alert-info">'. get_option_fixed('aol_application_close_message', esc_html__('The submission deadline for this ad has passed. Please contact support for more details.', 'apply-online')).'</div>';
                 $css_pattern = '/^#([0-9A-Fa-f]{3}){1,2}$/';
                 $css_bg = preg_match($css_pattern, $progress_bar['background']) ? $progress_bar['background'] : NULL;
                 $css_fg = preg_match($css_pattern, $progress_bar['foreground']) ? $progress_bar['foreground'] : NULL;
@@ -253,6 +252,7 @@ class AOL_Single_Post_Template{
             </style>
             <form class="aol_app_form aol_app_form_<?php echo (int)$post_id; ?>" name="aol_app_form" id="aol_app_form" enctype="multipart/form-data"  data-toggle="validator" action="#aol_app_form">
                 <?php
+                    echo '<h3 class="aol-heading">'. esc_html_x('Apply Online', 'public', 'apply-online').'</h3>';
                     do_action('aol_before_form_fields', $post_id);
                     
                     //Function returns sanitized data.

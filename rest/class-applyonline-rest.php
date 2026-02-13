@@ -56,10 +56,11 @@ class Applyonline_Rest{
         }
                 
         function rest_api_init() {
+            /*
             register_rest_route( $this->namespace, '/nonce', array(
                 'methods' => 'GET',
                 'callback' => [ $this, 'get_nonce' ],
-            ));
+            ));*/
             register_rest_route( $this->namespace, '/form', array(
                 'methods' => 'POST',
                 'permission_callback' => [$this, 'validate_nonce'],

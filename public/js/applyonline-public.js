@@ -127,10 +127,13 @@ async function aolSubmitForm( event ) {
     const formData = new FormData(document.getElementById("aol_app_form"));
     //formData.append('note', 'hello_world');
 
-    const response = await fetch(aol_public.ajaxurl, {
+    const response = await fetch(aol_public.rest_url+'/form', {
         method: 'POST',
         body: formData,
-        headers: {'Accept': 'application/json'}
+        headers: {
+            'Accept': 'application/json',
+            'X-WP-Nonce': aol_public.nonce
+        }
     });
     const data = await response.json();
     let message = !aolEmpty(data['message']) ? data['message'] : 'Something went wrong. Please try again or contact support.';

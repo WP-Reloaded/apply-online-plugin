@@ -303,7 +303,7 @@ class Applyonline_Activator {
             if(!get_option('aol_app_statuses')) update_option('aol_app_statuses', array('pending', 'rejected', 'shortlisted'));
             if(!get_option('aol_show_filter')) update_option('aol_show_filter', 0);
             //if(!get_option('aol_ad_filters')) update_option('aol_ad_filters', array('category', 'type', 'location'));
-            if(!get_option('aol_application_close_message')) update_option('aol_application_close_message', 'We are no longer accepting applications for this ad. Contact us for more details.');
+            if(!get_option('aol_application_close_message')) update_option('aol_application_close_message', 'The submission deadline for this ad has passed. Please contact support for more details.');
             if(!get_option('aol_mail_footer')) update_option('aol_mail_footer', "\n\nThank you\n".get_bloginfo('name')."\n".site_url()."n------\nPlease do not reply to the system generated message.");
             if(!get_option('aol_custom_statuses')) update_option('aol_custom_statuses', array('pending' => __('Pending', 'apply-online'), 'rejected'=> __('Rejected', 'apply-online'), 'shortlisted' => __('Shortlisted', 'apply-online')));
             if(!get_option('aol_nonce_is_active', 1)) update_option('aol_nonce_is_active', 1);

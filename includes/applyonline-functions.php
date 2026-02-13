@@ -393,7 +393,7 @@ function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 
     $form_output = NULL;
     foreach($fields as $field):
         //$value = isset($field['value']) ? $field['value'] : NULL;
-        $value = isset($field['val']) ? sanitize_textarea_field( $field['val'] ) : NULL;
+        $value = isset($field['val']) ? sanitize_textarea_field( $field['val'] ) : '';
         $placeholder   = isset($field['placeholder']) ? 'placeholder="'.sanitize_text_field( $field['placeholder'] ).'"' : NULL;
         $class         = isset($field['class']) ? esc_attr( $field['class'] ) : NULL;
 
