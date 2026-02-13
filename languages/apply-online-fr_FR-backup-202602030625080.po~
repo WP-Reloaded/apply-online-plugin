@@ -139,7 +139,7 @@ msgstr ""
 "ce qui suit :"
 
 #: public/class-applyonline-public.php:769
-#, php-format
+#, fuzzy, php-format
 #| msgid "Invalid file %s. Allowed file types are %s"
 msgid "Invalid file %1$s. Allowed file types are: %2$s"
 msgstr "Fichier invalide %s. Les fichiers autorisés sont %s"

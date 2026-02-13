@@ -236,3 +236,9 @@ body.post-type-aol_ad .postbox-header .hndle{justify-content: normal}
 
 .aol-tab-data{padding: 20px;}
 .wrap:has(.aol-table){margin-left: 12px;}
+
+.aol-border{border: 1px solid #c3c4c7; border-radius: 10px;}
+.aol-border-top{border-bottom: none;}
+.aol-border-bottom{border-top: none}
+.aol-border-sides{border-top: none; border-bottom: none}
+.aol-border th{padding-left: 20px;}

@@ -4,8 +4,8 @@ Donate link: https://wpreloaded.com/shop/
 Tags: WP Form, Custom Form, Contact Form, Form Builder, Payment Form
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 2.6.7.3
-Requires PHP: 5.4
+Stable tag: 2.6.7.6
+Requires PHP: 7.0
 License: GPLv2 or later
 
 Powerful & intuitive plugin to post ads and start receiving applications online.
@@ -108,6 +108,21 @@ Scroll bar with fixed height for form fields section.
 Recaptcha integration for secure form submission.
 Required field mark in the received application data.
 Different layout options e.g. grid layout, list layout, sidebar filter, popup form, etc.
+Secure mail with SMTP options.
+
+== 2.6.7.7 =
+Fixed: WP Warning on front-end "Translation loading for the apply-online domain was triggered too early."
+
+== 2.6.7.6 =
+Fixed: Read More button text.
+New: Custom from email option in settings for outgoing emails.
+New: Custom name column in applications table in admin panel.
+
+== 2.6.7.5 =
+Fixed: Ads and applications user role assignment on plugin activation.
+
+== 2.6.7.4 =
+Fixed: Fatal error on plugin activation.
 
 == 2.6.7.3 =
 New: Filter hook aol_application_success_response.
@@ -461,189 +476,5 @@ Fixed: Paragraph field text added in the received application & print format.
 * Plugin launched.
 
 == Upgrade Notice ==
-= 2.6.7.3 =
+= 2.6.7.6 =
  Maintenance and security releases, upgrade immediately.
-
-= 2.6.7.2 =
- Maintenance and security releases, upgrade immediately.
-
-= 2.6.7.1 =
- Maintenance release, upgrade immediately.
-
-= 2.6.7 =
- Security patch, upgrade immediately.
-
-= 2.6.6 =
- Critical updates. upgrade immediately.
-
-= 2.6.5 =
- Critical updates. upgrade immediately.
-
-= 2.6.4 =
- Critical updates. upgrade immediately.
-
-== Upgrade Notice ==
-= 2.6.3 =
- Critical updates. upgrade immediately.
-
-= 2.6.2 =
- Critical updates. upgrade immediately.
-
-= 2.6.1 =
- Critical updates. upgrade immediately.
-
-= 2.5.7 =
- Critical updates. upgrade immediately.
-
-= 2.5.6 =
- Security patches and important updates, upgrade immediately.
-
-= 2.5.5 =
- Security patches and important updates, upgrade immediately.
-
-= 2.5.4.1 =
- Security patches and important updates, upgrade immediately.
-
-= 2.5.4 =
- XSS Security patch and performance update, Upgrade immediately.
-
-= 2.5.3 =
- XSS Security patch and performance update, Upgrade immediately.
-
-= 2.5.2 =
- Reliability, security and performance update, Upgrade immediately.
-
-= 2.5.1 =
- Reliability, security and performance update, Upgrade immediately.
-
-= 2.5 =
- Reliability, security and performance update, Upgrade immediately.
-
-= 2.4.4 =
- Reliability, security and performance update, Upgrade immediately.
-
-= 2.4 =
- Reliability, security and performance update, Upgrade immediately.
-
-= 2.3 =
- Reliability, security and performance update, Upgrade immediately.
-
-= 2.2 =
- Reliability, security and performance update, Upgrade immediately.
-
-= 2.1 =
- Reliability and performance update, Upgrade immediately.
-
-= 2.0.2 =
- Reliability and performance update, Upgrade immediately.
-
-= 2.0.1 =
- Reliability and performance update, Upgrade immediately.
-
-= 2.0 =
- Reliability, performance, and security update, Upgrade immediately.
-
-= 1.9.98 =
- Reliability, performance, and security update, Upgrade immediately.
-
-= 1.9.97 =
- Reliability, performance, and security update, Upgrade immediately.
-
-= 1.9.96 =
- Reliability, performance, and security update, Upgrade immediately.
-
-= 1.9.96 =
- Reliability, performance, and security update, Upgrade immediately.
-
-= 1.9.95 =
- Reliability, performance, and security update, Upgrade immediately.
-
-= 1.9.91 =
- Reliability, performance, and security update, Upgrade immediately.
-
-= 1.9.9.9 =
-Critical bug fixes. Upgrade immediately.
-
-= 1.9.9.8 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.9.7 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.9.6 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.9.5 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.9.4 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.9.2 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.9 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.8 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.7 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.6 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.5 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.4 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.3 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.2 =
-Bug fixes. Upgrade immediately.
-
-= 1.9.1 =
-Bug fixes. Upgrade immediately.
-
-= 1.8.3 =
-Bug Fixes and patches. Upgrade recommended.
-
-= 1.8.1 =
-Bug Fixes and patches. Upgrade recommended.
-
-= 1.8 =
-New features, Bug Fixes and patches. Upgrade recommended.
-
-= 1.6.2 =
-Bug Fixes and patches. Upgrade recommended.
-
-= 1.6.1 =
-Bug Fixes and patches. Upgrade immediately.
-
-= 1.6 =
-Bug Fixes, patches and new features. Upgrade is recommended.
-
-= 1.5.1 =
-Bug Fixes, patches and new features. Upgrade is recommended.
-
-= 1.4 =
-Bug Fixes, patches and new features. Upgrade immediately.
-
-= 1.3 =
-Fixes, patches and new features. Upgrade immediately.
-
-= 1.2.1 =
-Link to new application in email alert fixed. Upgrade is recommended.
-
-= 1.2 =
-New hot features added. Upgrade immediately.
-
-= 1.1 =
-This version fixes bugs in shortcode, and file attachment with application form. Upgrade immediately.
-
-= 1.0 =
-Plugin launched.

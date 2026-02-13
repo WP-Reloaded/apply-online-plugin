@@ -63,7 +63,7 @@ function aol_form($post_id = 0){
  * @return string attributes
  */
 function get_aol_form_button($id = 'aol_app_submit_button', $title = NULL, $classes = NULL, $atts = array() ){
-    if( $title == NULL ) $title = esc_attr__('Submit', 'ApplyOnline');
+    if( $title == NULL ) $title = esc_attr__('Submit', 'apply-online');
     if( $classes == NULL ) $classes = apply_filters('aol_form_button_classes', 'btn btn-primary btn-submit button submit fusion-button button-large aol-form-button '. esc_attr( get_option('aol_submit_button_classes') ) );
     
     $attributes = apply_filters('aol_form_button_attributes', $atts);
@@ -162,7 +162,7 @@ function get_aol_ad_post_meta($post_id){
  * Returns Ad types with relevent data.
  */
 function aol_ad_types(){
-    return get_option_fixed('aol_ad_types', array('ad' => array('singular' => esc_html__('Ad','ApplyOnline'), 'plural' => esc_html__('Ads','ApplyOnline'), 'description' => esc_html__('All Ads','ApplyOnline'), 'filters' => array())));
+    return get_option_fixed('aol_ad_types', array('ad' => array('singular' => esc_html__('Ad','apply-online'), 'plural' => esc_html__('Ads','apply-online'), 'description' => esc_html__('All Ads','apply-online'), 'filters' => array())));
 }
 
 /**
@@ -262,7 +262,7 @@ function aol_ad_filters(){
 }
 
 function aol_app_statuses(){
-    $filters = array('pending' => esc_html__('Pending', 'ApplyOnline'), 'rejected'=> esc_html__('Rejected', 'ApplyOnline'), 'shortlisted' => esc_html__('Shortlisted', 'ApplyOnline'));
+    $filters = array('pending' => esc_html__('Pending', 'apply-online'), 'rejected'=> esc_html__('Rejected', 'apply-online'), 'shortlisted' => esc_html__('Shortlisted', 'apply-online'));
     $statuses = array_merge($filters, get_option_fixed('aol_custom_statuses', array()));
     return apply_filters('aol_app_statuses', $statuses);
 }
@@ -305,8 +305,8 @@ function aol_ad_cpt_filters($cpt){
             'aol_ad_types', 
             array(
                 'ad' => array(
-                    'singular' => esc_html__('Ad','ApplyOnline'), 
-                    'plural' => esc_html__('Ads','ApplyOnline'), 
+                    'singular' => esc_html__('Ad','apply-online'), 
+                    'plural' => esc_html__('Ads','apply-online'), 
                     'filters' => array_keys( aol_ad_filters() )
                     )
                 )
@@ -364,8 +364,8 @@ function aol_email_content_type(){
 
 function aol_links_shortcode( $atts ) {
 	$a = shortcode_atts( array(
-            'href' => esc_html__('Link is missing', 'ApplyOnline'),
-            'title' => esc_html__('Title is missing', 'ApplyOnline'),
+            'href' => esc_html__('Link is missing', 'apply-online'),
+            'title' => esc_html__('Title is missing', 'apply-online'),
             'target' => '_blank',
             
 	), $atts );
@@ -434,7 +434,7 @@ function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 
                 break;
 
             case 'date':
-                $form_output .= $wrapper_start. '<input type="text" '.$placeholder.' name="'.$prepend.$field_key.'" class="form-control datepicker '.$class.'" id="'.$prepend.$field_key.'" value="'.$value.'"  placeholder="'.esc_attr__('e.g.', 'ApplyOnline').' '.current_time(get_option('date_format')).'" '.$attributes.'  aria-describedby="help'.$field_key.'" >'.$wrapper_end;
+                $form_output .= $wrapper_start. '<input type="text" '.$placeholder.' name="'.$prepend.$field_key.'" class="form-control datepicker '.$class.'" id="'.$prepend.$field_key.'" value="'.$value.'"  placeholder="'.esc_attr__('e.g.', 'apply-online').' '.current_time(get_option('date_format')).'" '.$attributes.'  aria-describedby="help'.$field_key.'" >'.$wrapper_end;
                 break;
 
             case 'dropdown':
@@ -476,13 +476,13 @@ function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 
                 $is_multi_steps = get_option('aol_multistep');
                 $hide_section = $back = $multistep_output = NULL;
                 if($is_multi_steps){
-                    if($fieldset > 1) $back = '<button class="aol_multistep btn btn-default btn-previous pull-left" data-load="back"><span class="dashicons dashicons-arrow-left-alt2"></span> '.esc_html__('Previous', 'ApplyOnline').'</button>';
+                    if($fieldset > 1) $back = '<button class="aol_multistep btn btn-default btn-previous pull-left" data-load="back"><span class="dashicons dashicons-arrow-left-alt2"></span> '.esc_html__('Previous', 'apply-online').'</button>';
                     if($fieldset > 0){
                         $hide_section   = 'style="display:none;"';
                     }
                 }
                 
-                $multistep_output = $back.'<button class="aol_multistep btn btn-default btn-next pull-right" data-load="next">'.esc_html__('Next', 'ApplyOnline').' <span class="dashicons dashicons-arrow-right-alt2"></span></button>';
+                $multistep_output = $back.'<button class="aol_multistep btn btn-default btn-next pull-right" data-load="next">'.esc_html__('Next', 'apply-online').' <span class="dashicons dashicons-arrow-right-alt2"></span></button>';
                 if($fieldset > 0)   $form_output.=  $multistep_output.'</fieldset>';
 
                 $form_output.=  "<fieldset $hide_section><legend>".sanitize_text_field($label).'</legend>';
@@ -515,7 +515,7 @@ function aol_form_generator($fields, $fieldset = 0, $prepend = NULL, $post_id = 
                 break;
         }
     endforeach;
-    //if($fieldset > 0) $form_output.=  '<button class="aol_multistep btn btn-default btn-previous pull-left '.get_option('aol_multistep_button_classes').'" data-load="back"><span class="dashicons dashicons-arrow-left-alt2"></span> '.esc_html__('Previous', 'ApplyOnline').'</button></fieldset>';
+    //if($fieldset > 0) $form_output.=  '<button class="aol_multistep btn btn-default btn-previous pull-left '.get_option('aol_multistep_button_classes').'" data-load="back"><span class="dashicons dashicons-arrow-left-alt2"></span> '.esc_html__('Previous', 'apply-online').'</button></fieldset>';
     if($fieldset == 1) $form_output .= '</fieldset>';
 
     return $form_output;//ob_get_clean();
@@ -565,14 +565,14 @@ function aol_application_data($post){
 
             $val = get_post_meta ( $post->ID, $key, true );
             //Support to previuos versions where only URL was saved in the post meta.
-            //if ( !filter_var($val, FILTER_VALIDATE_URL) === false ) $val = '<a href="'.$val.'" target="_blank">'.esc_html__('View','ApplyOnline').'</a> | <a href="'.esc_url ($val).'" >'.esc_html__('Download','ApplyOnline').'</a>';
+            //if ( !filter_var($val, FILTER_VALIDATE_URL) === false ) $val = '<a href="'.$val.'" target="_blank">'.esc_html__('View','apply-online').'</a> | <a href="'.esc_url ($val).'" >'.esc_html__('Download','apply-online').'</a>';
 
             if(is_array($val)){
                 //If the outputs is file attachment
                 if(isset($val['file']) AND isset($val['type'])){
-                    $val = '<a href="'. aol_crypt($val['file']).'" target="_blank">'.esc_html__('Attachment','ApplyOnline').'</a>';                    
+                    $val = '<a href="'. aol_crypt($val['file']).'" target="_blank">'.esc_html__('Attachment','apply-online').'</a>';                    
                 } elseif(isset($val['url']) AND isset($val['type'])){
-                    $val = '<a href="'.esc_url($val['url']).'" target="_blank">"'.esc_html__('Attachment','ApplyOnline').'"</a>';                    
+                    $val = '<a href="'.esc_url($val['url']).'" target="_blank">"'.esc_html__('Attachment','apply-online').'"</a>';                    
                 } 
 
                 //If output is a radio or checkbox.
@@ -641,9 +641,9 @@ function aol_application_table($post, $classes = 'aol-table widefat striped'){
                     echo '<td>' . sanitize_text_field($row['label']) . '</td>';
                     echo '<td>';
                     if(empty($row['value'])) {
-                        echo '<i class="text-secondary">- '.esc_html__('not provided', 'ApplyOnline').' -</i>';
+                        echo '<i class="text-secondary">- '.esc_html__('not provided', 'apply-online').' -</i>';
                     } else {
-                        echo ( $row['type'] == 'file' ) ? '<a href="'.esc_url(get_option('siteurl').'?aol_attachment='.$row['value'] ).'" target="_blank">'.esc_html__('Attachment','ApplyOnline').'</a>' : sanitize_textarea_field($row['value']);
+                        echo ( $row['type'] == 'file' ) ? '<a href="'.esc_url(get_option('siteurl').'?aol_attachment='.$row['value'] ).'" target="_blank">'.esc_html__('Attachment','apply-online').'</a>' : sanitize_textarea_field($row['value']);
                     }
                     echo '</td>';
                 echo '</tr>';
@@ -716,24 +716,17 @@ function get_aol_settings(){
  * @return array Headers required by mail functions.
  */
 function aol_from_mail_header($extra_headers = array()){
+    $user = get_option_fixed( 'aol_from_email', 'do-not-reply', TRUE );
     // Get the site domain and get rid of www.
     $sitename = strtolower( $_SERVER['SERVER_NAME'] );
     if ( substr( $sitename, 0, 4 ) == 'www.' ) {
         $sitename = substr( $sitename, 4 );
     }
-    $from_email = 'do-not-reply@' . $sitename;
+    $from_email = $user.'@'.$sitename;
     
-    //Removed since 2.5.4
-    //$headers = 'Content-Type: text/html'."\r\n";
-    //$headers .= wp_specialchars_decode('From: '.get_bloginfo('name')." <$from_email>")."\r\n";
-    //$headers .= implode(",\r\n", $extra_headers);
-    
-    //Introduced in  2.5.4
-    $headers = array('Content-Type: text/html', "From: ". wp_specialchars_decode(get_bloginfo('name'))." <$from_email>");
+    $headers = array('Content-Type: text/html', "From: ". wp_specialchars_decode( get_bloginfo('name') )." <$from_email>");
     
     return array_merge($headers, $extra_headers); 
-    
-    //return array('Content-Type: text/html', "From:". wp_specialchars_decode(get_bloginfo('name'))." <$from_email>", implode(',', $extra_headers));
 }
 
 /**
@@ -763,13 +756,14 @@ if( !function_exists('has_blocks') ){
 }
 
 function aol_mail_footer(){
-        $message  = "\n\n";
-        $message  .= "Thank you";
-        $message .= "\n";
-        $message .= get_bloginfo('name')."\n";
-        $message .= site_url()."\n";
-        $message .= "------\n";
-        $message .= "Please do not reply to this system generated message.";
+        //$message .= '<p>'.sprintf(__('Thank you,<br>Team %s'), get_option('blogname')).'</p>';
+        $message  = '<p>';
+        $message .= __('Thank you,').'<br>';
+        $message .= get_bloginfo('name').'<br>';
+        $message .= site_url().'<br>';
+        $message .= '------<br>';
+        $message .= '</p>';
+        $message .= '<i>Please do not reply to the system generated message.</i>';
     return $message;
 }
 

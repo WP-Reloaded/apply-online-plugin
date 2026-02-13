@@ -1,0 +1,468 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Apply Online\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-20 15:24+0000\n"
+"PO-Revision-Date: 2020-02-20 15:25+0000\n"
+"Last-Translator: admin <rizwan4317@gmail.com>\n"
+"Language-Team: Dutch\n"
+"Language: nl_NL\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.3.1; wp-5.2.5"
+
+#: includes/applyonline-functions.php:141
+#: public/class-applyonline-public.php:264
+msgid "Ad"
+msgstr ""
+
+#: includes/applyonline-functions.php:141
+#: includes/applyonline-functions.php:238 includes/class-applyonline.php:359
+#: public/class-applyonline-public.php:264
+msgid "Ads"
+msgstr ""
+
+#: includes/applyonline-functions.php:141
+#: includes/class-applyonline-activator.php:266
+#: includes/class-applyonline.php:363 includes/class-applyonline.php:366
+msgid "All Ads"
+msgstr ""
+
+#: includes/applyonline-functions.php:187
+msgid "Category"
+msgstr ""
+
+#: includes/applyonline-functions.php:187
+msgid "Categories"
+msgstr ""
+
+#: includes/applyonline-functions.php:188
+msgid "Type"
+msgstr ""
+
+#: includes/applyonline-functions.php:188
+msgid "Types"
+msgstr ""
+
+#: includes/applyonline-functions.php:189
+msgid "Location"
+msgstr ""
+
+#: includes/applyonline-functions.php:189
+msgid "Locations"
+msgstr ""
+
+#: includes/applyonline-functions.php:195
+msgid "Pending"
+msgstr ""
+
+#: includes/applyonline-functions.php:195
+msgid "Rejected"
+msgstr ""
+
+#: includes/applyonline-functions.php:195
+msgid "Shortlisted"
+msgstr ""
+
+#: includes/applyonline-functions.php:237
+msgid "ad"
+msgstr ""
+
+#: includes/applyonline-functions.php:296
+msgid "Link is missing"
+msgstr ""
+
+#: includes/applyonline-functions.php:297
+msgid "Title is missing"
+msgstr ""
+
+#: includes/applyonline-functions.php:346
+msgid "e.g."
+msgstr ""
+
+#: includes/applyonline-functions.php:389
+#: includes/applyonline-functions.php:420
+msgid "Previous"
+msgstr ""
+
+#: includes/applyonline-functions.php:395
+msgid "Next"
+msgstr ""
+
+#: includes/applyonline-functions.php:466
+msgid "View"
+msgstr ""
+
+#: includes/applyonline-functions.php:466
+msgid "Download"
+msgstr ""
+
+#: includes/applyonline-functions.php:471
+#: includes/applyonline-functions.php:474
+msgid "Attachment"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:68
+msgid "Shortlisted Applications"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:73
+msgid "Rejected Applications"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:78
+msgid "Pending Applications"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:85
+msgid "Ads relevent to management department"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:93
+msgid "Ads relevent to finance department"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:101
+msgid "Ads relevent to IT department"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:106
+msgid "Ads for full time work"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:112
+msgid "Ads for part time work"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:117
+msgid "Ads for work on weekends"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:122
+msgid "Ads for internship work"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:127
+msgid "Ads for morning session"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:132
+msgid "Ads for evening session"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:137
+msgid "Ads for Islamabad"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:147
+#: includes/class-applyonline-activator.php:162
+msgid "Ads for London"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:152
+msgid "Ads for Washington D.C."
+msgstr ""
+
+#: includes/class-applyonline-activator.php:157
+msgid "Ads for Ankara"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:167
+msgid "Ads for Pretoria"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:172
+msgid "Ads for Ottawa"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:177
+msgid "Ads for Sydney"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:182
+msgid "Ads for Dhaka"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:187
+msgid "Ads for Brussels"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:192
+msgid "Ads for Berlin"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:197
+msgid "Ads for Jakarta"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:202
+#: includes/class-applyonline-activator.php:207
+msgid "Ads for Moscow"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:212
+msgid "Ads for Paris"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:221
+#: includes/class-applyonline-activator.php:237
+msgid "Name"
+msgstr "Naam"
+
+#: includes/class-applyonline-activator.php:227
+#: includes/class-applyonline-activator.php:245
+msgid "E Mail"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:234
+msgid "Default Template"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:240
+msgid "Please provide your full name."
+msgstr ""
+
+#: includes/class-applyonline-activator.php:251
+msgid "Address"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:254
+msgid "Please provide your full address"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:279
+msgid ""
+"Form has been submitted successfully. If required, we will get back to you "
+"shortly!"
+msgstr ""
+
+#: includes/class-applyonline-activator.php:280
+#: public/class-applyonline-public.php:198
+msgid "Fields with (*)  are compulsory."
+msgstr ""
+
+#: includes/class-applyonline-activator.php:337
+msgid "AOL Manager"
+msgstr ""
+
+#: includes/class-applyonline.php:282 includes/class-applyonline.php:318
+#, php-format
+msgid "Add New %s"
+msgstr ""
+
+#: includes/class-applyonline.php:283
+#, php-format
+msgid "New %s"
+msgstr ""
+
+#: includes/class-applyonline.php:284 includes/class-applyonline.php:316
+#, php-format
+msgid "Edit %s"
+msgstr ""
+
+#: includes/class-applyonline.php:285
+#, php-format
+msgid "View %s"
+msgstr ""
+
+#: includes/class-applyonline.php:286 includes/class-applyonline.php:312
+#, php-format
+msgid "Search %s"
+msgstr ""
+
+#: includes/class-applyonline.php:313
+#, php-format
+msgid "All %s"
+msgstr ""
+
+#: includes/class-applyonline.php:314
+#, php-format
+msgid "Parent %s"
+msgstr ""
+
+#: includes/class-applyonline.php:315
+#, php-format
+msgid "Parent %s:"
+msgstr ""
+
+#: includes/class-applyonline.php:317
+#, php-format
+msgid "Update %s"
+msgstr ""
+
+#: includes/class-applyonline.php:319
+#, php-format
+msgid "New %s Name"
+msgstr ""
+
+#: includes/class-applyonline.php:356
+msgid "Create Ad"
+msgstr ""
+
+#: includes/class-applyonline.php:357
+msgid "New Ad"
+msgstr ""
+
+#: includes/class-applyonline.php:358
+msgid "Edit Ad"
+msgstr ""
+
+#: includes/class-applyonline.php:388 includes/class-applyonline.php:389
+msgid "No applications found."
+msgstr ""
+
+#: includes/class-applyonline.php:392
+msgid "Applications"
+msgstr ""
+
+#: includes/class-applyonline.php:398
+msgid "All Applications"
+msgstr ""
+
+#: includes/class-applyonline.php:411
+msgid "Status"
+msgstr ""
+
+#: includes/class-applyonline.php:486
+#, php-format
+msgid "%s is oversized. Must be under %s MB"
+msgstr ""
+
+#: includes/class-applyonline.php:493
+#, php-format
+msgid "Invalid file %s. Allowed file types are %s"
+msgstr ""
+
+#: includes/class-applyonline.php:522
+msgid "Session Expired, please try again"
+msgstr ""
+
+#: includes/class-applyonline.php:545
+#, php-format
+msgid "%s is invalid."
+msgstr ""
+
+#: includes/class-applyonline.php:551 includes/class-applyonline.php:557
+#, php-format
+msgid "%s is required."
+msgstr ""
+
+#: includes/class-applyonline.php:633
+msgid ""
+"Form has been submitted successfully. If required, we will get back to you "
+"soon!"
+msgstr ""
+
+#: includes/class-applyonline.php:671
+#, php-format
+msgid "New application for %s"
+msgstr ""
+
+#: includes/class-applyonline.php:676
+msgid "Hi,"
+msgstr ""
+
+#: includes/class-applyonline.php:678
+#, php-format
+msgid "A new application for the ad %1$s has been received on %2$s website."
+msgstr ""
+
+#: includes/class-applyonline.php:680
+#, php-format
+msgid "%sClick Here%s to access this application."
+msgstr ""
+
+#: includes/class-applyonline.php:682
+msgid "Thank you"
+msgstr ""
+
+#: includes/class-applyonline.php:684
+#, php-format
+msgid "This is an automated response from Apply Online plugin on %s"
+msgstr ""
+
+#: public/class-applyonline-public.php:153
+msgid "Text"
+msgstr ""
+
+#: public/class-applyonline-public.php:153
+msgid "Check Box"
+msgstr ""
+
+#: public/class-applyonline-public.php:153
+msgid "Drop Down"
+msgstr ""
+
+#: public/class-applyonline-public.php:153
+msgid "Radio"
+msgstr ""
+
+#: public/class-applyonline-public.php:153
+msgid "File"
+msgstr ""
+
+#: public/class-applyonline-public.php:153
+msgid "Seprator"
+msgstr ""
+
+#: public/class-applyonline-public.php:173
+msgid "Form ID is missing"
+msgstr ""
+
+#: public/class-applyonline-public.php:183
+msgid "We are no longer accepting applications for this ad."
+msgstr ""
+
+#: public/class-applyonline-public.php:190
+msgid "Submit"
+msgstr ""
+
+#: public/class-applyonline-public.php:273
+msgctxt "public"
+msgid "Apply Online"
+msgstr ""
+
+#: public/class-applyonline-public.php:275
+msgid "Salient Features"
+msgstr ""
+
+#: public/class-applyonline-public.php:379
+#, php-format
+msgctxt "Filter Dropdown"
+msgid "%s - All"
+msgstr ""
+
+#: public/class-applyonline-public.php:391
+msgid "Filter"
+msgstr ""
+
+#: public/class-applyonline-public.php:442
+msgid "Read More"
+msgstr ""
+
+#: public/class-applyonline-public.php:469
+msgid "Sorry, we could not find what you were looking for."
+msgstr ""
+
+#. Name of the plugin
+msgid "Apply Online"
+msgstr ""
+
+#. Description of the plugin
+msgid "Post ads and start receiving applications online."
+msgstr ""
+
+#. URI of the plugin
+msgid "https://wpreloaded.com"
+msgstr ""
+
+#. Author of the plugin
+msgid "Spider Teams"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://spiderteams.com/home"
+msgstr ""

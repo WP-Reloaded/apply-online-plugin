@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Apply Online\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-18 08:08+0000\n"
-"PO-Revision-Date: 2026-02-03 06:25+0000\n"
+"PO-Revision-Date: 2026-02-03 06:21+0000\n"
 "Language-Team: French (France)\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
@@ -57,6 +57,7 @@ msgid "All Ads"
 msgstr "Les appels"
 
 #. Name of the plugin
+#, fuzzy
 #| msgid "Apply Online"
 msgid "ApplyOnline"
 msgstr "E-Candidature"
@@ -104,6 +105,7 @@ msgid "Filter"
 msgstr "Filtre"
 
 #: public/class-applyonline-public.php:957
+#, fuzzy
 #| msgid ""
 #| "Form has been submitted successfully with application id %d. If required "
 #| "we will get back to you soon!"
@@ -139,7 +141,7 @@ msgstr ""
 "ce qui suit :"
 
 #: public/class-applyonline-public.php:769
-#, php-format
+#, fuzzy, php-format
 #| msgid "Invalid file %s. Allowed file types are %s"
 msgid "Invalid file %1$s. Allowed file types are: %2$s"
 msgstr "Fichier invalide %s. Les fichiers autorisés sont %s"

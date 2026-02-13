@@ -99,13 +99,15 @@ class Applyonline_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/applyonline-public.js', array( 'jquery','jquery-ui-datepicker' ), $this->version, TRUE );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/applyonline-public.js', [ 'jquery','jquery-ui-datepicker' ], $this->version, TRUE );
                 //wp_enqueue_script( 'aol-charcounter', plugin_dir_url( __FILE__ ) . 'js/cct_embed.min.js', array(), $this->version, false );
                 $aol_js_vars = array(
-                        'ajaxurl' => admin_url ( 'admin-ajax.php' ),
+                        'ajaxurl' => admin_url( 'admin-ajax.php' ),
+                        'rest_url' => rest_url('aol/v1'),
+                        'nonce'  => wp_create_nonce('wp_rest'),
                         'date_format'   => get_option('aol_date_format', 'dd-mm-yy'),
                         'url'    => plugins_url('', __DIR__),
-                        'consent_text' => get_option('aol_form_consent', FALSE),//esc_html__('Do you really want to submit this form?', 'ApplyOnline'),
+                        'consent_text' => get_option('aol_form_consent', FALSE),//esc_html__('Do you really want to submit this form?', 'apply-online'),
                 );
                 wp_localize_script (
                     $this->plugin_name,
@@ -194,12 +196,12 @@ class AOL_Single_Post_Template{
             }
             
             $field_types = array(
-                'text'=> esc_html__('Text','ApplyOnline'),
-                'checkbox'=>esc_html__('Check Box','ApplyOnline'),
-                'dropdown'=>esc_html__('Drop Down','ApplyOnline'),
-                'radio'=> esc_html__('Radio','ApplyOnline'),
-                'file'=> esc_html__('File','ApplyOnline'),
-                'separator' => esc_html__('Seprator','ApplyOnline')
+                'text'=> esc_html__('Text','apply-online'),
+                'checkbox'=>esc_html__('Check Box','apply-online'),
+                'dropdown'=>esc_html__('Drop Down','apply-online'),
+                'radio'=> esc_html__('Radio','apply-online'),
+                'file'=> esc_html__('File','apply-online'),
+                'separator' => esc_html__('Separator','apply-online')
                 );
             
             $raw_fields = get_aol_ad_post_meta($post_id);
@@ -219,7 +221,7 @@ class AOL_Single_Post_Template{
         public function application_form($post_id = 0){
             
             if(empty($post_id) AND !is_singular()){ 
-                return '<p id="aol_form_status alert alert-danger">'.esc_html__('Form ID is missing', 'ApplyOnline').'</p>';
+                return '<p id="aol_form_status alert alert-danger">'.esc_html__('Form ID is missing', 'apply-online').'</p>';
             }
                         
             global $post;
@@ -235,10 +237,10 @@ class AOL_Single_Post_Template{
             $progress_bar = get_option('aol_progress_bar_color', array('foreground' => '#222222', 'background' => '#dddddd', 'counter' => '#888888'));
             ob_start();
 
-            echo '<h3 class="aol-heading">'. esc_html_x('Apply Online', 'public', 'ApplyOnline').'</h3>';
+            echo '<h3 class="aol-heading">'. esc_html_x('Apply Online', 'public', 'apply-online').'</h3>';
             //If closing date has passed away.
             if( !empty($date) AND $date < time() )
-                return '<span class="alert alert-warning">'. get_option_fixed('aol_application_close_message', esc_html__('We are no longer accepting applications for this ad.', 'ApplyOnline')).'</span>';
+                return '<span class="alert alert-warning">'. get_option_fixed('aol_application_close_message', esc_html__('We are no longer accepting applications for this ad.', 'apply-online')).'</span>';
                 $css_pattern = '/^#([0-9A-Fa-f]{3}){1,2}$/';
                 $css_bg = preg_match($css_pattern, $progress_bar['background']) ? $progress_bar['background'] : NULL;
                 $css_fg = preg_match($css_pattern, $progress_bar['foreground']) ? $progress_bar['foreground'] : NULL;
@@ -256,7 +258,7 @@ class AOL_Single_Post_Template{
                     //Function returns sanitized data.
                     echo aol_form_generator($fields, 0, '_aol_app_', $post_id);
                     do_action('aol_after_form_fields', $post_id);
-                    $aol_button_attributes = apply_filters('aol_form_button_attributes', array('value' => esc_html__('Submit', 'ApplyOnline'), 'class' => 'btn btn-primary btn-submit button submit fusion-button button-large aol-form-button '. get_option('aol_submit_button_classes')));
+                    $aol_button_attributes = apply_filters('aol_form_button_attributes', array('value' => esc_html__('Submit', 'apply-online'), 'class' => 'btn btn-primary btn-submit button submit fusion-button button-large aol-form-button '. get_option('aol_submit_button_classes')));
                     $aol_button_attributes = apply_filters('aol_form_button', $aol_button_attributes);//depricated in the favour of aol_form_button_attributes since 2.2.3.1
                     $attributes = NULL;
                     foreach($aol_button_attributes as $key => $val){
@@ -269,7 +271,7 @@ class AOL_Single_Post_Template{
                 <input type="hidden" name="action" value="aol_app_form" >
                 <input type="hidden" name="wp_nonce" value="<?php echo wp_create_nonce( 'the_best_aol_ad_security_nonce' ); ?>" >
                 <?php if( get_option('aol_is_progress_bar') ): ?>
-                    <div class="progress-wrapper">
+                    <div class="progress-wrapper" style="display:none">
                         <span><?php echo sanitize_text_field(get_option('aol_progress_bar_title', 'Application Progress')); ?></span>
                         <!--<progress value="0" max="100" style="width: 100%">3/5</progress>-->
                         <div id="aol-progress-wrapper">
@@ -338,7 +340,7 @@ class AOL_Single_Post_Template{
 
         public function aol_the_content($content){
             global $post;
-            $types = get_option_fixed('aol_ad_types', array('ad' => array('singular'=> esc_html__('Ad','ApplyOnline'), 'plural' => esc_html__('Ads','ApplyOnline'))));
+            $types = get_option_fixed('aol_ad_types', array('ad' => array('singular'=> esc_html__('Ad','apply-online'), 'plural' => esc_html__('Ads','apply-online'))));
             $aol_types = array();
             foreach($types as $type => $val){
                 $aol_types[] = 'aol_'.$type;
@@ -350,11 +352,11 @@ class AOL_Single_Post_Template{
             $title_features = empty($features) ? NULL : '<h4 class="aol-heading-features">'. get_option( 'aol_features_title', 'Salient Features' ).'</h4>';
             $form = $this->application_form();
             
-            $not_working = '<ul><li>'.esc_html__('If the application does not load after a few seconds, please try the following:', 'ApplyOnline').'</li>';
-            $not_working .= '<li>'.esc_html__('Open the application in a new tab. ', 'ApplyOnline').'</li>';
-            $not_working .= '<li>'.esc_html__('Try using a different browser. ', 'ApplyOnline').'</li>';
-            $not_working .= '<li>'.esc_html__('Try switching to a more stable network connection. ', 'ApplyOnline').'</li>';
-            $not_working .= '<li>'.esc_html__('Report this problem to the development team. ', 'ApplyOnline').'</li></ul>';
+            $not_working = '<ul><li>'.esc_html__('If the application does not load after a few seconds, please try the following:', 'apply-online').'</li>';
+            $not_working .= '<li>'.esc_html__('Open the application in a new tab.', 'apply-online').'</li>';
+            $not_working .= '<li>'.esc_html__('Try using a different browser.', 'apply-online').'</li>';
+            $not_working .= '<li>'.esc_html__('Try switching to a more stable network connection.', 'apply-online').'</li>';
+            $not_working .= '<li>'.esc_html__('Report this problem to the development team.', 'apply-online').'</li></ul>';
 
             //Show this content if you are viewing aol_ad post type using single.php (not with single-aol_type.php)
             $aol_content;
@@ -459,7 +461,7 @@ class Applyonline_Shortcodes{
                                 $key = sanitize_key($key);
                                 //$Fclass = ((isset($_REQUEST['filter']) AND $_REQUEST['filter']) == 'aol_ad_'. $key) ? 'selected' : NULL;
                                 echo '<div class="aol-md-'.(int)$col_count.'">';
-                                    echo '<select name="'.esc_attr($key).'" class="aol-filter-select form-control"><option value="">'. sprintf(esc_html__('%s - All', 'Filter Dropdown', 'ApplyOnline'), esc_html__($filter['plural'], 'ApplyOnline') ).'</option>';
+                                    echo '<select name="'.esc_attr($key).'" class="aol-filter-select form-control"><option value="">'. sprintf(esc_html__('%s - All', 'Filter Dropdown', 'apply-online'), esc_html__($filter['plural'], 'apply-online') ).'</option>';
                                     $args = array(
                                         'taxonomy' => 'aol_ad_'. $key,
                                         'hide_empty' => true,
@@ -475,8 +477,8 @@ class Applyonline_Shortcodes{
                             }
                             echo '</div>'; //Ended 1st row
                         echo '<div class="form-group">'; //2nd row started
-                        echo '<div class="aol-md-10"><input type="text" name="aol_seach_keyword" class="form-control" placeholder="'.esc_html__('Search Keyword', 'ApplyOnline').'" value="'. esc_attr($search_keyword).'"></div>';
-                        echo '<div class="aol-md-2"><button class="fusion-button button btn btn-info btn-block aol-filter-button">'.esc_html__('Filter', 'ApplyOnline').'</button></div>';
+                        echo '<div class="aol-md-10"><input type="text" name="aol_seach_keyword" class="form-control" placeholder="'.esc_html__('Search Keyword', 'apply-online').'" value="'. esc_attr($search_keyword).'"></div>';
+                        echo '<div class="aol-md-2"><button class="fusion-button button btn btn-info btn-block aol-filter-button">'.esc_html__('Filter', 'apply-online').'</button></div>';
                         echo '</div></form>'; //2nd row closed, form closed 
                     echo '</div>'; //Ended Well
             }
@@ -528,7 +530,7 @@ class Applyonline_Shortcodes{
                                                     '<a href="%s" ><button class="%s">%s</button></a>',
                                                     get_the_permalink($post),
                                                     'fusion-button button read-more btn btn-info',
-                                                    esc_html__( 'Read More', 'ApplyOnline' )
+                                                    get_option( 'aol_readmore_button', __('Read More', 'apply-online') )
                                                     )
                                             );
                                         $body = apply_filters('aol_shortcode_body', $body, $post);
@@ -619,10 +621,10 @@ class Applyonline_Shortcodes{
                     $pad = empty($tax) ? NULL : ' &nbsp;';
                     $taxObj = get_taxonomy($term->taxonomy);
                     $span = is_null($tax) ? '<span class="aol-tax-wrapper">' : '</span><span class="aol-tax-wrapper">';
-                    $title = $span.$pad.'<strong class="aol-ad-taxonomy">'.esc_html__($taxObj->label, 'ApplyOnline').': </strong>';
+                    $title = $span.$pad.'<strong class="aol-ad-taxonomy">'.esc_html__($taxObj->label, 'apply-online').': </strong>';
                 }
                 $output.= $title.$term->name.$separator;
-                $tax = esc_html__($term->taxonomy, 'ApplyOnline');
+                $tax = esc_html__($term->taxonomy, 'apply-online');
             }
             $output.= '</span>';
             do_action('aol_shortcode_after_terms', $post_id);
@@ -689,8 +691,9 @@ class Applyonline_Shortcodes{
 
 /**
   * This class is responsible to handle Ajax requests.
+  * Depricated in favor of class Applyonline_Rest. 
   * 
-  * 
+  * @todo: 
   * @since      1.0
   * @package    AjaxHandler
   * @author     Farhan Noor
@@ -757,14 +760,14 @@ class Applyonline_Shortcodes{
                 $max_upload_size = $upload_size*1048576; //Multiply by KBs
                 
                 if($max_upload_size < $val['size']){
-                        $errors->add('max_size', sprintf(esc_html__( '%s is oversized. Must be under %s MB', 'ApplyOnline' ), $val['name'] , $upload_size));
+                        $errors->add('max_size', sprintf(esc_html__( '%s is oversized. Must be under %s MB', 'apply-online' ), $val['name'] , $upload_size));
                 }
 
                 /* Check File Size */
                 $file_type_match = 0;
                 $filetype = wp_check_filetype(  $val['name'] );
                 $file_ext = strtolower($filetype['ext']);
-                if( !in_array($file_ext, $allowed_types) ) $errors->add('file_type', sprintf(esc_html__( 'Invalid file %1$s. Allowed file types are: %2$s', 'ApplyOnline' ), $val['name'], implode (',', $allowed_types)));
+                if( !in_array($file_ext, $allowed_types) ) $errors->add('file_type', sprintf(esc_html__( 'Invalid file %1$s. Allowed file types are: %2$s', 'apply-online' ), $val['name'], implode (',', $allowed_types)));
                 $errors = apply_filters('aol_before_file_upload_errors', $errors);
                 if(empty($errors->errors)){
                     do_action('aol_before_file_upload', $key, $val, $post);
@@ -797,7 +800,7 @@ class Applyonline_Shortcodes{
             
             $nonce = $form_data['wp_nonce'];
             if( !wp_verify_nonce($nonce, 'the_best_aol_ad_security_nonce') /*and (int)get_option('aol_nonce_is_active', 1) == 1*/ ){
-                $response = array( 'code' => 'session_expired', 'reason' => 'Session Expired', 'message' => esc_html__( 'Session Expired, please refresh this page and try again. If problem presists, please report this issue through Contact Us page. Thanks', 'ApplyOnline' ) );
+                $response = array( 'code' => 'session_expired', 'reason' => 'Session Expired', 'message' => esc_html__( 'Session Expired, please refresh this page and try again. If problem persists, please report this issue through Contact Us page. Thanks', 'apply-online' ) );
                 $this->response($response, 401);
             }
             //Get parent ad value for which the application is being submitted.
@@ -836,19 +839,19 @@ class Applyonline_Shortcodes{
 
                     //eMail validation.
                     if($val['type'] == 'email'){
-                        if(!empty($form_data[$key]) and is_email($form_data[$key])==FALSE) $errors->add('email', sprintf(esc_html__('%s is invalid.', 'ApplyOnline'), '"'.$val['label'].'"'));
+                        if(!empty($form_data[$key]) and is_email($form_data[$key])==FALSE) $errors->add('email', sprintf(esc_html__('%s is invalid.', 'apply-online'), '"'.$val['label'].'"'));
                     }
 
                     //File validation & verification.
                     if(isset($val['required']) AND $val['type'] == 'file'){
-                        //if(!isset($_FILES[$key]['name'])) $errors->add('file', sprintf(esc_html__('%s is not a file.', 'ApplyOnline'), str_replace('_',' ', substr($key, 9))));
-                        if((int)$val['required'] == 1 and empty($_FILES[$key]['name'])) $errors->add('required', sprintf(esc_html__('%s is required.', 'ApplyOnline'), '"'.$val['label'].'"'));
+                        //if(!isset($_FILES[$key]['name'])) $errors->add('file', sprintf(esc_html__('%s is not a file.', 'apply-online'), str_replace('_',' ', substr($key, 9))));
+                        if((int)$val['required'] == 1 and empty($_FILES[$key]['name'])) $errors->add('required', sprintf(esc_html__('%s is required.', 'apply-online'), '"'.$val['label'].'"'));
                     }
 
                     //chek required fields for non File Fields.
                     if( isset($val['required']) AND (int)$val['required'] == 1 and $val['type'] != 'file'){
                         $form_data[$key] = is_array($form_data[$key]) ? array_map('sanitize_text_field', $form_data[$key]) : sanitize_textarea_field($form_data[$key]);
-                        if(empty($form_data[$key])) $errors->add('required', sprintf (esc_html__('%s is required.', 'ApplyOnline'), '"'.$val['label'].'"') );
+                        if(empty($form_data[$key])) $errors->add('required', sprintf (esc_html__('%s is required.', 'apply-online'), '"'.$val['label'].'"') );
                     }            
             endforeach;
             //Deprictated since 2.2.2. Will be deleted soon. Use aol_app_final_fields hook instead
@@ -863,7 +866,7 @@ class Applyonline_Shortcodes{
 
             if( !empty($error_messages ) ){
                 $error_html = implode('<br />', $error_messages);
-                $response = array( 'reason' => esc_html__('Missing required fields', 'ApplyOnline'), 'message' => $error_html );    //generate the error response.
+                $response = array( 'reason' => esc_html__('Missing required fields', 'apply-online'), 'message' => $error_html );    //generate the error response.
                 
                 //response output
                 $this->response($response, 406);
@@ -901,8 +904,8 @@ class Applyonline_Shortcodes{
                 'post_type'     => 'aol_application',
                 'post_parent'   => $parent_id,
                 'post_title'    => get_the_title($parent_id),
-                'post_status'   => 'publish',
-                'tax_input'     => array('aol_application_status' => 'pending'),
+                'post_status'   => 'pending',
+                //'tax_input'     => array('aol_application_status' => 'pending'), Depricated since 2.6.7.4
             );
             do_action('aol_before_app_save', $app_data, $form_data); //Depricated Since 2.5
             do_action('aol_before_save_app', $app_data, $form_data);
@@ -934,7 +937,7 @@ class Applyonline_Shortcodes{
             update_post_meta($pid, 'ad_transcript', $ad_transcript );
             /* End Saving Ad Transcript Since v2.2 */
 
-            wp_set_post_terms( $pid, 'pending', 'aol_application_status' );
+            //wp_set_post_terms( $pid, 'pending', 'aol_application_status' ); Depreicated since 2.6.7.4
 
             do_action('aol_after_app_save', $pid, $app_data); //Depricated since 2.5
             do_action('aol_after_save_app', $pid, $app_data);
@@ -952,7 +955,7 @@ class Applyonline_Shortcodes{
             $divert_page = get_option('aol_thankyou_page');
 
             empty($divert_page) ? $divert_link = null :  $divert_link = get_page_link($divert_page);
-            $message = str_replace('[id]', $pid, get_option_fixed('aol_application_success_alert', esc_html__('Form has been submitted successfully with application id [id]. If required, we will get back to you shortly!', 'ApplyOnline')) );
+            $message = str_replace('[id]', $pid, get_option_fixed('aol_application_success_alert', esc_html__('Form has been submitted successfully with application id [id]. If required, we will get back to you shortly!', 'apply-online')) );
             // generate the response alert.
             $response = apply_filters( 
                         'aol_application_success_response', 
@@ -1038,20 +1041,20 @@ class Applyonline_Shortcodes{
              * 
              */
 
-            //$subject = sprintf(esc_html__('New application for %s', 'ApplyOnline'), sanitize_text_field($post->post_title));
+            //$subject = sprintf(esc_html__('New application for %s', 'apply-online'), sanitize_text_field($post->post_title));
             $subject = str_replace( array('[id]' ,'[title]'), array($post->ID ,$post->post_title), get_option('aol_admin_mail_subject', 'New application [id] for [title]') );
             $headers = aol_from_mail_header();
 
             //@todo need a filter hook to modify content of this email message and to add a from field in the message.
-            $message=   '<p>'.esc_html__('Hi,', 'ApplyOnline').'</p>'
+            $message=   '<p>'.esc_html__('Hi,', 'apply-online').'</p>'
                         .'<p>'
-                        .sprintf(esc_html__('A new application for the ad %1$s received on %2$s website.', 'ApplyOnline'), '<b>'.$post->post_title.'</b>', '<b>'.get_bloginfo('name').'</b>')
+                        .sprintf(esc_html__('A new application for the ad %1$s received on %2$s website.', 'apply-online'), '<b>'.$post->post_title.'</b>', '<b>'.get_bloginfo('name').'</b>')
                         .'</p><p>'
-                        .sprintf(esc_html__('%sClick Here%s to access this application.', 'ApplyOnline'),'<b><a href="'.$post_url.'">', '</a></b>')
+                        .sprintf(esc_html__('%sClick Here%s to access this application.', 'apply-online'),'<b><a href="'.$post_url.'">', '</a></b>')
                         .'</p>'
-                        .esc_html__('Thank you', 'ApplyOnline')
+                        .esc_html__('Thank you', 'apply-online')
                         .'<br /><p>----<br />'
-                        .sprintf(esc_html__('This is an automated response from Apply Online plugin on %s', 'ApplyOnline'), '<a href="'.site_url().'" >'.get_bloginfo('name').'</a>')
+                        .sprintf(esc_html__('This is an automated response from Apply Online plugin on %s', 'apply-online'), '<a href="'.site_url().'" >'.get_bloginfo('name').'</a>')
                         .'</p>';
 
             $message = apply_filters('aol_email_notification', $message, $post_id); //Deprecated.
