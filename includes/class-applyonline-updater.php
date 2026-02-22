@@ -55,8 +55,6 @@ class Applyonline_Updater{
             $this->plugin_name = $plugin_name;
             $this->plugin_version = $version;
             $this->db_version = get_option('aol_version', $version);
-
-            $this->after_plugin_update();
         }
 
         function get_version(){
@@ -73,7 +71,7 @@ class Applyonline_Updater{
                 $done = TRUE;
             }
 
-            if( version_compare( '1.9', $saved_version, '>' ) ){
+            if( version_compare( '1.9.92', $saved_version, '>' ) ){
                 $this->fix_roles();
                 $done = TRUE;
             }
@@ -96,9 +94,9 @@ class Applyonline_Updater{
         
         function fix_filters(){
                $default_filters = [
-                    'category' => array('singular' => esc_html__('Category', 'ApplyOnline'), 'plural' => esc_html__('Categories', 'ApplyOnline')),
-                    'type' => array('singular' => esc_html__('Type', 'ApplyOnline'), 'plural' => esc_html__('Types', 'ApplyOnline')),
-                    'location' => array('singular' => esc_html__('Location', 'ApplyOnline'), 'plural' => esc_html__('Locations', 'ApplyOnline'))
+                    'category' => array('singular' => esc_html__('Category', 'apply-online'), 'plural' => esc_html__('Categories', 'apply-online')),
+                    'type' => array('singular' => esc_html__('Type', 'apply-online'), 'plural' => esc_html__('Types', 'apply-online')),
+                    'location' => array('singular' => esc_html__('Location', 'apply-online'), 'plural' => esc_html__('Locations', 'apply-online'))
                 ];
                 $custom_filters = get_option_fixed('aol_custom_filters', array());
                 $filters = array_merge($default_filters, $custom_filters);
@@ -107,14 +105,14 @@ class Applyonline_Updater{
                 update_option('aol_ad_filters', $filters);
                 
                 /*Merge Custom Statuses to Default Statuses*/
-                $default_statuses = array('pending' => __('Pending', 'ApplyOnline'), 'rejected'=> __('Rejected', 'ApplyOnline'), 'shortlisted' => __('Shortlisted', 'ApplyOnline'));
+                $default_statuses = array('pending' => __('Pending', 'apply-online'), 'rejected'=> __('Rejected', 'apply-online'), 'shortlisted' => __('Shortlisted', 'apply-online'));
                 $custom_statuses = get_option_fixed('aol_custom_statuses', array());
                 $statuses = array_merge($default_statuses, $custom_statuses);
                 //Update Option was not working for Existing options, hence it is 1st being deleted.
                 delete_option('aol_custom_statuses');
                 update_option('aol_custom_statuses', $statuses);
                 
-                //update_option('aol_mail_footer', "\n\nThank you\n".get_bloginfo('name')."\n".site_url()."n------\nPlease do not reply to this system generated message.");
+                //update_option('aol_mail_footer', "\n\nThank you\n".get_bloginfo('name')."\n".site_url()."n------\nPlease do not reply to the system generated message.");
         }
 
         function fix_application_statuses(){
@@ -136,56 +134,8 @@ class Applyonline_Updater{
         }
 
         function fix_roles(){
-            $caps = array(
-                'delete_ads' =>TRUE,
-                'delete_others_ads' =>TRUE,
-                'delete_published_ads' =>TRUE,
-                'edit_ads' =>TRUE,
-                'edit_others_ads' =>TRUE,
-                'edit_private_ads' =>TRUE,
-                'edit_published_ads' =>TRUE,
-                'publish_ads' =>TRUE,
-                'read_private_ads' =>TRUE,
-                'delete_applications' =>TRUE,
-                'delete_others_applications'=>TRUE,
-                'delete_published_applications' =>TRUE,
-                'edit_application'         =>TRUE,
-                'read_application'         =>TRUE,
-                //'delete_application'         =>TRUE,
-                'edit_applications'         =>TRUE,
-                'edit_others_applications'  =>TRUE,
-                'edit_private_applications' =>TRUE,
-                'edit_published_applications'=>TRUE,
-                'publish_applications'       =>FALSE,
-                'create_applications'       =>FALSE,
-                'read_private_applications' =>TRUE,
-                'manage_ads'                =>TRUE,
-                'manage_ad_terms'       => TRUE,
-                'edit_ad_terms'         => TRUE,
-                'delete_ad_terms'       => TRUE,
-                'assign_ad_terms'          => TRUE,
-                //'read'                      =>TRUE,
-                //'view_admin_dashboard'      => TRUE, //WooCommerce fix, the alternate read capability.
-                //'upload_files'          => TRUE
-                );
-            
             $role = get_role('administrator');
-                
             $role->remove_cap( 'edit_ratings' ); //Fixing bug in version 1.9.92
-            foreach($caps as $cap => $val){
-                $role->add_cap( $cap, $val );
-            }
-
-            //Prepare AOL Manager Role
-            //$caps = array_merge($caps, array('delete_others_ads' =>FALSE,'edit_others_ads' =>FALSE));
-            $caps['upload_files'] = TRUE;
-            $caps['read'] = TRUE;
-            $caps['view_admin_dashboard'] = TRUE;
-
-            remove_role('aol_manager');
-            add_role('aol_manager', 'AOL Manager', $caps);
-
-            //do_action('activate_applyonline'); Depricated since 2.6.7.3
         }
         
         /**

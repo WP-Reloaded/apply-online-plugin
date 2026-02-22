@@ -39,9 +39,9 @@ class Applyonline_Activator {
             //Registering taxonomies (Ad Filters) to work at activation.
             //$filters = aol_ad_filters();
             $filters = array(
-                'category' => array('singular' => __('Category', 'ApplyOnline'), 'plural' => __('Categories', 'ApplyOnline')),
-                'type' => array('singular' => __('Type', 'ApplyOnline'), 'plural' => __('Types', 'ApplyOnline')),
-                'location' => array('singular' => esc_html__('Location', 'ApplyOnline'), 'plural' => esc_html__('Locations', 'ApplyOnline'))
+                'category' => array('singular' => __('Category', 'apply-online'), 'plural' => __('Categories', 'apply-online')),
+                'type' => array('singular' => __('Type', 'apply-online'), 'plural' => __('Types', 'apply-online')),
+                'location' => array('singular' => esc_html__('Location', 'apply-online'), 'plural' => esc_html__('Locations', 'apply-online'))
             );
             
             foreach($filters as $key => $filter){
@@ -64,6 +64,8 @@ class Applyonline_Activator {
 	public static function activate() {
             //Run dependencies before terms insertion.
             self::dependencies();
+            self::fix_roles();
+            self::set_defaults();
             wp_insert_term(
                         'Shortlisted',
                         'aol_application_status',
@@ -212,12 +214,25 @@ class Applyonline_Activator {
                     'aol_ad_location',
                     array('slug' => 'paris', 'description'=>'Ads for Paris')
                 );
-
-            Applyonline_updater::fix_roles();
-            Applyonline_updater::bug_fix_before_16();            
         }
         
         static function set_defaults(){
+            //Insert default fields.
+            $fields = array (
+                '_aol_app_name' => 
+                array (
+                  'type' => 'text',
+                  'options' => '',
+                  'label' => 'Name',
+                ),
+                '_aol_app_email' => 
+                array (
+                  'type' => 'email',
+                  'options' => '',
+                  'label' => 'E Mail',
+                ),
+            );
+
             $templates = array (
                 'templatedefault' => 
                 array (
@@ -261,9 +276,9 @@ class Applyonline_Activator {
             if(!get_option('aol_ad_types')) update_option('aol_ad_types', $types);
 
             $default_filters = array(
-                'category' => array('singular' => __('Category', 'ApplyOnline'), 'plural' => __('Categories', 'ApplyOnline')),
-                'type' => array('singular' => __('Type', 'ApplyOnline'), 'plural' => __('Types', 'ApplyOnline')),
-                'location' => array('singular' => esc_html__('Location', 'ApplyOnline'), 'plural' => esc_html__('Locations', 'ApplyOnline'))
+                'category' => array('singular' => __('Category', 'apply-online'), 'plural' => __('Categories', 'apply-online')),
+                'type' => array('singular' => __('Type', 'apply-online'), 'plural' => __('Types', 'apply-online')),
+                'location' => array('singular' => esc_html__('Location', 'apply-online'), 'plural' => esc_html__('Locations', 'apply-online'))
             );
             if(!get_option('aol_ad_filters')) update_option('aol_ad_filters', $default_filters);
 
@@ -288,16 +303,70 @@ class Applyonline_Activator {
             if(!get_option('aol_app_statuses')) update_option('aol_app_statuses', array('pending', 'rejected', 'shortlisted'));
             if(!get_option('aol_show_filter')) update_option('aol_show_filter', 0);
             //if(!get_option('aol_ad_filters')) update_option('aol_ad_filters', array('category', 'type', 'location'));
-            if(!get_option('aol_application_close_message')) update_option('aol_application_close_message', 'We are no longer accepting applications for this ad. Contact us for more details.');
-            if(!get_option('aol_mail_footer')) update_option('aol_mail_footer', "\n\nThank you\n".get_bloginfo('name')."\n".site_url()."n------\nPlease do not reply to this system generated message.");
-            if(!get_option('aol_custom_statuses')) update_option('aol_custom_statuses', array('pending' => __('Pending', 'ApplyOnline'), 'rejected'=> __('Rejected', 'ApplyOnline'), 'shortlisted' => __('Shortlisted', 'ApplyOnline')));
+            if(!get_option('aol_application_close_message')) update_option('aol_application_close_message', 'The submission deadline for this ad has passed. Please contact support for more details.');
+            if(!get_option('aol_mail_footer')) update_option('aol_mail_footer', "\n\nThank you\n".get_bloginfo('name')."\n".site_url()."n------\nPlease do not reply to the system generated message.");
+            if(!get_option('aol_custom_statuses')) update_option('aol_custom_statuses', array('pending' => __('Pending', 'apply-online'), 'rejected'=> __('Rejected', 'apply-online'), 'shortlisted' => __('Shortlisted', 'apply-online')));
             if(!get_option('aol_nonce_is_active', 1)) update_option('aol_nonce_is_active', 1);
             if(!get_option('aol_success_mail_message')) update_option('aol_success_mail_message', "Hi there,\n\nThank you for showing interest in the ad: [title]. Your application with id [id] has been received. We will review your application and contact you if required.\n\n"
-                        .sprintf(__('Team %s'), get_bloginfo('name'))."\n"
+                        .sprintf('Team %s', get_bloginfo('name'))."\n"
                         .site_url()."\n"
                         ."Please do not reply to this system generated message.");
             if(!get_option('aol_success_mail_subject')) update_option('aol_success_mail_subject', 'Your application for [title]');
             if(!get_option('aol_admin_mail_subject')) update_option('aol_admin_mail_subject', 'New application [id] for [title]');
             if( !get_option('aol_upload_path') ) update_option('aol_upload_path', realpath(ABSPATH.'../'));
+
+        }
+        
+        
+        static function fix_roles(){
+            $caps = array(
+                'delete_ads' =>TRUE,
+                'delete_others_ads' =>TRUE,
+                'delete_published_ads' =>TRUE,
+                'edit_ads' =>TRUE,
+                'edit_others_ads' =>TRUE,
+                'edit_private_ads' =>TRUE,
+                'edit_published_ads' =>TRUE,
+                'publish_ads' =>TRUE,
+                'read_private_ads' =>TRUE,
+                'delete_applications' =>TRUE,
+                'delete_others_applications'=>TRUE,
+                'delete_published_applications' =>TRUE,
+                'edit_application'         =>TRUE,
+                'read_application'         =>TRUE,
+                //'delete_application'         =>TRUE,
+                'edit_applications'         =>TRUE,
+                'edit_others_applications'  =>TRUE,
+                'edit_private_applications' =>TRUE,
+                'edit_published_applications'=>TRUE,
+                'publish_applications'       =>FALSE,
+                'create_applications'       =>FALSE,
+                'read_private_applications' =>TRUE,
+                'manage_ads'                =>TRUE,
+                'manage_ad_terms'       => TRUE,
+                'edit_ad_terms'         => TRUE,
+                'delete_ad_terms'       => TRUE,
+                'assign_ad_terms'          => TRUE,
+                //'read'                      =>TRUE,
+                //'view_admin_dashboard'      => TRUE, //WooCommerce fix, the alternate read capability.
+                //'upload_files'          => TRUE
+                );
+            
+            $role = get_role('administrator');
+                
+            foreach($caps as $cap => $val){
+                $role->add_cap( $cap, $val );
+            }
+
+            //Prepare AOL Manager Role
+            //$caps = array_merge($caps, array('delete_others_ads' =>FALSE,'edit_others_ads' =>FALSE));
+            $caps['upload_files'] = TRUE;
+            $caps['read'] = TRUE;
+            $caps['view_admin_dashboard'] = TRUE;
+
+            remove_role('aol_manager');
+            add_role('aol_manager', 'AOL Manager', $caps);
+
+            do_action('activate_applyonline');
         }
 }

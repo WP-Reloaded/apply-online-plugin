@@ -84,7 +84,6 @@ class Applyonline {
 		$this->define_rest_hooks();
 
                 add_action( 'init', array( $this, 'register_aol_post_types' ), 5 );
-                //add_action( 'init', array($this, 'after_plugin_update')); @todo: Depricated in favor of class-applyonline-updater. Must be removed
 
                 new Applyonline_Labels();
 	}
@@ -140,15 +139,8 @@ class Applyonline {
 		 * The class responsible for defining all actions that occur in the REST API
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'rest/class-applyonline-rest.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'rest/class-applyonline-rest-functions.php';
                 
-                /*
-                 * Form Builder addon
-                 */
-                //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/builder/class-functions.php';
-                //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/builder/class-init.php';
-
-                //require_once plugin_dir_path( dirname( __FILE__ ) ) . 'required-plugins/class-tgm-plugin-activation.php';
-
 		$this->loader = new Applyonline_Loader();
 
 	}
@@ -165,9 +157,9 @@ class Applyonline {
 	private function set_locale() {
 
 		$plugin_i18n = new Applyonline_i18n();
-		$plugin_i18n->set_domain( 'ApplyOnline' );
+		$plugin_i18n->set_domain( 'apply-online' );
 
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+		$this->loader->add_action( 'init', $plugin_i18n, 'load_plugin_textdomain' );
 
 	}
 
@@ -220,7 +212,7 @@ class Applyonline {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles', 1 );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-                
+
                 /*Schedule Ad*/
                 $this->loader->add_action( 'pre_get_posts', $plugin_public, 'check_ad_closing_status' );
                 $this->loader->add_action( 'set_current_user', $plugin_public, 'output_attachment' );
@@ -249,9 +241,10 @@ class Applyonline {
 	 */
 	private function define_rest_hooks() {
 
-		$rest_public = new Applyonline_Rest( $this->get_plugin_name(), $this->get_version() );
+		$plugin_rest = new Applyonline_Rest( $this->get_plugin_name(), $this->get_version() );
 
-		//$this->loader->add_action( 'wp_enqueue_scripts', $rest_public, 'enqueue_styles', 1 );
+                $this->loader->add_action( 'rest_api_init', $plugin_rest, 'rest_api_init');
+                //$this->loader->add_filter( 'aol_form_errors', $plugin_rest, 'file_uploader', 10,3 ); //Call file_uploader when form is being processed.
 	}
 
         /**
@@ -295,53 +288,13 @@ class Applyonline {
 	}
 
         /**
-         * Deprecated in favor of class-applyonline-updater. Must be removed
+         * 
+         * @param type $cpt Post type name.
+         * @param type $singular Singular name.
+         * @param type $plural Plural name.
+         * @param type $description Description.
+         * @param type $args_custom Custom arguments.
          */
-        function after_plugin_update(){
-            require_once plugin_dir_path( __FILE__ ).'class-applyonline-activator.php';
-            $saved_version = get_option('aol_version', 0);
-            if($saved_version < 1.6) {
-                Applyonline_Activator::bug_fix_before_16();
-                update_option('aol_version', $this->get_version(), TRUE);
-            }
-
-            if($saved_version < 1.9){
-                Applyonline_Activator::fix_roles();
-                update_option('aol_version', $this->get_version(), TRUE);
-            }
-
-            if($saved_version < 2.1){
-                /*Merge Custom Filters to Default Filters*/
-                $default_filters = array(
-                    'category' => array('singular' => esc_html__('Category', 'ApplyOnline'), 'plural' => esc_html__('Categories', 'ApplyOnline')),
-                    'type' => array('singular' => esc_html__('Type', 'ApplyOnline'), 'plural' => esc_html__('Types', 'ApplyOnline')),
-                    'location' => array('singular' => esc_html__('Location', 'ApplyOnline'), 'plural' => esc_html__('Locations', 'ApplyOnline'))
-                );
-                $custom_filters = get_option_fixed('aol_custom_filters', array());
-                $filters = array_merge($default_filters, $custom_filters);
-                //Update Option was not working for Existing options, hence it is 1st being deleted.
-                delete_option('aol_ad_filters');
-                update_option('aol_ad_filters', $filters);
-                
-                /*Merge Custom Statuses to Default Statuses*/
-                $default_statuses = array('pending' => __('Pending', 'ApplyOnline'), 'rejected'=> __('Rejected', 'ApplyOnline'), 'shortlisted' => __('Shortlisted', 'ApplyOnline'));
-                $custom_statuses = get_option_fixed('aol_custom_statuses', array());
-                $statuses = array_merge($default_statuses, $custom_statuses);
-                //Update Option was not working for Existing options, hence it is 1st being deleted.
-                delete_option('aol_custom_statuses');
-                update_option('aol_custom_statuses', $statuses);
-                
-                update_option('aol_mail_footer', "\n\nThank you\n".get_bloginfo('name')."\n".site_url()."n------\nPlease do not reply to this system generated message.");
-                
-                /*Setting version to latest 2.1*/
-                update_option('aol_version', $this->get_version(), TRUE);
-            }
-            
-            if($saved_version < '2.6.7.2'){
-                Applyonline_Activator::fix_statuses();
-            }
-        }
-
         public function cpt_generator($cpt, $singular, $plural, $description, $args_custom = array()){
             if($singular != NULL){
             $labels=array(

@@ -2,43 +2,45 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Apply Online\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-18 08:08+0000\n"
-"PO-Revision-Date: 2026-02-03 06:25+0000\n"
-"Language-Team: French (France)\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"POT-Creation-Date: 2026-02-03 05:44+0000\n"
+"PO-Revision-Date: 2026-02-03 06:55+0000\n"
+"Last-Translator: \n"
+"Language-Team: German\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.1; wp-6.9; php-8.2.12\n"
-"Last-Translator: \n"
-"Language: fr_FR"
+"X-Loco-Version: 2.8.1; wp-6.9; php-8.2.12"
 
 #: public/class-applyonline-public.php:841
 #, php-format
 msgid "%s is invalid."
-msgstr "%s est invalide."
+msgstr "%s ist ungültig."
 
 #: public/class-applyonline-public.php:762
 #, php-format
 msgid "%s is oversized. Must be under %s MB"
-msgstr "%s est trop lourd. Il doit être en dessous de  %s MB"
+msgstr "%s ist zu groß. Es darf nicht größer als %s MB sein."
 
 #: public/class-applyonline-public.php:847
 #: public/class-applyonline-public.php:853
 #, php-format
 msgid "%s is required."
-msgstr "%s est requis."
+msgstr "%s ist erforderlich."
 
 #: public/class-applyonline-public.php:1052
 #, php-format
 msgid "%sClick Here%s to access this application."
-msgstr "%sCliquez ici%s pour accéder à cette candidature."
+msgstr "%sHier klicken%s um auf diese Anwendung zuzugreifen."
 
 #: public/class-applyonline-public.php:1050
 #, php-format
 msgid "A new application for the ad %1$s received on %2$s website."
-msgstr "Une nouvelle demande pour l'annonce %1$s reçue sur le site web %2$s."
+msgstr ""
+"Eine neue Bewerbung für die Anzeige %1$s ist auf der Website %2$s "
+"eingegangen."
 
 #: includes/applyonline-functions.php:165
 #: includes/applyonline-functions.php:308
@@ -50,46 +52,45 @@ msgstr "Annonce"
 #: includes/applyonline-functions.php:309
 #: public/class-applyonline-public.php:343
 msgid "Ads"
-msgstr "Appels"
+msgstr "Anzeigen"
 
 #: includes/applyonline-functions.php:165
 msgid "All Ads"
-msgstr "Les appels"
+msgstr "Alle Anzeigen"
 
 #. Name of the plugin
-#| msgid "Apply Online"
 msgid "ApplyOnline"
-msgstr "E-Candidature"
+msgstr "ApplyOnline"
 
 #: includes/applyonline-functions.php:573
 #: includes/applyonline-functions.php:575
 #: includes/applyonline-functions.php:646
 msgid "Attachment"
-msgstr "Pièce jointe"
+msgstr "Befestigung"
 
 #: includes/class-applyonline-activator.php:42
 #: includes/class-applyonline-activator.php:279
 #: includes/class-applyonline-updater.php:97
 msgid "Categories"
-msgstr "Catégories"
+msgstr "Kategorien"
 
 #: includes/class-applyonline-activator.php:42
 #: includes/class-applyonline-activator.php:279
 #: includes/class-applyonline-updater.php:97
 msgid "Category"
-msgstr "Catégorie"
+msgstr "Kategorie"
 
 #: public/class-applyonline-public.php:200
 msgid "Check Box"
-msgstr "case à cocher"
+msgstr "Kontrollkästchen"
 
 #: public/class-applyonline-public.php:201
 msgid "Drop Down"
-msgstr "Dérouler"
+msgstr "Dropdown"
 
 #: includes/applyonline-functions.php:437
 msgid "e.g."
-msgstr "ex."
+msgstr " z.B."
 
 #. Author of the plugin
 msgid "Farhan Noor"
@@ -97,30 +98,27 @@ msgstr "Farhan Noor"
 
 #: public/class-applyonline-public.php:203
 msgid "File"
-msgstr "Fichier"
+msgstr "Datei"
 
 #: public/class-applyonline-public.php:481
 msgid "Filter"
-msgstr "Filtre"
+msgstr "Filter"
 
 #: public/class-applyonline-public.php:957
-#| msgid ""
-#| "Form has been submitted successfully with application id %d. If required "
-#| "we will get back to you soon!"
 msgid ""
 "Form has been submitted successfully with application id [id]. If required, "
 "we will get back to you shortly!"
 msgstr ""
-"Le formulaire a été soumis avec succès avec l'id de candidature %d. Nous "
-"vous contacterons prochainement!"
+"Das Formular wurde erfolgreich mit der Antrags-ID [id] übermittelt. Bei "
+"Bedarf melden wir uns in Kürze bei Ihnen!"
 
 #: public/class-applyonline-public.php:224
 msgid "Form ID is missing"
-msgstr "L'identifiant du formulaire est manquant"
+msgstr "Die Formular-ID fehlt."
 
 #: public/class-applyonline-public.php:1048
 msgid "Hi,"
-msgstr "Salut,"
+msgstr "Hallo,"
 
 #. Author URI of the plugin
 msgid "https://linkedin.com/in/farhan-noor"
@@ -135,142 +133,140 @@ msgid ""
 "If the application does not load after a few seconds, please try the "
 "following:"
 msgstr ""
-"Si l'application ne se charge pas après quelques secondes, veuillez essayer "
-"ce qui suit :"
+"Falls die Anwendung nach einigen Sekunden nicht lädt, versuchen Sie bitte "
+"Folgendes:"
 
 #: public/class-applyonline-public.php:769
 #, php-format
-#| msgid "Invalid file %s. Allowed file types are %s"
 msgid "Invalid file %1$s. Allowed file types are: %2$s"
-msgstr "Fichier invalide %s. Les fichiers autorisés sont %s"
+msgstr "Ungültige Datei %1$s. Zulässige Dateitypen sind: %2$s"
 
 #: includes/applyonline-functions.php:367
 msgid "Link is missing"
-msgstr "Lien manquant"
+msgstr "Link fehlt"
 
 #: includes/class-applyonline-activator.php:44
 #: includes/class-applyonline-activator.php:281
 #: includes/class-applyonline-updater.php:99
 msgid "Location"
-msgstr "Lieu"
+msgstr "Standort"
 
 #: includes/class-applyonline-activator.php:44
 #: includes/class-applyonline-activator.php:281
 #: includes/class-applyonline-updater.php:99
 msgid "Locations"
-msgstr "Lieux"
+msgstr "Standorte"
 
 #: public/class-applyonline-public.php:868
 msgid "Missing required fields"
-msgstr "Champs obligatoires manquants"
+msgstr "Fehlende Pflichtfelder"
 
 #: includes/applyonline-functions.php:644
 msgid "not provided"
-msgstr "non fourni"
+msgstr "nicht angegeben"
 
 #. Description of the plugin
 msgid "Online Form Builder and Applications Manager."
-msgstr "Créateur de formulaires en ligne et gestionnaire d'applications."
+msgstr "Online-Formulargenerator und Anwendungsmanager."
 
 #: public/class-applyonline-public.php:356
-#| msgid "Open the application in a new tab. "
 msgid "Open the application in a new tab."
-msgstr "Ouvrez l'application dans un nouvel onglet."
+msgstr "Öffnen Sie die Anwendung in einem neuen Tab."
 
 #: includes/applyonline-functions.php:265
 #: includes/class-applyonline-activator.php:308
 #: includes/class-applyonline-updater.php:108
 msgid "Pending"
-msgstr "En attente"
+msgstr "Ausstehend"
 
 #: public/class-applyonline-public.php:240
 msgctxt "public"
 msgid "Apply Online"
-msgstr "Candidature en ligne"
+msgstr "Online bewerben"
 
 #: public/class-applyonline-public.php:202
 msgid "Radio"
-msgstr "Bouton radio"
+msgstr "Optionsfeld"
 
 #: public/class-applyonline-public.php:533
 msgid "Read More"
-msgstr "En savoir plus"
+msgstr "Mehr lesen"
 
 #: includes/applyonline-functions.php:265
 #: includes/class-applyonline-activator.php:308
 #: includes/class-applyonline-updater.php:108
 msgid "Rejected"
-msgstr "Rejeté"
+msgstr "Abgelehnt"
 
 #: public/class-applyonline-public.php:359
-#| msgid "Report this problem to the development team. "
 msgid "Report this problem to the development team."
-msgstr "Signalez ce problème à l'équipe de développement."
+msgstr "Melden Sie dieses Problem dem Entwicklerteam."
 
 #: public/class-applyonline-public.php:480
 msgid "Search Keyword"
-msgstr "Mot-clé de recherche"
+msgstr "Suchbegriff"
 
 #: public/class-applyonline-public.php:204
 msgid "Separator"
-msgstr "Séparateur"
+msgstr "Separator"
 
 #: public/class-applyonline-public.php:802
 msgid ""
 "Session Expired, please refresh this page and try again. If problem persists,"
 " please report this issue through Contact Us page. Thanks"
 msgstr ""
-"Session expirée. Veuillez actualiser la page et réessayer. Si le problème "
-"persiste, veuillez le signaler via la page « Nous contacter ». Merci."
+"Ihre Sitzung ist abgelaufen. Bitte aktualisieren Sie die Seite und versuchen "
+"Sie es erneut. Sollte das Problem weiterhin bestehen, melden Sie es bitte "
+"über unsere Kontaktseite. Vielen Dank."
 
 #: includes/applyonline-functions.php:265
 #: includes/class-applyonline-activator.php:308
 #: includes/class-applyonline-updater.php:108
 msgid "Shortlisted"
-msgstr "Présélectionné"
+msgstr "in die engere Wahl gezogen"
 
 #: includes/applyonline-functions.php:66
 #: public/class-applyonline-public.php:261
 msgid "Submit"
-msgstr "Soumettre"
+msgstr "Einreichen"
 
 #: public/class-applyonline-public.php:199
 msgid "Text"
-msgstr "Texte"
+msgstr "Text"
 
 #: public/class-applyonline-public.php:1054
 msgid "Thank you"
-msgstr "Merci"
+msgstr "Danke"
 
 #: public/class-applyonline-public.php:1056
 #, php-format
 msgid "This is an automated response from Apply Online plugin on %s"
-msgstr "Il s'agit d'une réponse automatisée - %s"
+msgstr "Dies ist eine automatische Antwort des Apply Online-Plugins auf %s."
 
 #: includes/applyonline-functions.php:368
 msgid "Title is missing"
-msgstr "Titre manquant"
+msgstr "Der Titel fehlt."
 
 #: public/class-applyonline-public.php:358
 msgid "Try switching to a more stable network connection."
-msgstr "Essayez de passer à une connexion réseau plus stable."
+msgstr "Versuchen Sie, auf eine stabilere Netzwerkverbindung umzuschalten."
 
 #: public/class-applyonline-public.php:357
 msgid "Try using a different browser."
-msgstr "Essayez d'utiliser un autre navigateur."
+msgstr "Versuchen Sie es mit einem anderen Browser."
 
 #: includes/class-applyonline-activator.php:43
 #: includes/class-applyonline-activator.php:280
 #: includes/class-applyonline-updater.php:98
 msgid "Type"
-msgstr "Type"
+msgstr "Typ"
 
 #: includes/class-applyonline-activator.php:43
 #: includes/class-applyonline-activator.php:280
 #: includes/class-applyonline-updater.php:98
 msgid "Types"
-msgstr "Les types"
+msgstr "Typen"
 
 #: public/class-applyonline-public.php:243
 msgid "We are no longer accepting applications for this ad."
-msgstr "Nous n'acceptons plus les candidatures pour cet appel."
+msgstr "Wir nehmen keine Bewerbungen mehr für diese Anzeige entgegen."
