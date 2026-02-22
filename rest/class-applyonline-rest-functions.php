@@ -153,7 +153,6 @@ class Applyonline_Rest_Functions{
             //Start - Check for required fields.
             //Loop through each form field & check received application data.
             foreach( $transcript as $key => $val ):
-
                 //Excludes non form fields from check.
                 if( in_array($val['type'], ['separator', 'seprator', 'paragraph']) ) continue;
 
@@ -163,8 +162,8 @@ class Applyonline_Rest_Functions{
                 //Check for required fields.
                 if( isset($val['required']) AND (int)$val['required'] == 1 ){
                     //Check file fields.
-                    if( $val['type'] == 'file' AND empty($_FILES[$key]['name']) ){
-                        $errors->add(403, sprintf( esc_html__('%s field is required.', 'apply-online'), $val['label']) );
+                    if( $val['type'] == 'file' ){
+                        if(empty($_FILES[$key]['name'])) $errors->add(403, sprintf( esc_html__('%s field is required.', 'apply-online'), $val['label']) );
                     }
 
                     //Check all other fields.
@@ -234,7 +233,7 @@ class Applyonline_Rest_Functions{
             $app_data = apply_filters('aol_app_final_fields', $app_data, $form_data);
 
             $args =  array(
-                'post_author'   => 0,
+                //'post_author'   => 0,
                 'post_type'     => 'aol_application',
                 'post_parent'   => $parent_id,
                 'post_title'    => get_the_title($parent_id),

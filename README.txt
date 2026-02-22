@@ -1,10 +1,11 @@
 === ApplyOnline - Application Form Builder and Manager ===
 Contributors: farhan.noor
 Donate link: https://wpreloaded.com/shop/
+Author URI:  https://linkedin.com/in/farhan-noor
 Tags: WP Form, Custom Form, Contact Form, Form Builder, Payment Form
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 2.6.7.7
+Stable tag: 2.6.8
 Requires PHP: 7.0
 License: GPLv2 or later
 
@@ -109,23 +110,29 @@ Recaptcha integration for secure form submission.
 Required field mark in the received application data.
 Different layout options e.g. grid layout, list layout, sidebar filter, popup form, etc.
 Secure mail with SMTP options.
+Consent or terms & conditions field.
 
-== 2.6.7.7 =
-Fixed: WP Warning on front-end "Translation loading for the apply-online domain was triggered too early."
+= 2.6.8.1 =
+Fixed: Nonce expired generic error message replaced with a more specific error message.
+
+= 2.6.8 =
 New: REST API replacing classic WP AJAX.
+Fixed: Server side check to avoid closed ads form submission.
+Fixed: WP Warning on front-end "Translation loading for the apply-online domain was triggered too early."
+Fixed: File attachment required field invalid trigger.
 
-== 2.6.7.6 =
+= 2.6.7.6 =
 Fixed: Read More button text.
 New: Custom from email option in settings for outgoing emails.
 New: Custom name column in applications table in admin panel.
 
-== 2.6.7.5 =
+= 2.6.7.5 =
 Fixed: Ads and applications user role assignment on plugin activation.
 
-== 2.6.7.4 =
+= 2.6.7.4 =
 Fixed: Fatal error on plugin activation.
 
-== 2.6.7.3 =
+= 2.6.7.3 =
 New: Filter hook aol_application_success_response.
 Fixed: Application Statuses moved from terms to posts table.
 Fixed: Actions after plugin update moved to separate class.
