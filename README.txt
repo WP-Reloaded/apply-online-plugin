@@ -5,7 +5,7 @@ Author URI:  https://linkedin.com/in/farhan-noor
 Tags: WP Form, Custom Form, Contact Form, Form Builder, Payment Form
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 2.6.8
+Stable tag: 2.6.8.1
 Requires PHP: 7.0
 License: GPLv2 or later
 
@@ -112,14 +112,19 @@ Different layout options e.g. grid layout, list layout, sidebar filter, popup fo
 Secure mail with SMTP options.
 Consent or terms & conditions field.
 
-= 2.6.8.1 =
+=2.6.8.2=
 Fixed: Nonce expired generic error message replaced with a more specific error message.
+
+= 2.6.8.1 =
+Fixed: Ad author inclusion in Author drop-down on Ad editor screen.
+Fixed: Application form buttons disabled state moved from id to- class using JS.
+Fixed: Application form submission alerts formation.
 
 = 2.6.8 =
 New: REST API replacing classic WP AJAX.
 Fixed: Server side check to avoid closed ads form submission.
 Fixed: WP Warning on front-end "Translation loading for the apply-online domain was triggered too early."
-Fixed: File attachment required field invalid trigger.
+Fixed: In application form, invalid required field error trigger for file attachment field.
 
 = 2.6.7.6 =
 Fixed: Read More button text.

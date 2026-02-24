@@ -160,8 +160,18 @@ class Applyonline_Admin{
             echo json_encode($response); exit;
         }
 
+        /**
+         * Short circut authors list on Ad editor screen.
+         * Only show AOL managers & admins in the authors list
+         * 
+         * @global type $post
+         * @param type $args
+         * @return $args
+         */
         function ad_editor_authors_metabox($args){
             global $post;
+            if( empty($post) ) return $args;
+            
             $ad_types = aol_ad_types();
             if ( !in_array(substr($post->post_type, 4), array_keys($ad_types) ) ) return $args;
             

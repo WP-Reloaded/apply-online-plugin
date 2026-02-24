@@ -11,7 +11,7 @@
  * Plugin Name:       ApplyOnline
  * Plugin URI:        https://wpreloaded.com
  * Description:       Online Form Builder and Applications Manager.
- * Version:           2.6.8
+ * Version:           2.6.8.1
  * Author:            Farhan Noor
  * Author URI:        https://linkedin.com/in/farhan-noor
  * License:           GPL-2.0+
@@ -24,7 +24,7 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-define( 'APPLYONLINE_VERSION', '2.6.8' );
+define( 'APPLYONLINE_VERSION', '2.6.8.1' );
 
 require_once( 'class-addons-update.php' );
 /**

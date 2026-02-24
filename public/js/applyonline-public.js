@@ -113,12 +113,15 @@ async function aolSubmitForm( event ) {
     }
     event.preventDefault();
     
-    const submitButton = document.getElementById('aol_app_submit_button');
+    //const submitButton = document.getElementById('aol_app_submit_button');
+    const submitButton = document.querySelectorAll('.aol-form-button');
     const statusBar = document.getElementById('aol_form_status');
     const aolForm = event.target;
     
-    //event.target.setAttribute('disabled', 'disabled');
-    submitButton.setAttribute('disabled', 'disabled');
+    submitButton.forEach( (button, index, array) => {
+        //button.setAttribute('disabled', 'disabled');
+        button.disabled = true;
+    } );
     statusBar.classList.remove('alert-danger'); //May be trying again after errors.
     statusBar.classList.add('alert');
     statusBar.classList.add('alert-warning');
@@ -137,6 +140,7 @@ async function aolSubmitForm( event ) {
     });
     const data = await response.json();
     let message = !aolEmpty(data['message']) ? data['message'] : 'Something went wrong. Please try again or contact support.';
+    
     if( response.status == 200 ){
         statusBar.classList.remove('alert-warning');
         statusBar.classList.add('alert-info');
@@ -153,9 +157,12 @@ async function aolSubmitForm( event ) {
     } else {
         statusBar.classList.remove('alert-warning');
         statusBar.classList.add('alert-danger');
-        statusBar.innerHTML = '<h5 class="error-title">'+response.statusText+'</h5>'+message;
-        submitButton.removeAttribute('disabled');
+        statusBar.innerHTML = message;
     }
+    submitButton.forEach( (button, index, array) => {
+        //button.removeAttribute('disabled', 'disabled');
+        button.disabled = false;
+    });
 }
 
 function stripslashes (str) {
