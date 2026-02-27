@@ -227,9 +227,9 @@ class Applyonline {
 	 */
 	private function define_updater_hooks() {
 
-		$plugin_public = new Applyonline_Updater( $this->get_plugin_name(), $this->get_version() );
+		$plugin_update = new Applyonline_Updater( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'plugins_loaded', $plugin_public, 'after_plugin_update', 1 );
+		$this->loader->add_action( 'plugins_loaded', $plugin_update, 'after_plugin_update', 1 );
 	}
         
         /**
@@ -244,6 +244,7 @@ class Applyonline {
 		$plugin_rest = new Applyonline_Rest( $this->get_plugin_name(), $this->get_version() );
 
                 $this->loader->add_action( 'rest_api_init', $plugin_rest, 'rest_api_init');
+		$this->loader->add_action( 'rest_authentication_errors', $plugin_rest, 'rest_authentication_errors' );
                 //$this->loader->add_filter( 'aol_form_errors', $plugin_rest, 'file_uploader', 10,3 ); //Call file_uploader when form is being processed.
 	}
 

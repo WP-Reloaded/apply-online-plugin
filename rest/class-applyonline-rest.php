@@ -54,6 +54,13 @@ class Applyonline_Rest{
             $this->namespace = 'aol/v1';
             $this->callbacks = new Applyonline_Rest_Functions();
         }
+        
+        function rest_authentication_errors( $errors ){
+            
+            if( is_wp_error($errors) ){
+                var_dump($errors); die('Alhamdulillah');                
+            }
+        }
                 
         function rest_api_init() {
             /*

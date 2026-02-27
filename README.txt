@@ -114,6 +114,7 @@ Consent or terms & conditions field.
 
 =2.6.8.2=
 Fixed: Nonce expired generic error message replaced with a more specific error message.
+Fixed: Application form invalid email error formation.
 
 = 2.6.8.1 =
 Fixed: Ad author inclusion in Author drop-down on Ad editor screen.
